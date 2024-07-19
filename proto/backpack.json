@@ -1,0 +1,6527 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "type title here",
+    "description": "type desc here",
+    "version": "type version here"
+  },
+  "host": "test.wapenai.cn",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "//apple-app-site-association": {
+      "get": {
+        "summary": "universal link",
+        "operationId": "UniversalLink",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UniversalLinkRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "wechat"
+        ]
+      }
+    },
+    "/wapen/api/v1/chat": {
+      "post": {
+        "summary": "新建chat",
+        "operationId": "NewChat",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/NewChatRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewChatReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "chat"
+        ]
+      }
+    },
+    "/wapen/api/v1/chat/list": {
+      "get": {
+        "summary": "分页获取chat data",
+        "operationId": "GetChatDataPage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetChatRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "sortCreateTime",
+            "description": " 创建时间排序：1正序|-1倒序",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sortUpdateTime",
+            "description": " 创建时间排序：1正序|-1倒序",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": " 每页数量",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "pageNum",
+            "description": " 页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "status",
+            "description": " 状态 1 正常、2删除",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "chat"
+        ]
+      }
+    },
+    "/wapen/api/v1/chat/message": {
+      "post": {
+        "summary": "保存聊天信息",
+        "operationId": "NewChatMessage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/NewChatMessageRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewChatMessageReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "chat"
+        ]
+      }
+    },
+    "/wapen/api/v1/chat/title": {
+      "put": {
+        "summary": "修改title",
+        "operationId": "UpdateChatDataTitle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateChatDataTitleReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "chat"
+        ]
+      }
+    },
+    "/wapen/api/v1/chat/{id}": {
+      "get": {
+        "summary": "获取聊天对话",
+        "operationId": "GetChatDataById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetChatRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "chat"
+        ]
+      },
+      "delete": {
+        "summary": "删除chat",
+        "operationId": "DeleteChatData",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ChatDataIdReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "chat"
+        ]
+      }
+    },
+    "/wapen/api/v1/counselor/chat/stream_log": {
+      "post": {
+        "summary": "对话",
+        "operationId": "CounselorStream",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CounselorStreamRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CounselorStreamReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "coulselor"
+        ]
+      }
+    },
+    "/wapen/api/v1/counselor/feedback": {
+      "post": {
+        "summary": "feedback",
+        "operationId": "CounselorFeedback",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CounselorFeedbackReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "coulselor"
+        ]
+      }
+    },
+    "/wapen/api/v1/counselor/home_question/{id}": {
+      "get": {
+        "summary": "首页问题",
+        "operationId": "HomeQuestion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/HomeQuestionsRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "coulselornoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/counselor/refresh_question": {
+      "post": {
+        "summary": "刷新引申问题",
+        "operationId": "CounselorRefreshExtendedQuestion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/RefreshExtendedQuestionRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RefreshExtendedQuestionReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "coulselor"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc": {
+      "delete": {
+        "summary": "彻底删除（归档）支持批量",
+        "operationId": "ArchiveDocument",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ArchiveDocumentReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      },
+      "post": {
+        "summary": "新建文档",
+        "operationId": "NewDocument",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/NewDocumentRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewDocumentReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "docmid"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc/card": {
+      "delete": {
+        "summary": "删除卡片(form-data格式)",
+        "operationId": "DeleteCard",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteCardReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      },
+      "post": {
+        "summary": "新建、插入卡片",
+        "operationId": "NewCard",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateCardReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      },
+      "put": {
+        "summary": "修改文本,喜欢,折叠",
+        "operationId": "UpdateCard",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateCardReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc/card/comment": {
+      "delete": {
+        "summary": "删除卡片批注(form-data格式)",
+        "operationId": "DeleteCardComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteCardCommentReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      },
+      "post": {
+        "summary": "新增卡片批注",
+        "operationId": "InsertCardComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CardCommentReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      },
+      "put": {
+        "summary": "修改卡片批注",
+        "operationId": "UpdateCardComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CardCommentReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc/card/revocation": {
+      "post": {
+        "summary": "撤回卡片",
+        "operationId": "RevocationCard",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RevocationCardReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc/igure_pen": {
+      "get": {
+        "summary": "获取数字笔",
+        "operationId": "GetFigurePen",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetFigurePenRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      },
+      "post": {
+        "summary": "新增数字笔",
+        "operationId": "SaveFigurePen",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FigurePenRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FigurePenReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      },
+      "put": {
+        "summary": "修改数字笔",
+        "operationId": "UpdateFigurePen",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FigurePenRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FigurePenReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc/like": {
+      "put": {
+        "summary": "收藏文档",
+        "operationId": "UpdateDocumentLike",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateDocumentLikeReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc/list": {
+      "post": {
+        "summary": "文档列表",
+        "operationId": "GetDocList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/DocListRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DocListReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc/status": {
+      "put": {
+        "summary": "修改文档状态：1恢复，-1删除(支持批量)",
+        "operationId": "UpdateDocumentStatus",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateDocumentStatusReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc/title": {
+      "put": {
+        "summary": "修改文档标题",
+        "operationId": "UpdateDocumentTitle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/NewDocumentRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateDocumentTitleReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      }
+    },
+    "/wapen/api/v1/doc/{id}": {
+      "get": {
+        "summary": "查询文档",
+        "operationId": "GetDocument",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetDocumentRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "doc"
+        ]
+      }
+    },
+    "/wapen/api/v1/file/get_token": {
+      "post": {
+        "summary": "获取上传token",
+        "operationId": "GetUploadToken",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetUploadTokenRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetUploadTokenReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "file"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt": {
+      "post": {
+        "operationId": "GptWrapper",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WapenTextResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WapenTextRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/Write": {
+      "post": {
+        "summary": "ai写作接口",
+        "operationId": "CompletionWrite",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GptCompletionWriteReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/chat_list": {
+      "post": {
+        "summary": " 获取chat list",
+        "operationId": "GatChatList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ChatListRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ChatListReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/chat_page_list": {
+      "post": {
+        "summary": " 获取chat list 分页",
+        "operationId": "GatChatPageList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ChatListRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ChatPageListReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/completion": {
+      "post": {
+        "summary": "gpt聊天接口",
+        "operationId": "Completion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GptCompletionReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/delete": {
+      "post": {
+        "summary": "删除对话框",
+        "operationId": "DeleteChatInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteChatReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/generate_write": {
+      "post": {
+        "summary": "通用问答接口",
+        "operationId": "CompletionGenerateWrite",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GptCompletionGenerateReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gptmid"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/get_methods": {
+      "get": {
+        "summary": "获取所有模板方法",
+        "operationId": "GetMethods",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetMethodsRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "gptnoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/get_param/{method}": {
+      "get": {
+        "summary": "根据方法获取模板参数",
+        "operationId": "GetParam",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetParamRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "method",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gptnoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/mapping": {
+      "get": {
+        "summary": "获取mapping",
+        "operationId": "GatMappingByChatId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MappingRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "chatId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/save": {
+      "post": {
+        "summary": "保存聊天信息",
+        "operationId": "SaveChatInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SaveChatDataRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SaveChatDataReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/speech_to_text": {
+      "get": {
+        "summary": "语音转换",
+        "operationId": "SpeechToText",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SpeechToTextRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/speech_to_text_stream": {
+      "get": {
+        "summary": "语音转换stream",
+        "operationId": "SpeechToTextStream",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SpeechToTextRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "language",
+            "description": " 转换的语言",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/update_title": {
+      "post": {
+        "summary": "修改对话框title",
+        "operationId": "UpdateChatTitle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateChatTitleReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "gpt"
+        ]
+      }
+    },
+    "/wapen/api/v1/gpt/upload_prompt_tmpl": {
+      "post": {
+        "summary": "更新prompt模板，文件key为file",
+        "operationId": "UploadPromptTmpl",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "gptnoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/interview": {
+      "post": {
+        "summary": "开始面试",
+        "operationId": "Start",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/StartInterviewRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/StartInterviewReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "interview"
+        ]
+      }
+    },
+    "/wapen/api/v1/interview/chat": {
+      "post": {
+        "summary": "问题回答",
+        "operationId": "Chat",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InterviewChatReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "interview"
+        ]
+      }
+    },
+    "/wapen/api/v1/interview/comment": {
+      "get": {
+        "summary": "面试评论问题",
+        "operationId": "CommentQuestion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/Question"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "interview"
+        ]
+      },
+      "post": {
+        "summary": "提交面试评论",
+        "operationId": "SubmitCommentQuestion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SubmitComment"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "interview"
+        ]
+      }
+    },
+    "/wapen/api/v1/interview/end": {
+      "post": {
+        "summary": "结束面试,生成面试反馈",
+        "operationId": "End",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/EndInterviewRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/EndInterviewReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "interview"
+        ]
+      }
+    },
+    "/wapen/api/v1/interview/feedback": {
+      "get": {
+        "summary": "获取面试反馈",
+        "operationId": "Feedback",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/InterviewFeedbackRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "chatDataId",
+            "description": " 面试房间id",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "interview"
+        ]
+      },
+      "delete": {
+        "summary": "删除面试反馈",
+        "operationId": "DeleteFeedback",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteFeedbackReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "interview"
+        ]
+      }
+    },
+    "/wapen/api/v1/interview/feedback_list": {
+      "get": {
+        "summary": "获取面试反馈列表",
+        "operationId": "FeedbackList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FeedbackListRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "sortCreateTime",
+            "description": " 创建时间排序：1正序|-1倒序",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sortUpdateTime",
+            "description": " 创建时间排序：1正序|-1倒序",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": " 每页数量",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": "10"
+          },
+          {
+            "name": "pageNum",
+            "description": " 页码",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          },
+          {
+            "name": "status",
+            "description": " 状态 1 正常、2删除",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32",
+            "default": "1"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "interview"
+        ]
+      }
+    },
+    "/wapen/api/v1/interview/voice": {
+      "get": {
+        "summary": "获取voice信息",
+        "operationId": "GetVoiceInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetVoiceRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "interviewnoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/banner": {
+      "get": {
+        "summary": "获取banner列表",
+        "operationId": "GetBanner",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/BannerList"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "post": {
+        "summary": "新增banner",
+        "operationId": "NewBanner",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BannerReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "put": {
+        "summary": "修改banner",
+        "operationId": "UpdateBanner",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BannerReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/banner/{id}": {
+      "delete": {
+        "summary": "删除banner",
+        "operationId": "DeleteBanner",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeteteBanner"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/class": {
+      "get": {
+        "summary": "获取class列表",
+        "operationId": "GetClass",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ClassList"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "post": {
+        "summary": "新增class",
+        "operationId": "NewClass",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClassReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "put": {
+        "summary": "修改class",
+        "operationId": "UpdateClass",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClassReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/class/{id}": {
+      "delete": {
+        "summary": "删除class",
+        "operationId": "DeleteClass",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClassId"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/prompt": {
+      "post": {
+        "summary": "新增模板",
+        "operationId": "SavePrompt",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PromptTemplateReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "put": {
+        "summary": "修改模板",
+        "operationId": "UpdatePrompt",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PromptTemplateReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/prompt/{id}": {
+      "delete": {
+        "summary": "根据scene id查新模板",
+        "operationId": "DeletePrompt",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PromptTemplateIdReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/prompt/{sceneId}": {
+      "get": {
+        "summary": "根据scene id查新模板",
+        "operationId": "GetPromptBySceneId",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/PromptTemplateRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "sceneId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/push_msg": {
+      "post": {
+        "summary": "消息推送",
+        "operationId": "PushMessage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PushMessageReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "managernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/scene": {
+      "post": {
+        "summary": "新增scene",
+        "operationId": "NewScene",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SceneReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "put": {
+        "summary": "修改scene",
+        "operationId": "UpdateScene",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SceneReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/scene/{id}": {
+      "get": {
+        "summary": "根据classID获取scene列表",
+        "operationId": "GetScene",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SceneList"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "delete": {
+        "summary": "删除scene",
+        "operationId": "DeleteScene",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SceneId"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/tag": {
+      "get": {
+        "summary": "获取所有tag",
+        "operationId": "GetTags",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/TagList"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "post": {
+        "summary": "新增tag",
+        "operationId": "NewTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TagReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "put": {
+        "summary": "修改tag",
+        "operationId": "UpdateTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TagReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/manager/tag/{id}": {
+      "get": {
+        "summary": "根据id获取tag",
+        "operationId": "GetTagById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/TagRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      },
+      "delete": {
+        "summary": "删除tag",
+        "operationId": "DeleteTag",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TagId"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "manager"
+        ]
+      }
+    },
+    "/wapen/api/v1/oauth2/callback": {
+      "get": {
+        "summary": "google 登录回调",
+        "operationId": "GoogleCallbackHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SignInResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "code",
+            "description": " google code",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "state",
+            "description": " 元数据（app端不填）",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "source",
+            "description": " 请求源（1.app 2.web）",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/pay/apple": {
+      "post": {
+        "summary": "apple支付",
+        "operationId": "ApplePay",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ApplePayReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "payauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/pay/callback_cancel": {
+      "get": {
+        "summary": "取消支付回调",
+        "operationId": "PayCancelCallback",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "success_url",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cancel_url",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "paynoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/pay/callback_success": {
+      "get": {
+        "summary": "支付成功回调",
+        "operationId": "PaySuccessCallback",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "success_url",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "cancel_url",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "paynoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/pay/create": {
+      "post": {
+        "summary": "发起支付",
+        "operationId": "CreatePay",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CreatePayRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreatePayReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "payauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/pay/price/list": {
+      "get": {
+        "summary": "获取商品列表(包含价格)",
+        "operationId": "GetPriceList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetPriceListRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "payauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/pay/webhook": {
+      "post": {
+        "summary": "Stripe webhook",
+        "operationId": "PayWebHook",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "paynoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/send/code": {
+      "post": {
+        "summary": "发送验证码",
+        "operationId": "SendCodeHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SendCodeRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/send/forgot-password/{email}": {
+      "get": {
+        "summary": "忘记密码发送邮箱",
+        "operationId": "SendReSetPwdEmailHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/text_to_speech": {
+      "post": {
+        "summary": "文字转语音",
+        "operationId": "TextToSpeech",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/TextToSpeechRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/TextToSpeechReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "speech"
+        ]
+      }
+    },
+    "/wapen/api/v1/text_to_speech/whisper": {
+      "get": {
+        "summary": "文字转语音openai",
+        "operationId": "TextToSpeechOpenAi",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "speech"
+        ]
+      }
+    },
+    "/wapen/api/v1/translate": {
+      "post": {
+        "operationId": "DeepLWrapper",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/WapenTranslateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WapenTranslateRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user": {
+      "delete": {
+        "summary": "删除账号",
+        "operationId": "DeleteUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/avatar": {
+      "put": {
+        "summary": "用户上传头像",
+        "operationId": "UploadAvatar",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateAatarRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/check_in": {
+      "get": {
+        "summary": "获取签到信息",
+        "operationId": "GetCheckIn",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/GetCheckInRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      },
+      "post": {
+        "summary": "签到",
+        "operationId": "CheckIn",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CheckInReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/exist": {
+      "post": {
+        "summary": "判断本地用户是否存在",
+        "operationId": "AccountIsExistHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/AccountIsExistResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AccountIsExist"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/feedback_to_app": {
+      "post": {
+        "summary": "app反馈",
+        "operationId": "FeedbackToApp",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FeedbackToAppReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/figure_pen": {
+      "get": {
+        "summary": "获取数字笔",
+        "operationId": "GetUserFigurePen",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserFigureRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      },
+      "post": {
+        "summary": "生成数字笔",
+        "operationId": "GenerateFigurePen",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FigurePenRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FigureReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      },
+      "put": {
+        "summary": "修改数字笔",
+        "operationId": "UpdateUserFigurePen",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateFigureReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/file_info": {
+      "get": {
+        "summary": "获取用户档案信息",
+        "operationId": "GetUserFileInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserInfoRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      },
+      "put": {
+        "summary": "修改用户个人档案信息",
+        "operationId": "UpdateUserFileInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUserFileInfoRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/info": {
+      "get": {
+        "summary": "获取用户信息",
+        "operationId": "GetUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserInfoRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/pwd": {
+      "put": {
+        "summary": "修改密码",
+        "operationId": "UpdatePwdHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdatePwdRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/set_pwd": {
+      "put": {
+        "summary": "设置密码",
+        "operationId": "SetPwdHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SignInResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReSetPwdRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/set_pwd_check_code": {
+      "put": {
+        "summary": "验证码设置密码判断验证码是否正确",
+        "operationId": "CheckSetPwdByCodeHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CheckSetPwdByCodeResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CheckSetPwdByCodeRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/set_pwd_code": {
+      "put": {
+        "summary": "验证码设置密码",
+        "operationId": "SetPwdByCodeHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SignInResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SetPwdByCodeRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/signin": {
+      "post": {
+        "summary": "用户登录账号密码",
+        "operationId": "SigninHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SignInResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SignInRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/signingoogle": {
+      "get": {
+        "summary": "google登录",
+        "operationId": "SigninByGoogleHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SignInResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "invitationCode",
+            "description": " 邀请码",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "product",
+            "description": " 所属产品",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/signup": {
+      "post": {
+        "summary": "用户注册",
+        "operationId": "SignupHandler",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SignUpResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SignUpRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/user/wap_view": {
+      "post": {
+        "summary": "wap-view设置用户信息",
+        "operationId": "SaveWapViewUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WapViewUserInfo"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      },
+      "put": {
+        "summary": "wap-view修改用户信息",
+        "operationId": "UpdateWapViewUserInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WapViewUserInfo"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauth"
+        ]
+      }
+    },
+    "/wapen/api/v1/wechat/joint": {
+      "get": {
+        "summary": "微信接入",
+        "operationId": "Joint",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "signature",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "timestamp",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "nonce",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "echostr",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "wechat"
+        ]
+      }
+    },
+    "/wapen/api/v2/user/": {
+      "get": {
+        "summary": "获取用户信息",
+        "operationId": "GetUserInfoV2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserInfoRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "userauthv2"
+        ]
+      },
+      "delete": {
+        "summary": "删除账号",
+        "operationId": "DeleteUserV2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "userauthv2"
+        ]
+      }
+    },
+    "/wapen/api/v2/user/country": {
+      "get": {
+        "summary": "获取区号",
+        "operationId": "GetCountryCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/CountryCodeRes"
+            }
+          }
+        },
+        "requestBody": {},
+        "tags": [
+          "usernoauthv2"
+        ]
+      }
+    },
+    "/wapen/api/v2/user/credits": {
+      "post": {
+        "summary": "获取用户积分列表",
+        "operationId": "GetUserCredits",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/UserCreditsRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserCreditsResReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauthv2"
+        ]
+      }
+    },
+    "/wapen/api/v2/user/mobile": {
+      "put": {
+        "summary": "绑定用户手机号",
+        "operationId": "BindUserMobileV2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BindUserMobileReq"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauthv2"
+        ]
+      }
+    },
+    "/wapen/api/v2/user/signin": {
+      "post": {
+        "summary": "登录",
+        "operationId": "SigninHandlerV2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/SignInResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SignInRequest"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "usernoauthv2"
+        ]
+      }
+    },
+    "/wapen/api/v2/user/wap_view": {
+      "post": {
+        "summary": "wap-view设置用户信息",
+        "operationId": "SaveWapViewUserInfoV2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WapViewUserInfo"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauthv2"
+        ]
+      },
+      "put": {
+        "summary": "wap-view修改用户信息",
+        "operationId": "UpdateWapViewUserInfoV2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WapViewUserInfo"
+            }
+          }
+        ],
+        "requestBody": {},
+        "tags": [
+          "userauthv2"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AccountIsExist": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "string",
+          "description": " 用户账号"
+        },
+        "email": {
+          "type": "string",
+          "description": " 邮箱"
+        },
+        "mobile": {
+          "type": "string",
+          "description": " 手机号"
+        },
+        "accountType": {
+          "$ref": "#/definitions/uint8",
+          "description": " 账号类型 【1账号 2邮箱 3手机】"
+        }
+      },
+      "title": "AccountIsExist",
+      "required": [
+        "accountType"
+      ]
+    },
+    "AccountIsExistResponse": {
+      "type": "object",
+      "properties": {
+        "exist": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "AccountIsExistResponse",
+      "required": [
+        "exist"
+      ]
+    },
+    "ApplePayReq": {
+      "type": "object",
+      "properties": {
+        "transactionReceipt": {
+          "type": "string",
+          "description": " 交易凭据"
+        }
+      },
+      "title": "ApplePayReq",
+      "required": [
+        "transactionReceipt"
+      ]
+    },
+    "ArchiveDocumentReq": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 文档id"
+        }
+      },
+      "title": "ArchiveDocumentReq",
+      "required": [
+        "ids"
+      ]
+    },
+    "Award": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 名称"
+        },
+        "ranking": {
+          "type": "string",
+          "description": " 名次"
+        },
+        "startTime": {
+          "type": "string",
+          "description": " 开始时间"
+        },
+        "endTime": {
+          "type": "string",
+          "description": " 结束时间"
+        }
+      },
+      "title": "Award",
+      "required": [
+        "name",
+        "ranking",
+        "startTime",
+        "endTime"
+      ]
+    },
+    "BannerList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "object"
+        }
+      },
+      "title": "BannerList",
+      "required": [
+        "list"
+      ]
+    },
+    "BannerReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string",
+          "description": " Banner名称"
+        },
+        "imgUrl": {
+          "type": "string",
+          "description": " 英文图片url"
+        },
+        "imgUrlCn": {
+          "type": "string",
+          "description": " 中文图片url"
+        },
+        "h5": {
+          "type": "string",
+          "description": " h5连接"
+        },
+        "weight": {
+          "$ref": "#/definitions/int16",
+          "description": " 权重"
+        }
+      },
+      "title": "BannerReq",
+      "required": [
+        "name",
+        "imgUrl",
+        "imgUrlCn",
+        "h5"
+      ]
+    },
+    "BaseInformation": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 学生姓名"
+        },
+        "identity": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 身份 0：学生,1:家长"
+        },
+        "school": {
+          "type": "string",
+          "description": " 就读学校"
+        },
+        "grade": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 所在年级 1-6年级（0），7-12年级（1），大学（2）"
+        }
+      },
+      "title": "BaseInformation",
+      "required": [
+        "name",
+        "identity",
+        "school",
+        "grade"
+      ]
+    },
+    "BindUserMobileReq": {
+      "type": "object",
+      "properties": {
+        "mobile": {
+          "type": "string"
+        },
+        "authCode": {
+          "type": "string"
+        },
+        "countryCode": {
+          "type": "string"
+        }
+      },
+      "title": "BindUserMobileReq",
+      "required": [
+        "mobile",
+        "authCode",
+        "countryCode"
+      ]
+    },
+    "CallbackRes": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "type": "string"
+        },
+        "success_url": {
+          "type": "string"
+        },
+        "cancel_url": {
+          "type": "string"
+        }
+      },
+      "title": "CallbackRes"
+    },
+    "Card": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " id"
+        },
+        "sort": {
+          "$ref": "#/definitions/int16",
+          "description": " 排序"
+        },
+        "cardType": {
+          "$ref": "#/definitions/int8",
+          "description": " 类型(1标题,2大纲,3内容,4 idea)"
+        },
+        "text": {
+          "type": "string",
+          "description": " 文本内容"
+        },
+        "suggestions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 优化建议"
+        },
+        "like": {
+          "$ref": "#/definitions/int8",
+          "description": " 是否标记喜欢(0未标记，1标记)"
+        },
+        "fold": {
+          "$ref": "#/definitions/int8",
+          "description": " 是否折叠(0未折叠，1折叠)"
+        },
+        "status": {
+          "$ref": "#/definitions/int8",
+          "description": " 文本状态(1正常，-1删除)"
+        },
+        "gptParam": {
+          "$ref": "#/definitions/GptParam",
+          "description": " gpt属性"
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Comment"
+          },
+          "description": " 批注"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "Card",
+      "required": [
+        "id",
+        "sort",
+        "cardType",
+        "text",
+        "suggestions",
+        "like",
+        "fold",
+        "status",
+        "gptParam",
+        "comments",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "CardCommentReq": {
+      "type": "object",
+      "properties": {
+        "docId": {
+          "type": "string",
+          "description": " 文档id"
+        },
+        "cardId": {
+          "type": "string",
+          "description": " 卡片id"
+        },
+        "commentId": {
+          "$ref": "#/definitions/uint16",
+          "description": " 批注id"
+        },
+        "text": {
+          "type": "string",
+          "description": " 批注内容"
+        },
+        "commentType": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 类型：0批注，1想法"
+        },
+        "owner": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 类型：0 :ai 1 用户"
+        }
+      },
+      "title": "CardCommentReq",
+      "required": [
+        "docId",
+        "cardId",
+        "commentId",
+        "text",
+        "commentType",
+        "owner"
+      ]
+    },
+    "CardReq": {
+      "type": "object",
+      "properties": {
+        "cardId": {
+          "type": "string",
+          "description": " 卡片id"
+        },
+        "type": {
+          "$ref": "#/definitions/uint8",
+          "description": " 卡片类型(1标题,2大纲,3内容,4 idea)"
+        },
+        "owner": {
+          "$ref": "#/definitions/uint8",
+          "description": " 卡片拥有者(0AI，1用户)"
+        },
+        "text": {
+          "type": "string",
+          "description": " 卡片内容"
+        },
+        "prompt": {
+          "type": "string",
+          "description": " 提示词"
+        },
+        "sourceText": {
+          "type": "string",
+          "description": " 源文本内容"
+        },
+        "gptSourceTest": {
+          "type": "string",
+          "description": " gpt请求源文本内容"
+        },
+        "sourceCardType": {
+          "$ref": "#/definitions/uint8",
+          "description": " 源卡片属性"
+        },
+        "suggestions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 优化建议(优化产生的卡片需要)"
+        }
+      },
+      "title": "CardReq",
+      "required": [
+        "cardId",
+        "type",
+        "text"
+      ]
+    },
+    "ChatDataIdReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " 当前聊天窗口id"
+        }
+      },
+      "title": "ChatDataIdReq",
+      "required": [
+        "id"
+      ]
+    },
+    "ChatListReq": {
+      "type": "object",
+      "properties": {
+        "chatIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "ChatListReq",
+      "required": [
+        "chatIds"
+      ]
+    },
+    "ChatListRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        }
+      },
+      "title": "ChatListRes",
+      "required": [
+        "data"
+      ]
+    },
+    "ChatPageListReq": {
+      "type": "object",
+      "properties": {
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32",
+          "default": "0"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10"
+        }
+      },
+      "title": "ChatPageListReq",
+      "required": [
+        "pageIndex",
+        "pageSize"
+      ]
+    },
+    "CheckInReq": {
+      "type": "object",
+      "properties": {
+        "credits": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 当前签到活得的积分"
+        }
+      },
+      "title": "CheckInReq",
+      "required": [
+        "credits"
+      ]
+    },
+    "CheckSetPwdByCodeRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "title": "CheckSetPwdByCodeRequest",
+      "required": [
+        "email",
+        "code"
+      ]
+    },
+    "CheckSetPwdByCodeResponse": {
+      "type": "object",
+      "properties": {
+        "pass": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "CheckSetPwdByCodeResponse",
+      "required": [
+        "pass"
+      ]
+    },
+    "Class": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " id"
+        },
+        "className": {
+          "type": "string",
+          "description": " 英文名"
+        },
+        "classNameCn": {
+          "type": "string",
+          "description": " 中文名"
+        }
+      },
+      "title": "Class",
+      "required": [
+        "id",
+        "className",
+        "classNameCn"
+      ]
+    },
+    "ClassId": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " ClassID"
+        }
+      },
+      "title": "ClassId",
+      "required": [
+        "id"
+      ]
+    },
+    "ClassList": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "object",
+          "description": " 分类列表"
+        }
+      },
+      "title": "ClassList",
+      "required": [
+        "list"
+      ]
+    },
+    "ClassReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "className": {
+          "type": "string",
+          "description": " 英文名"
+        },
+        "classNameCn": {
+          "type": "string",
+          "description": " 中文名"
+        },
+        "weight": {
+          "$ref": "#/definitions/int16",
+          "description": " 权重"
+        }
+      },
+      "title": "ClassReq",
+      "required": [
+        "className",
+        "classNameCn"
+      ]
+    },
+    "ClubExperience": {
+      "type": "object",
+      "properties": {
+        "school": {
+          "type": "string",
+          "description": " 学校/组织的名称"
+        },
+        "department": {
+          "type": "string",
+          "description": " 所属部门的名称"
+        },
+        "position": {
+          "type": "string",
+          "description": " 职位名称"
+        },
+        "startTime": {
+          "type": "string",
+          "description": " 开始时间"
+        },
+        "endTime": {
+          "type": "string",
+          "description": " 结束时间"
+        },
+        "content": {
+          "type": "string",
+          "description": " 实践内容"
+        }
+      },
+      "title": "ClubExperience",
+      "required": [
+        "school",
+        "department",
+        "position",
+        "startTime",
+        "endTime",
+        "content"
+      ]
+    },
+    "Comment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/int8",
+          "description": " 排序"
+        },
+        "text": {
+          "type": "string",
+          "description": " 文本内容"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": " 创建时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": " 更新时间"
+        }
+      },
+      "title": "Comment",
+      "required": [
+        "id",
+        "text",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "CommentQuestion": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "type": "string",
+          "description": " 问题"
+        },
+        "sort": {
+          "$ref": "#/definitions/uint",
+          "description": " 排序"
+        },
+        "tag": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QuestionTag"
+          },
+          "description": " 标签"
+        }
+      },
+      "title": "CommentQuestion",
+      "required": [
+        "question",
+        "sort",
+        "tag"
+      ]
+    },
+    "CounselorFeedbackReq": {
+      "type": "object",
+      "properties": {
+        "runId": {
+          "type": "string",
+          "description": " 回答返回的id"
+        },
+        "score": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 反馈：1.赞同，0.不赞同"
+        }
+      },
+      "title": "CounselorFeedbackReq",
+      "required": [
+        "runId",
+        "score"
+      ]
+    },
+    "CounselorFeedbackRes": {
+      "type": "object",
+      "title": "CounselorFeedbackRes"
+    },
+    "CounselorStreamReq": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string"
+        },
+        "chatDataId": {
+          "type": "string"
+        }
+      },
+      "title": "CounselorStreamReq",
+      "required": [
+        "input",
+        "chatDataId"
+      ]
+    },
+    "CounselorStreamRes": {
+      "type": "object",
+      "properties": {
+        "extendedQuestions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "CounselorStreamRes",
+      "required": [
+        "extendedQuestions"
+      ]
+    },
+    "CountryCodeReq": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": " 语言：中文cn，英文：ch"
+        }
+      },
+      "title": "CountryCodeReq",
+      "required": [
+        "language"
+      ]
+    },
+    "CountryCodeRes": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "object"
+        }
+      },
+      "title": "CountryCodeRes",
+      "required": [
+        "list"
+      ]
+    },
+    "CreateCardReq": {
+      "type": "object",
+      "properties": {
+        "docId": {
+          "type": "string",
+          "description": " 文档id"
+        },
+        "index": {
+          "type": "string",
+          "description": " 插入卡片的位置（新增的卡片集合第一个卡片的uid）"
+        },
+        "cards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CardReq"
+          },
+          "description": " 新增卡片集合"
+        }
+      },
+      "title": "CreateCardReq",
+      "required": [
+        "docId",
+        "cards"
+      ]
+    },
+    "CreatePayReq": {
+      "type": "object",
+      "properties": {
+        "priceId": {
+          "type": "string",
+          "description": " 价格id"
+        },
+        "successUrl": {
+          "type": "string",
+          "description": " 支付成功跳转的url"
+        },
+        "cancelUrl": {
+          "type": "string",
+          "description": " 取消支付跳转的url"
+        }
+      },
+      "title": "CreatePayReq",
+      "required": [
+        "priceId",
+        "successUrl",
+        "cancelUrl"
+      ]
+    },
+    "CreatePayRes": {
+      "type": "object",
+      "properties": {
+        "payUrl": {
+          "type": "string"
+        }
+      },
+      "title": "CreatePayRes",
+      "required": [
+        "payUrl"
+      ]
+    },
+    "Credits": {
+      "type": "object",
+      "properties": {
+        "creditType": {
+          "$ref": "#/definitions/uint8",
+          "description": " 积分类型：1注册,2邀请,3面试,4打卡"
+        },
+        "credit": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 积分"
+        }
+      },
+      "title": "Credits",
+      "required": [
+        "creditType",
+        "credit"
+      ]
+    },
+    "DeleteCardCommentReq": {
+      "type": "object",
+      "properties": {
+        "docId": {
+          "type": "string",
+          "description": " 文档id"
+        },
+        "cardId": {
+          "type": "string",
+          "description": " 卡片id"
+        },
+        "commentId": {
+          "$ref": "#/definitions/uint16",
+          "description": " 批注id"
+        }
+      },
+      "title": "DeleteCardCommentReq",
+      "required": [
+        "docId",
+        "cardId",
+        "commentId"
+      ]
+    },
+    "DeleteCardReq": {
+      "type": "object",
+      "properties": {
+        "docId": {
+          "type": "string",
+          "description": " 文档id"
+        },
+        "cardId": {
+          "type": "string",
+          "description": " 卡片id"
+        }
+      },
+      "title": "DeleteCardReq",
+      "required": [
+        "docId",
+        "cardId"
+      ]
+    },
+    "DeleteChatReq": {
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string"
+        }
+      },
+      "title": "DeleteChatReq",
+      "required": [
+        "chatId"
+      ]
+    },
+    "DeleteFeedbackReq": {
+      "type": "object",
+      "properties": {
+        "chatDataId": {
+          "type": "string",
+          "description": " 当前面试id"
+        }
+      },
+      "title": "DeleteFeedbackReq",
+      "required": [
+        "chatDataId"
+      ]
+    },
+    "DeteteBanner": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " BannerID"
+        }
+      },
+      "title": "DeteteBanner",
+      "required": [
+        "id"
+      ]
+    },
+    "DocListReq": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": " 文档标题"
+        },
+        "sortCreateTime": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 创建时间排序：1正序|-1倒序"
+        },
+        "sortUpdateTime": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 创建时间排序：1正序|-1倒序"
+        },
+        "startTime": {
+          "type": "string",
+          "description": " 开始时间"
+        },
+        "endTime": {
+          "type": "string",
+          "description": " 结束时间"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10",
+          "description": "  每页数量"
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 页码"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 页码"
+        }
+      },
+      "title": "DocListReq",
+      "required": [
+        "pageSize",
+        "pageNum",
+        "status"
+      ]
+    },
+    "DocListRes": {
+      "type": "object",
+      "properties": {
+        "documents": {
+          "type": "object"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "description": "  每页数量"
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 页码"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 总数"
+        }
+      },
+      "title": "DocListRes",
+      "required": [
+        "documents",
+        "pageSize",
+        "pageNum",
+        "total"
+      ]
+    },
+    "EmptyResponse": {
+      "type": "object",
+      "title": "EmptyResponse"
+    },
+    "EndInterviewReq": {
+      "type": "object",
+      "properties": {
+        "chatDataId": {
+          "type": "string",
+          "description": " 当前面试房间id"
+        },
+        "method": {
+          "type": "string",
+          "default": "generate_feedback",
+          "description": " 请求的方法(generate_feedback)"
+        },
+        "interviewSource": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 面试来源：1正常面试，2签到面试"
+        },
+        "credits": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 增减的积分"
+        },
+        "source": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 运营后台需要填写为1"
+        }
+      },
+      "title": "EndInterviewReq",
+      "required": [
+        "chatDataId",
+        "method",
+        "interviewSource"
+      ]
+    },
+    "EndInterviewRes": {
+      "type": "object",
+      "properties": {
+        "valid": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 当前面试是否有效"
+        }
+      },
+      "title": "EndInterviewRes",
+      "required": [
+        "valid"
+      ]
+    },
+    "EnglishProficiency": {
+      "type": "object",
+      "properties": {
+        "subject": {
+          "type": "string",
+          "description": " 科目"
+        },
+        "score": {
+          "type": "string",
+          "description": " 分数"
+        }
+      },
+      "title": "EnglishProficiency",
+      "required": [
+        "subject",
+        "score"
+      ]
+    },
+    "Expertise": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 特长名称"
+        },
+        "level": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 程度（1: 休闲娱乐, 2: 业余水平, 3: 学校最高级别, 4: 州省专业水平, 5: 国家专业水平, 6: 世界专业水平）"
+        }
+      },
+      "title": "Expertise",
+      "required": [
+        "name",
+        "level"
+      ]
+    },
+    "FeedbackListReq": {
+      "type": "object",
+      "properties": {
+        "sortCreateTime": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 创建时间排序：1正序|-1倒序"
+        },
+        "sortUpdateTime": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 创建时间排序：1正序|-1倒序"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10",
+          "description": " 每页数量"
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 页码"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 状态 1 正常、2删除"
+        }
+      },
+      "title": "FeedbackListReq",
+      "required": [
+        "pageSize",
+        "pageNum",
+        "status"
+      ]
+    },
+    "FeedbackListRes": {
+      "type": "object",
+      "properties": {
+        "chatDataList": {
+          "type": "object"
+        }
+      },
+      "title": "FeedbackListRes",
+      "required": [
+        "chatDataList"
+      ]
+    },
+    "FeedbackReq": {
+      "type": "object",
+      "properties": {
+        "chatDataId": {
+          "type": "string",
+          "description": " 面试房间id"
+        }
+      },
+      "title": "FeedbackReq",
+      "required": [
+        "chatDataId"
+      ]
+    },
+    "FeedbackToAppReq": {
+      "type": "object",
+      "properties": {
+        "feedback": {
+          "$ref": "#/definitions/mapstringinterface",
+          "description": " 反馈信息（用key-value形式传参，方便后续拓展）"
+        }
+      },
+      "title": "FeedbackToAppReq",
+      "required": [
+        "feedback"
+      ]
+    },
+    "FigurePenReq": {
+      "type": "object",
+      "properties": {
+        "figurePenText": {
+          "type": "string",
+          "description": " 数字笔文本"
+        },
+        "figurePenId": {
+          "type": "string",
+          "description": " 数字笔id（修改时比传）"
+        }
+      },
+      "title": "FigurePenReq",
+      "required": [
+        "figurePenText"
+      ]
+    },
+    "FigurePenRes": {
+      "type": "object",
+      "properties": {
+        "figurePenId": {
+          "type": "string"
+        }
+      },
+      "title": "FigurePenRes",
+      "required": [
+        "figurePenId"
+      ]
+    },
+    "FigureReq": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 数字笔名称"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 数字笔模板文件列表"
+        }
+      },
+      "title": "FigureReq",
+      "required": [
+        "name",
+        "files"
+      ]
+    },
+    "GetChatPageReq": {
+      "type": "object",
+      "properties": {
+        "sortCreateTime": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 创建时间排序：1正序|-1倒序"
+        },
+        "sortUpdateTime": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 创建时间排序：1正序|-1倒序"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10",
+          "description": " 每页数量"
+        },
+        "pageNum": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 页码"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "default": "1",
+          "description": " 状态 1 正常、2删除"
+        }
+      },
+      "title": "GetChatPageReq",
+      "required": [
+        "pageSize",
+        "pageNum",
+        "status"
+      ]
+    },
+    "GetChatRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        }
+      },
+      "title": "GetChatRes",
+      "required": [
+        "data"
+      ]
+    },
+    "GetCheckInRes": {
+      "type": "object",
+      "properties": {
+        "checkInDays": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 连续签到天数"
+        },
+        "currentCheckStatus": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 当日是否签到"
+        },
+        "credits": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 总积分"
+        }
+      },
+      "title": "GetCheckInRes",
+      "required": [
+        "checkInDays",
+        "currentCheckStatus",
+        "credits"
+      ]
+    },
+    "GetDocumentReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " 文档id"
+        }
+      },
+      "title": "GetDocumentReq",
+      "required": [
+        "id"
+      ]
+    },
+    "GetDocumentRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object",
+          "description": " 文档"
+        }
+      },
+      "title": "GetDocumentRes",
+      "required": [
+        "data"
+      ]
+    },
+    "GetFigurePenReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "title": "GetFigurePenReq",
+      "required": [
+        "id"
+      ]
+    },
+    "GetFigurePenRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        }
+      },
+      "title": "GetFigurePenRes",
+      "required": [
+        "data"
+      ]
+    },
+    "GetMethodsRes": {
+      "type": "object",
+      "properties": {
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "GetMethodsRes",
+      "required": [
+        "methods"
+      ]
+    },
+    "GetParamReq": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": " 方法名"
+        }
+      },
+      "title": "GetParamReq",
+      "required": [
+        "method"
+      ]
+    },
+    "GetParamRes": {
+      "type": "object",
+      "properties": {
+        "params": {
+          "type": "string"
+        }
+      },
+      "title": "GetParamRes",
+      "required": [
+        "params"
+      ]
+    },
+    "GetPriceListRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        }
+      },
+      "title": "GetPriceListRes",
+      "required": [
+        "data"
+      ]
+    },
+    "GetTemporaryCredentialsRes": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "title": "GetTemporaryCredentialsRes",
+      "required": [
+        "token"
+      ]
+    },
+    "GetUploadTokenReq": {
+      "type": "object",
+      "properties": {
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 文件名列表"
+        },
+        "usedType": {
+          "type": "string",
+          "description": " 使用类型（文件:file、头像:avatar）"
+        }
+      },
+      "title": "GetUploadTokenReq",
+      "required": [
+        "files",
+        "usedType"
+      ]
+    },
+    "GetUploadTokenRes": {
+      "type": "object",
+      "properties": {
+        "signUrl": {
+          "type": "object",
+          "description": " 上传文件url"
+        }
+      },
+      "title": "GetUploadTokenRes",
+      "required": [
+        "signUrl"
+      ]
+    },
+    "GetVoiceRes": {
+      "type": "object",
+      "properties": {
+        "voices": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VoiceInfo"
+          }
+        }
+      },
+      "title": "GetVoiceRes",
+      "required": [
+        "voices"
+      ]
+    },
+    "GoogleCallbackReq": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": " google code"
+        },
+        "state": {
+          "type": "string",
+          "description": " 元数据（app端不填）"
+        },
+        "source": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 请求源（1.app 2.web）"
+        }
+      },
+      "title": "GoogleCallbackReq",
+      "required": [
+        "code"
+      ]
+    },
+    "GoogleSignInRequest": {
+      "type": "object",
+      "properties": {
+        "invitationCode": {
+          "type": "string",
+          "description": " 邀请码"
+        },
+        "product": {
+          "type": "string",
+          "description": " 所属产品"
+        }
+      },
+      "title": "GoogleSignInRequest"
+    },
+    "GptCompletionGenerateReq": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": " 要使用的 GPT 模型。"
+        },
+        "method": {
+          "type": "string",
+          "description": " 请求的方法"
+        },
+        "sceneId": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 场景id"
+        },
+        "params": {
+          "type": "object",
+          "description": " 请求参数（通过方法获取）"
+        },
+        "lastContent": {
+          "type": "string",
+          "default": "''",
+          "description": " 上次返回的文本内容"
+        },
+        "continue": {
+          "type": "boolean",
+          "format": "boolean",
+          "default": "false",
+          "description": " 是否继续"
+        },
+        "module": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 功能模块：1 ai写作 | 2 竞赛写作 | 3 数字笔 | 4 wap-view"
+        },
+        "system": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        }
+      },
+      "title": "GptCompletionGenerateReq",
+      "required": [
+        "model",
+        "lastContent",
+        "continue"
+      ]
+    },
+    "GptCompletionReq": {
+      "type": "object",
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "description": " 提供给 GPT 的提示文本。"
+        },
+        "model": {
+          "type": "string",
+          "description": " 要使用的 GPT 模型。"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 完成的类型。"
+        },
+        "role": {
+          "type": "string",
+          "description": " 完成的角色。"
+        },
+        "chatId": {
+          "type": "string",
+          "description": " 可选的聊天 ID。"
+        },
+        "mappingId": {
+          "type": "string",
+          "description": " 可选的映射 ID。"
+        },
+        "promptInfo": {
+          "$ref": "#/definitions/PromptInfo",
+          "description": " 可选的提示信息。"
+        }
+      },
+      "title": "GptCompletionReq",
+      "required": [
+        "prompt",
+        "model",
+        "type",
+        "role"
+      ]
+    },
+    "GptCompletionWriteReq": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string",
+          "description": " 内容（可以是标题，大纲，文本）"
+        },
+        "model": {
+          "type": "string",
+          "description": " 要使用的 GPT 模型。"
+        },
+        "method": {
+          "type": "string",
+          "description": " 请求的方法（idea_to_outline，outline_to_outline，outline_to_text，heading_to_outline，text_to_text）"
+        },
+        "language": {
+          "type": "string",
+          "description": " 输出语言。"
+        },
+        "suggestions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 优化建议（优化时需要）。"
+        },
+        "paragraph": {
+          "type": "string",
+          "description": " 段落（标题-正文需要）。"
+        }
+      },
+      "title": "GptCompletionWriteReq",
+      "required": [
+        "input",
+        "model",
+        "method",
+        "language"
+      ]
+    },
+    "GptParam": {
+      "type": "object",
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "description": " 提示词"
+        },
+        "sourceText": {
+          "type": "string",
+          "description": " 原文本"
+        }
+      },
+      "title": "GptParam",
+      "required": [
+        "prompt",
+        "sourceText"
+      ]
+    },
+    "HomeQuestionsReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "HomeQuestionsReq",
+      "required": [
+        "id"
+      ]
+    },
+    "HomeQuestionsRes": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "homeQuestions": {
+          "type": "object"
+        }
+      },
+      "title": "HomeQuestionsRes",
+      "required": [
+        "homeQuestions"
+      ]
+    },
+    "InterviewChatReq": {
+      "type": "object",
+      "properties": {
+        "chatDataId": {
+          "type": "string",
+          "description": " 面试房间id"
+        },
+        "mappingSort": {
+          "$ref": "#/definitions/uint16",
+          "description": " 会话序号"
+        },
+        "model": {
+          "type": "string",
+          "description": " 要使用的 GPT 模型。"
+        },
+        "method": {
+          "type": "string",
+          "description": " 请求的方法(generate_interview_question、generate_interview_end_question[最后一个问题的时候使用])"
+        },
+        "content": {
+          "type": "string",
+          "description": " 文本内容"
+        },
+        "endFlag": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否最后一个回答"
+        },
+        "sceneId": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 场景id"
+        }
+      },
+      "title": "InterviewChatReq",
+      "required": [
+        "chatDataId",
+        "mappingSort",
+        "model",
+        "method",
+        "content",
+        "endFlag"
+      ]
+    },
+    "InterviewFeedback": {
+      "type": "object",
+      "properties": {
+        "feedback": {
+          "type": "object"
+        },
+        "status": {
+          "$ref": "#/definitions/uint8"
+        },
+        "createAt": {
+          "type": "string"
+        }
+      },
+      "title": "InterviewFeedback",
+      "required": [
+        "feedback",
+        "status",
+        "createAt"
+      ]
+    },
+    "InterviewFeedbackReq": {
+      "type": "object",
+      "properties": {
+        "chatDataId": {
+          "type": "string",
+          "description": "面试房间id"
+        }
+      },
+      "title": "InterviewFeedbackReq",
+      "required": [
+        "chatDataId"
+      ]
+    },
+    "InterviewFeedbackRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/InterviewFeedback"
+        }
+      },
+      "title": "InterviewFeedbackRes",
+      "required": [
+        "data"
+      ]
+    },
+    "Introduce": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": " 介绍"
+        }
+      },
+      "title": "Introduce",
+      "required": [
+        "text"
+      ]
+    },
+    "MappingReq": {
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string"
+        }
+      },
+      "title": "MappingReq",
+      "required": [
+        "chatId"
+      ]
+    },
+    "MappingRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        }
+      },
+      "title": "MappingRes",
+      "required": [
+        "data"
+      ]
+    },
+    "NewChatMessageReq": {
+      "type": "object",
+      "properties": {
+        "chatDataId": {
+          "type": "string",
+          "description": " 当前聊天窗口id"
+        },
+        "role": {
+          "type": "string",
+          "description": " 当前聊天的角色（ai回答的内容：ai、用户的提问：human）"
+        },
+        "content": {
+          "type": "string",
+          "description": " 聊天内容"
+        },
+        "sort": {
+          "$ref": "#/definitions/uint8",
+          "description": " 当前消息的序号（一个问答回合算一个序号）"
+        },
+        "contentType": {
+          "type": "string",
+          "default": "chat",
+          "description": " 文本类型（目前都默认chat）"
+        },
+        "isQuestion": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": " 是否是提问（在ai场景下，用户输入的都算问题，ai回答的不算）"
+        },
+        "otherId": {
+          "type": "string",
+          "description": " langchain 当前请求的id"
+        }
+      },
+      "title": "NewChatMessageReq",
+      "required": [
+        "chatDataId",
+        "role",
+        "content",
+        "contentType"
+      ]
+    },
+    "NewChatMessageRes": {
+      "type": "object",
+      "properties": {
+        "sort": {
+          "$ref": "#/definitions/uint8",
+          "description": " 当前消息的序号（一个问答回合算一个序号）"
+        }
+      },
+      "title": "NewChatMessageRes",
+      "required": [
+        "sort"
+      ]
+    },
+    "NewChatReq": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": " 聊天标题"
+        },
+        "chatType": {
+          "$ref": "#/definitions/uint8",
+          "default": "2",
+          "description": " 类型（1 wap-view 2 wo-counselor）"
+        }
+      },
+      "title": "NewChatReq",
+      "required": [
+        "title",
+        "chatType"
+      ]
+    },
+    "NewChatRes": {
+      "type": "object",
+      "properties": {
+        "chatDataId": {
+          "type": "string",
+          "description": " 当前聊天窗口id"
+        }
+      },
+      "title": "NewChatRes",
+      "required": [
+        "chatDataId"
+      ]
+    },
+    "NewDocumentReq": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": " 文档标题"
+        }
+      },
+      "title": "NewDocumentReq",
+      "required": [
+        "title"
+      ]
+    },
+    "NewDocumentRes": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " 文档id"
+        }
+      },
+      "title": "NewDocumentRes",
+      "required": [
+        "id"
+      ]
+    },
+    "PromptInfo": {
+      "type": "object",
+      "properties": {
+        "contentMapKey": {
+          "type": "string",
+          "description": " 内容映射键。"
+        },
+        "rewriteTarget": {
+          "type": "string",
+          "description": " 重写目标，可选值包括更好的逻辑、更简明、更描述性、简化语言、更具说服力、更吸引人、更正式、更非正式。"
+        },
+        "toneOption": {
+          "type": "string",
+          "description": " 语调选项，可选值包括诙谐、冷静、信息性、有说服力、友好、热情。"
+        },
+        "userIdentity": {
+          "type": "string",
+          "description": " 用户身份。"
+        },
+        "userInputText": {
+          "type": "string",
+          "description": " 用户输入的文本，可选。"
+        },
+        "essayIdea": {
+          "type": "string",
+          "description": " 论文主题想法，可选。"
+        },
+        "userBackgroundInfo": {
+          "type": "string",
+          "description": " 用户背景信息，可选。"
+        },
+        "studentBasicInfo": {
+          "type": "string",
+          "description": " 学生基本信息，可选。"
+        },
+        "userEmail": {
+          "type": "string",
+          "description": " 用户电子邮件，可选。"
+        }
+      },
+      "title": "PromptInfo",
+      "required": [
+        "contentMapKey",
+        "rewriteTarget",
+        "toneOption",
+        "userIdentity"
+      ]
+    },
+    "PromptTemplateIdReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " id"
+        }
+      },
+      "title": "PromptTemplateIdReq",
+      "required": [
+        "id"
+      ]
+    },
+    "PromptTemplateReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 主键id,修改必传"
+        },
+        "sceneId": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 场景id"
+        },
+        "methodName": {
+          "type": "string",
+          "description": " 方法名"
+        },
+        "system": {
+          "type": "string",
+          "description": " 系统模板"
+        },
+        "user": {
+          "type": "string",
+          "description": " 用户模板"
+        },
+        "params": {
+          "type": "string",
+          "description": " 参数"
+        },
+        "type": {
+          "$ref": "#/definitions/uint8",
+          "description": "类型 1 prompt,2 question,3 introduction"
+        },
+        "randomQuestions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "随机问题"
+        },
+        "introduction": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "开场白列表"
+        }
+      },
+      "title": "PromptTemplateReq",
+      "required": [
+        "sceneId",
+        "methodName",
+        "type"
+      ]
+    },
+    "PromptTemplateRes": {
+      "type": "object",
+      "properties": {
+        "prompt": {
+          "type": "object"
+        }
+      },
+      "title": "PromptTemplateRes",
+      "required": [
+        "prompt"
+      ]
+    },
+    "PushMessageReq": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": " 标题"
+        },
+        "content": {
+          "type": "string",
+          "description": " 内容"
+        }
+      },
+      "title": "PushMessageReq",
+      "required": [
+        "title",
+        "content"
+      ]
+    },
+    "Question": {
+      "type": "object",
+      "properties": {
+        "questions": {
+          "type": "object"
+        }
+      },
+      "title": "Question",
+      "required": [
+        "questions"
+      ]
+    },
+    "QuestionTag": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 标签名"
+        },
+        "childTags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QuestionTag"
+          },
+          "description": " 子标签"
+        }
+      },
+      "title": "QuestionTag",
+      "required": [
+        "name",
+        "childTags"
+      ]
+    },
+    "ReSetPwdRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "pwd": {
+          "type": "string"
+        },
+        "uid": {
+          "type": "string",
+          "description": " 链接中带的唯一id"
+        }
+      },
+      "title": "ReSetPwdRequest",
+      "required": [
+        "email",
+        "pwd",
+        "uid"
+      ]
+    },
+    "RefreshExtendedQuestionReq": {
+      "type": "object",
+      "properties": {
+        "human": {
+          "type": "string",
+          "description": " 当前用户提问"
+        },
+        "ai": {
+          "type": "string",
+          "description": " 当前ai回答"
+        }
+      },
+      "title": "RefreshExtendedQuestionReq",
+      "required": [
+        "human",
+        "ai"
+      ]
+    },
+    "RefreshExtendedQuestionRes": {
+      "type": "object",
+      "properties": {
+        "refreshExtendedQuestions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "RefreshExtendedQuestionRes",
+      "required": [
+        "refreshExtendedQuestions"
+      ]
+    },
+    "ResearchExperience": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": " 科研名称"
+        },
+        "type": {
+          "type": "string",
+          "description": " 科研类型"
+        },
+        "team": {
+          "type": "string",
+          "description": " 科研团队"
+        },
+        "startTime": {
+          "type": "string",
+          "description": " 开始时间"
+        },
+        "endTime": {
+          "type": "string",
+          "description": " 结束时间"
+        },
+        "content": {
+          "type": "string",
+          "description": " 科研内容"
+        },
+        "achievements": {
+          "type": "string",
+          "description": " 科研成果"
+        }
+      },
+      "title": "ResearchExperience",
+      "required": [
+        "name",
+        "type",
+        "team",
+        "startTime",
+        "endTime",
+        "content",
+        "achievements"
+      ]
+    },
+    "RevocationCardReq": {
+      "type": "object",
+      "properties": {
+        "docId": {
+          "type": "string",
+          "description": " 文档id"
+        },
+        "card": {
+          "$ref": "#/definitions/Card"
+        }
+      },
+      "title": "RevocationCardReq",
+      "required": [
+        "docId",
+        "card"
+      ]
+    },
+    "SaveChatDataReq": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": " 标题。"
+        },
+        "prompt": {
+          "type": "string",
+          "description": " 提示。"
+        },
+        "role": {
+          "type": "string",
+          "description": " 角色。"
+        },
+        "chatId": {
+          "type": "string",
+          "description": " 可选的聊天 ID。"
+        },
+        "conversationId": {
+          "type": "string",
+          "description": " 可选的对话 ID。"
+        },
+        "mappingId": {
+          "type": "string",
+          "description": " 可选的映射 ID。"
+        },
+        "endTurn": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 可选的结束回合。"
+        }
+      },
+      "title": "SaveChatDataReq",
+      "required": [
+        "title",
+        "prompt",
+        "role"
+      ]
+    },
+    "SaveChatDataRes": {
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string"
+        },
+        "mappingId": {
+          "type": "string"
+        }
+      },
+      "title": "SaveChatDataRes",
+      "required": [
+        "chatId",
+        "mappingId"
+      ]
+    },
+    "Scene": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " id"
+        },
+        "name": {
+          "type": "string",
+          "description": " 英文名"
+        },
+        "nameCN": {
+          "type": "string",
+          "description": " 中文名"
+        },
+        "intro": {
+          "type": "string",
+          "description": " 英文介绍"
+        },
+        "introCn": {
+          "type": "string",
+          "description": " 中文介绍"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Tag"
+          },
+          "description": " 标签"
+        },
+        "imgUrl": {
+          "type": "string",
+          "description": " 图片"
+        },
+        "status": {
+          "$ref": "#/definitions/uint8",
+          "default": "1",
+          "description": " 状态"
+        }
+      },
+      "title": "Scene",
+      "required": [
+        "id",
+        "name",
+        "nameCN",
+        "intro",
+        "introCn",
+        "tags",
+        "imgUrl",
+        "status"
+      ]
+    },
+    "SceneId": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " SceneId"
+        }
+      },
+      "title": "SceneId",
+      "required": [
+        "id"
+      ]
+    },
+    "SceneIdReq": {
+      "type": "object",
+      "properties": {
+        "sceneId": {
+          "type": "integer",
+          "format": "int32",
+          "description": " sceneId"
+        }
+      },
+      "title": "SceneIdReq",
+      "required": [
+        "sceneId"
+      ]
+    },
+    "SceneList": {
+      "type": "object",
+      "properties": {
+        "scenes": {
+          "type": "object",
+          "description": " 场景列表"
+        }
+      },
+      "title": "SceneList",
+      "required": [
+        "scenes"
+      ]
+    },
+    "SceneReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " id 新增不传，修改需要传"
+        },
+        "name": {
+          "type": "string",
+          "description": " 英文名"
+        },
+        "nameCN": {
+          "type": "string",
+          "description": " 中文名"
+        },
+        "intro": {
+          "type": "string",
+          "description": " 英文介绍"
+        },
+        "introCn": {
+          "type": "string",
+          "description": " 中文介绍"
+        },
+        "classId": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 分类id"
+        },
+        "tagId": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 标签id"
+        },
+        "imgUrl": {
+          "type": "string",
+          "description": " 图片"
+        },
+        "weight": {
+          "$ref": "#/definitions/int16",
+          "description": " 权重"
+        }
+      },
+      "title": "SceneReq",
+      "required": [
+        "name",
+        "nameCN",
+        "intro",
+        "introCn",
+        "classId",
+        "tagId",
+        "imgUrl"
+      ]
+    },
+    "SchoolGrade": {
+      "type": "object",
+      "properties": {
+        "year": {
+          "type": "number",
+          "format": "float",
+          "description": " 学年 (7年级上学期（7.1）7年级下学期（7.2）8年级上学期（8.1）8年级下学期（8.2）...)"
+        },
+        "course": {
+          "type": "string",
+          "description": " 课程名称"
+        },
+        "score": {
+          "type": "string",
+          "description": " 成绩"
+        }
+      },
+      "title": "SchoolGrade",
+      "required": [
+        "year",
+        "course",
+        "score"
+      ]
+    },
+    "SendCodeRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": " 邮箱"
+        },
+        "mobile": {
+          "type": "string",
+          "description": " 手机号"
+        },
+        "countryCode": {
+          "type": "string",
+          "description": " 手机号区号"
+        },
+        "codeType": {
+          "$ref": "#/definitions/uint8",
+          "description": " 验证码类型 【1手机验证码 2邮箱验证码】"
+        },
+        "codeUsed": {
+          "$ref": "#/definitions/uint8",
+          "default": "1",
+          "description": " 验证码用途 【1注册 2忘记密码】"
+        }
+      },
+      "title": "SendCodeRequest",
+      "required": [
+        "codeType",
+        "codeUsed"
+      ]
+    },
+    "SendReSetPwdEmailRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        }
+      },
+      "title": "SendReSetPwdEmailRequest",
+      "required": [
+        "email"
+      ]
+    },
+    "SetPwdByCodeRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "pwd": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "title": "SetPwdByCodeRequest",
+      "required": [
+        "email",
+        "pwd",
+        "code"
+      ]
+    },
+    "SignInRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": " 邮箱"
+        },
+        "password": {
+          "type": "string",
+          "description": " 密码"
+        },
+        "mobile": {
+          "type": "string",
+          "description": " 手机号"
+        },
+        "countryCode": {
+          "type": "string",
+          "description": " 手机号区号"
+        },
+        "account": {
+          "type": "string",
+          "description": " 用户账号"
+        },
+        "authCode": {
+          "type": "string",
+          "description": " 验证码"
+        },
+        "cliUserId": {
+          "type": "string",
+          "description": " apple userID"
+        },
+        "cliToken": {
+          "type": "string",
+          "description": " apple CliToken"
+        },
+        "wechatCode": {
+          "type": "string",
+          "description": " 微信code"
+        },
+        "authtype": {
+          "$ref": "#/definitions/uint8",
+          "description": " 登录方式 1手机密码;2账号密码;3邮箱密码;4邮箱验证码;5手机验证码;6微信;7apple"
+        },
+        "product": {
+          "type": "string",
+          "description": " 所属应用"
+        },
+        "invitationCode": {
+          "type": "string",
+          "description": " 邀请码"
+        }
+      },
+      "title": "SignInRequest",
+      "required": [
+        "authtype"
+      ]
+    },
+    "SignInResponse": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "description": " 访问令牌"
+        },
+        "accessExpire": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 访问令牌过期时间"
+        },
+        "refreshAfter": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 刷新令牌时间"
+        },
+        "uid": {
+          "type": "string",
+          "description": " id"
+        },
+        "email": {
+          "type": "string",
+          "description": " 邮箱"
+        },
+        "mobile": {
+          "type": "string",
+          "description": " 手机号"
+        }
+      },
+      "title": "SignInResponse",
+      "required": [
+        "accessToken",
+        "accessExpire",
+        "refreshAfter",
+        "uid",
+        "email",
+        "mobile"
+      ]
+    },
+    "SignUpRequest": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "type": "string",
+          "description": " 用户账号"
+        },
+        "email": {
+          "type": "string",
+          "description": " 邮箱"
+        },
+        "password": {
+          "type": "string",
+          "description": " 密码"
+        },
+        "code": {
+          "type": "string",
+          "description": " 验证码"
+        },
+        "invitationCode": {
+          "type": "string",
+          "description": " 邀请码"
+        },
+        "codeUsed": {
+          "$ref": "#/definitions/uint8",
+          "default": "1",
+          "description": " 验证码用途 【1注册 2忘记密码】"
+        },
+        "product": {
+          "type": "string",
+          "description": " 所属应用"
+        }
+      },
+      "title": "SignUpRequest",
+      "required": [
+        "account",
+        "email",
+        "password",
+        "code",
+        "codeUsed"
+      ]
+    },
+    "SignUpResponse": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "description": " 访问令牌"
+        },
+        "accessExpire": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 访问令牌过期时间"
+        },
+        "refreshAfter": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 刷新令牌时间"
+        }
+      },
+      "title": "SignUpResponse",
+      "required": [
+        "accessToken",
+        "accessExpire",
+        "refreshAfter"
+      ]
+    },
+    "SpeechToTextReq": {
+      "type": "object",
+      "properties": {
+        "language": {
+          "type": "string",
+          "description": " 转换的语言"
+        }
+      },
+      "title": "SpeechToTextReq",
+      "required": [
+        "language"
+      ]
+    },
+    "SpeechToTextRes": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      },
+      "title": "SpeechToTextRes",
+      "required": [
+        "text"
+      ]
+    },
+    "StartInterviewReq": {
+      "type": "object",
+      "properties": {
+        "sceneId": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 选择的场景id"
+        },
+        "chatType": {
+          "$ref": "#/definitions/uint8",
+          "default": "1",
+          "description": " 对话类型传1就行"
+        },
+        "title": {
+          "type": "string",
+          "description": "当前面试的标题"
+        }
+      },
+      "title": "StartInterviewReq",
+      "required": [
+        "chatType",
+        "title"
+      ]
+    },
+    "StartInterviewRes": {
+      "type": "object",
+      "properties": {
+        "question": {
+          "type": "string",
+          "description": " 面试第一个随机问题"
+        },
+        "chatDataId": {
+          "type": "string",
+          "description": " 面试房间id"
+        },
+        "mappingSort": {
+          "$ref": "#/definitions/uint16",
+          "description": " mapping序号(一组对话作为一个mapping，机器人提问，用户回答算是一组对话，序号递增)"
+        },
+        "roundLimit": {
+          "$ref": "#/definitions/uint16",
+          "description": " 面试问答轮次限制"
+        },
+        "timeLimit": {
+          "$ref": "#/definitions/uint16",
+          "description": " 面试时间限制"
+        }
+      },
+      "title": "StartInterviewRes",
+      "required": [
+        "question",
+        "chatDataId",
+        "mappingSort",
+        "roundLimit",
+        "timeLimit"
+      ]
+    },
+    "SubmitComment": {
+      "type": "object",
+      "properties": {
+        "chatDataId": {
+          "type": "string",
+          "description": " 会话id"
+        },
+        "comment": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/map[string]interface"
+          },
+          "description": " comment信息（用key-value形式传参，方便后续拓展）"
+        }
+      },
+      "title": "SubmitComment",
+      "required": [
+        "chatDataId",
+        "comment"
+      ]
+    },
+    "Tag": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string",
+          "description": " 英文名"
+        },
+        "nameCn": {
+          "type": "string",
+          "description": " 中文名"
+        },
+        "url": {
+          "type": "string"
+        },
+        "urlCn": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string",
+          "description": " 颜色"
+        }
+      },
+      "title": "Tag",
+      "required": [
+        "name",
+        "nameCn",
+        "color"
+      ]
+    },
+    "TagId": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " tagId"
+        }
+      },
+      "title": "TagId",
+      "required": [
+        "id"
+      ]
+    },
+    "TagList": {
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "object",
+          "description": " Tag列表"
+        }
+      },
+      "title": "TagList",
+      "required": [
+        "tags"
+      ]
+    },
+    "TagReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": " id 新增不传，修改需要传"
+        },
+        "name": {
+          "type": "string",
+          "description": " 英文名"
+        },
+        "nameCN": {
+          "type": "string",
+          "description": " 中文名"
+        },
+        "imgUrl": {
+          "type": "string",
+          "description": " 图片"
+        },
+        "imgUrlCn": {
+          "type": "string",
+          "description": " 中文图片url"
+        },
+        "color": {
+          "type": "string",
+          "description": " 颜色"
+        }
+      },
+      "title": "TagReq",
+      "required": [
+        "name",
+        "nameCN",
+        "imgUrl",
+        "imgUrlCn",
+        "color"
+      ]
+    },
+    "TagRes": {
+      "type": "object",
+      "properties": {
+        "tag": {
+          "type": "object",
+          "description": " Tag"
+        }
+      },
+      "title": "TagRes",
+      "required": [
+        "tag"
+      ]
+    },
+    "TextToSpeechReq": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "description": " 需要转换的文本"
+        },
+        "languageCode": {
+          "type": "string",
+          "default": "en-US",
+          "description": " 语言code"
+        },
+        "voiceId": {
+          "type": "string",
+          "description": " 声音code"
+        },
+        "outputFormat": {
+          "type": "string",
+          "default": "mp3",
+          "description": " 转换的格式"
+        },
+        "engine": {
+          "type": "string",
+          "default": "neural",
+          "description": " 使用的engine"
+        },
+        "rate": {
+          "type": "string",
+          "default": "medium",
+          "description": " 语速（可用值：x-slow（极慢）、slow（慢）、medium（中速）、fast（快）、x-fast（极快））"
+        },
+        "userVoiceId": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 用户选择的voiceid"
+        }
+      },
+      "title": "TextToSpeechReq",
+      "required": [
+        "text",
+        "languageCode",
+        "outputFormat",
+        "engine",
+        "rate"
+      ]
+    },
+    "TextToSpeechReqq": {
+      "type": "object",
+      "title": "TextToSpeechReqq"
+    },
+    "TextToSpeechRes": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": " 语言播放连接"
+        }
+      },
+      "title": "TextToSpeechRes",
+      "required": [
+        "url"
+      ]
+    },
+    "UniversalLinkRes": {
+      "type": "object",
+      "properties": {
+        "res": {
+          "type": "object"
+        }
+      },
+      "title": "UniversalLinkRes",
+      "required": [
+        "res"
+      ]
+    },
+    "UpdateAatarRequest": {
+      "type": "object",
+      "properties": {
+        "fileName": {
+          "type": "string"
+        }
+      },
+      "title": "UpdateAatarRequest",
+      "required": [
+        "fileName"
+      ]
+    },
+    "UpdateCardReq": {
+      "type": "object",
+      "properties": {
+        "docId": {
+          "type": "string",
+          "description": " 文档id"
+        },
+        "cardId": {
+          "type": "string",
+          "description": " 卡片id"
+        },
+        "type": {
+          "$ref": "#/definitions/uint8",
+          "description": " 卡片类型"
+        },
+        "field": {
+          "type": "string",
+          "description": " 修改字段(text,fold,like)"
+        },
+        "info": {
+          "type": "string",
+          "description": " 修改卡片内容(是否标记喜欢(0未标记，1标记),是否折叠(0未折叠，1折叠)) 都用string表示"
+        }
+      },
+      "title": "UpdateCardReq",
+      "required": [
+        "docId",
+        "cardId",
+        "field",
+        "info"
+      ]
+    },
+    "UpdateChatDataTitleReq": {
+      "type": "object",
+      "properties": {
+        "chatDataId": {
+          "type": "string",
+          "description": " 当前聊天窗口id"
+        },
+        "title": {
+          "type": "string",
+          "description": " 聊天标题"
+        }
+      },
+      "title": "UpdateChatDataTitleReq",
+      "required": [
+        "chatDataId",
+        "title"
+      ]
+    },
+    "UpdateChatTitleReq": {
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "UpdateChatTitleReq",
+      "required": [
+        "chatId",
+        "title"
+      ]
+    },
+    "UpdateDocumentLikeReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " 文档id"
+        },
+        "like": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 1收藏，0取消收藏，默认0"
+        }
+      },
+      "title": "UpdateDocumentLikeReq",
+      "required": [
+        "id",
+        "like"
+      ]
+    },
+    "UpdateDocumentStatusReq": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 文档id"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 文档状态值：1恢复，-1删除"
+        }
+      },
+      "title": "UpdateDocumentStatusReq",
+      "required": [
+        "ids",
+        "status"
+      ]
+    },
+    "UpdateDocumentTitleReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " 文档id"
+        },
+        "title": {
+          "type": "string",
+          "description": " 文档标题"
+        }
+      },
+      "title": "UpdateDocumentTitleReq",
+      "required": [
+        "id",
+        "title"
+      ]
+    },
+    "UpdateFigureReq": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " 数字笔id"
+        },
+        "name": {
+          "type": "string",
+          "description": " 数字笔名称"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": " 数字笔模板文件列表"
+        }
+      },
+      "title": "UpdateFigureReq",
+      "required": [
+        "id"
+      ]
+    },
+    "UpdatePwdRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        },
+        "oldPassword": {
+          "type": "string"
+        }
+      },
+      "title": "UpdatePwdRequest",
+      "required": [
+        "email",
+        "newPassword",
+        "oldPassword"
+      ]
+    },
+    "UpdateUserFileInfoRequest": {
+      "type": "object",
+      "properties": {
+        "baseInformation": {
+          "$ref": "#/definitions/BaseInformation",
+          "description": " 个人信息"
+        },
+        "introduce": {
+          "$ref": "#/definitions/Introduce",
+          "description": " 自我介绍"
+        },
+        "schoolGrade": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SchoolGrade"
+          },
+          "description": " 在校成绩"
+        },
+        "englishProficiency": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EnglishProficiency"
+          },
+          "description": " 英语成绩"
+        },
+        "expertise": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Expertise"
+          },
+          "description": " 特长"
+        },
+        "clubExperience": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ClubExperience"
+          },
+          "description": " 社团情况"
+        },
+        "researchExperience": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ResearchExperience"
+          },
+          "description": " 科研经历"
+        },
+        "award": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Award"
+          }
+        }
+      },
+      "title": "UpdateUserFileInfoRequest",
+      "required": [
+        "base_info",
+        "introduce",
+        "school_grade",
+        "english_proficiency",
+        "expertise",
+        "club_experience",
+        "research_experience",
+        "award"
+      ]
+    },
+    "UserCreditsRes": {
+      "type": "object",
+      "properties": {
+        "credits": {
+          "type": "object"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "title": "UserCreditsRes",
+      "required": [
+        "credits",
+        "total"
+      ]
+    },
+    "UserCreditsResReq": {
+      "type": "object",
+      "properties": {
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32",
+          "default": "0"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "default": "10"
+        }
+      },
+      "title": "UserCreditsResReq",
+      "required": [
+        "pageIndex",
+        "pageSize"
+      ]
+    },
+    "UserFigureRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        }
+      },
+      "title": "UserFigureRes",
+      "required": [
+        "data"
+      ]
+    },
+    "UserInfoRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "object"
+        }
+      },
+      "title": "UserInfoRes",
+      "required": [
+        "data"
+      ]
+    },
+    "VoiceInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "languageCode": {
+          "type": "string",
+          "description": " 语言code"
+        },
+        "voiceId": {
+          "type": "string",
+          "description": " 声音code"
+        },
+        "engine": {
+          "type": "string",
+          "description": " 使用的engine"
+        },
+        "avatar": {
+          "type": "string",
+          "description": " 头像url"
+        },
+        "name": {
+          "type": "string",
+          "description": " 名称"
+        },
+        "demoUrl": {
+          "type": "string",
+          "description": " 语音模板连接"
+        }
+      },
+      "title": "VoiceInfo",
+      "required": [
+        "id",
+        "languageCode",
+        "voiceId",
+        "engine",
+        "avatar",
+        "name",
+        "demoUrl"
+      ]
+    },
+    "WapViewUserInfo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": " id"
+        },
+        "name": {
+          "type": "string",
+          "description": " 姓名"
+        },
+        "education": {
+          "$ref": "#/definitions/uint8",
+          "description": " 学历 1.初中2.高中3.大学"
+        },
+        "interviewPurpose": {
+          "$ref": "#/definitions/uint8",
+          "description": " 面试目的"
+        },
+        "birthday": {
+          "type": "integer",
+          "format": "int64",
+          "description": " 生日"
+        },
+        "location": {
+          "type": "string",
+          "description": " 地区"
+        },
+        "voiceId": {
+          "type": "integer",
+          "format": "int32",
+          "description": " 用户声音id"
+        },
+        "language": {
+          "type": "string",
+          "description": " 语言 cn中文，en英文"
+        }
+      },
+      "title": "WapViewUserInfo"
+    },
+    "WapenTextRequest": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "userInputs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/WapenTextUserInput"
+          }
+        },
+        "tone": {
+          "type": "string"
+        },
+        "option": {
+          "type": "string"
+        },
+        "identity": {
+          "type": "string"
+        },
+        "key": {
+          "type": "string"
+        }
+      },
+      "title": "WapenTextRequest",
+      "required": [
+        "method",
+        "userInputs",
+        "tone",
+        "option",
+        "identity"
+      ]
+    },
+    "WapenTextResponse": {
+      "type": "object",
+      "properties": {
+        "Ok": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "choices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "title": "WapenTextResponse",
+      "required": [
+        "Ok",
+        "message",
+        "choices"
+      ]
+    },
+    "WapenTextUserInput": {
+      "type": "object",
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "title": "WapenTextUserInput",
+      "required": [
+        "field",
+        "value"
+      ]
+    },
+    "WapenTranslateRequest": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "autoDetect": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      },
+      "title": "WapenTranslateRequest",
+      "required": [
+        "text",
+        "source",
+        "target",
+        "autoDetect"
+      ]
+    },
+    "WapenTranslateResponse": {
+      "type": "object",
+      "properties": {
+        "Ok": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "title": "WapenTranslateResponse",
+      "required": [
+        "Ok",
+        "message",
+        "text"
+      ]
+    },
+    "WechatJointReq": {
+      "type": "object",
+      "properties": {
+        "signature": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "nonce": {
+          "type": "string"
+        },
+        "echostr": {
+          "type": "string"
+        }
+      },
+      "title": "WechatJointReq",
+      "required": [
+        "signature",
+        "timestamp",
+        "nonce",
+        "echostr"
+      ]
+    },
+    "WechatJointRes": {
+      "type": "object",
+      "properties": {
+        "echostr": {
+          "type": "string"
+        }
+      },
+      "title": "WechatJointRes",
+      "required": [
+        "echostr"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "apiKey": {
+      "type": "apiKey",
+      "description": "Enter JWT Bearer token **_only_**",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

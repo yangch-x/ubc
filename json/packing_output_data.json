@@ -1,0 +1,340 @@
+{
+    "orders": [
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "PURPLE/WHITE",
+            "style_number": "Mesh Jersey",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 12
+                },
+                {
+                    "size": "M",
+                    "quantity": 26
+                },
+                {
+                    "size": "L",
+                    "quantity": 12
+                }
+            ],
+            "total_quantity": 50,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "PURPLE/WHITE",
+            "style_number": "Mesh Jersey",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 23
+                },
+                {
+                    "size": "M",
+                    "quantity": 18
+                },
+                {
+                    "size": "L",
+                    "quantity": 5
+                }
+            ],
+            "total_quantity": 46,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "YELLOW/BLACK",
+            "style_number": "Mesh Jersey",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 12
+                },
+                {
+                    "size": "M",
+                    "quantity": 24
+                },
+                {
+                    "size": "L",
+                    "quantity": 13
+                }
+            ],
+            "total_quantity": 49,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "YELLOW/BLACK",
+            "style_number": "Mesh Jersey",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 22
+                },
+                {
+                    "size": "M",
+                    "quantity": 19
+                },
+                {
+                    "size": "L",
+                    "quantity": 6
+                }
+            ],
+            "total_quantity": 47,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "BLUE/YELLOW",
+            "style_number": "Mesh Jersey",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 11
+                },
+                {
+                    "size": "M",
+                    "quantity": 27
+                },
+                {
+                    "size": "L",
+                    "quantity": 14
+                }
+            ],
+            "total_quantity": 52,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "BLUE/YELLOW",
+            "style_number": "Mesh Jersey",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 22
+                },
+                {
+                    "size": "M",
+                    "quantity": 18
+                },
+                {
+                    "size": "L",
+                    "quantity": 4
+                }
+            ],
+            "total_quantity": 44,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "RED/YELLOW",
+            "style_number": "Mesh Jersey",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 12
+                },
+                {
+                    "size": "M",
+                    "quantity": 26
+                },
+                {
+                    "size": "L",
+                    "quantity": 14
+                }
+            ],
+            "total_quantity": 52,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "RED/YELLOW",
+            "style_number": "Mesh Jersey",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 23
+                },
+                {
+                    "size": "M",
+                    "quantity": 19
+                },
+                {
+                    "size": "L",
+                    "quantity": 4
+                }
+            ],
+            "total_quantity": 46,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "PURPLE/WHITE",
+            "style_number": "Mesh Shorts",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 13
+                },
+                {
+                    "size": "M",
+                    "quantity": 24
+                },
+                {
+                    "size": "L",
+                    "quantity": 13
+                }
+            ],
+            "total_quantity": 50,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "PURPLE/WHITE",
+            "style_number": "Mesh Shorts",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 24
+                },
+                {
+                    "size": "M",
+                    "quantity": 21
+                },
+                {
+                    "size": "L",
+                    "quantity": 5
+                }
+            ],
+            "total_quantity": 50,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "YELLOW/BLACK",
+            "style_number": "Mesh Shorts",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 13
+                },
+                {
+                    "size": "M",
+                    "quantity": 24
+                },
+                {
+                    "size": "L",
+                    "quantity": 14
+                }
+            ],
+            "total_quantity": 51,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "YELLOW/BLACK",
+            "style_number": "Mesh Shorts",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 24
+                },
+                {
+                    "size": "M",
+                    "quantity": 22
+                },
+                {
+                    "size": "L",
+                    "quantity": 4
+                }
+            ],
+            "total_quantity": 50,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "BLUE/YELLOW",
+            "style_number": "Mesh Shorts",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 13
+                },
+                {
+                    "size": "M",
+                    "quantity": 24
+                },
+                {
+                    "size": "L",
+                    "quantity": 12
+                }
+            ],
+            "total_quantity": 49,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "BLUE/YELLOW",
+            "style_number": "Mesh Shorts",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 26
+                },
+                {
+                    "size": "M",
+                    "quantity": 21
+                },
+                {
+                    "size": "L",
+                    "quantity": 5
+                }
+            ],
+            "total_quantity": 52,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "RED/YELLOW",
+            "style_number": "Mesh Shorts",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 13
+                },
+                {
+                    "size": "M",
+                    "quantity": 26
+                },
+                {
+                    "size": "L",
+                    "quantity": 13
+                }
+            ],
+            "total_quantity": 52,
+            "CTNS": 1
+        },
+        {
+            "po": "10- ALOCS JERSEY SETS",
+            "color": "RED/YELLOW",
+            "style_number": "Mesh Shorts",
+            "sizes": [
+                {
+                    "size": "S",
+                    "quantity": 24
+                },
+                {
+                    "size": "M",
+                    "quantity": 22
+                },
+                {
+                    "size": "L",
+                    "quantity": 5
+                }
+            ],
+            "total_quantity": 51,
+            "CTNS": 1
+        }
+    ]
+}

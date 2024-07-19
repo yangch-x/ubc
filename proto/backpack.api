@@ -1,0 +1,237 @@
+syntax = "v1"
+
+info(
+	title: "type title here"
+	desc: "type desc here"
+	author: "type author here"
+	email: "type email here"
+	version: "type version here"
+)
+
+type (
+	SignInRequest {
+		Name     string `json:"name,optional"`     // 邮箱
+		Password string `json:"password,optional"` // 密码
+	}
+
+	SignInResponse {
+		Token        string `json:"token"`        // 访问令牌
+		AccessExpire int64  `json:"accessExpire"` // 访问令牌过期时间
+		RefreshAfter int64  `json:"refreshAfter"` // 刷新令牌时间
+		Role         string `json:"role"`         // 角色
+	}
+
+	Shipment {
+		BillOfLanding   string `json:"billOfLanding,optional"`   // 提单
+		CustomerCode    string `json:"customerCode,optional"`    // 客户代码
+		ShipFrom        string `json:"shipFrom,optional"`        // 发货地
+		ShipMethod      string `json:"shipMethod,optional"`      // 运输方式
+		CountryOfOrigin string `json:"countryOfOrigin,optional"` // 原产国
+		Manufacture     string `json:"manufacture,optional"`     // 制造商
+		VesselFlight    string `json:"vesselFlight,optional"`    // 船/航班
+		ETDDt           int64  `json:"etdDt,optional"`           // 预计离港日期
+		UBCPI           string `json:"ubcPi,optional"`           // UBC PI
+		MarksAndNumbers string `json:"marksAndNumbers,optional"` // 标记和号码
+	}
+
+	Packing {
+		PO     string  `json:"po,optional"`     // 采购订单号
+		Style  string  `json:"style,optional"`  // 款式
+		Color  string  `json:"color,optional"`  // 颜色
+		ProjID int     `json:"projId,optional"` // projection id
+		UBCPI  string  `json:"ubcPi,optional"`  // UBC PI
+		Price  float64 `json:"price,optional"`  // 价格
+		Carton int     `json:"carton,optional"` // 纸箱数量
+		QtyPC  int     `json:"qtyPC,optional"`  // 数量（件）
+		GWKG   int     `json:"gwKg,optional"`   // 毛重（千克）
+		NWKG   int     `json:"nwKg,optional"`   // 净重（千克）
+		Meas   int     `json:"meas,optional"`   // 尺寸
+	}
+
+	Invoice {
+		InvoiceCode    string  `json:"invoiceCode,optional"`    // 发票代码
+		AdditionalCost float64 `json:"additionalCost,optional"` // 附加费用
+		DepositAmt     float64 `json:"depositAmt,optional"`     // 定金金额
+		InvoiceDt      int64   `json:"invoiceDt,optional"`      // 发票日期
+		InvoiceDue     int64   `json:"invoiceDue,optional"`     // 发票到期日
+	}
+
+	ShipmentAndInvoice {
+		ShipmentId      int     `json:"shipmentId,optional"`
+		InvoiceId       int     `json:"invoiceId,optional"`
+		BillOfLanding   string  `json:"billOfLanding,optional"`   // 提单
+		CustomerCode    string  `json:"customerCode,optional"`    // 客户代码
+		ShipFrom        string  `json:"shipFrom,optional"`        // 发货地
+		ShipMethod      string  `json:"shipMethod,optional"`      // 运输方式
+		CountryOfOrigin string  `json:"countryOfOrigin,optional"` // 原产国
+		Manufacture     string  `json:"manufacture,optional"`     // 制造商
+		VesselFlight    string  `json:"vesselFlight,optional"`    // 船/航班
+		ETDDt           int64   `json:"etdDt,optional"`           // 预计离港日期
+		UBCPI           string  `json:"ubcPi,optional"`           // UBC PI
+		MarksAndNumbers string  `json:"marksAndNumbers,optional"` // 标记和号码
+		InvoiceCode     string  `json:"invoiceCode,optional"`     // 发票代码
+		AdditionalCost  float64 `json:"additionalCost,optional"`  // 附加费用
+		DepositAmt      float64 `json:"depositAmt,optional"`      // 定金金额
+		InvoiceDt       int64   `json:"invoiceDt,optional"`       // 发票日期
+		InvoiceDue      int64   `json:"invoiceDue,optional"`      // 发票到期日
+	}
+	ShipmentAndInvoiceRes {
+		ShipmentId int `json:"shipmentId"`
+		InvoiceId  int `json:"invoiceId"`
+	}
+
+	UpdateShippingInfo {
+		BillOfLading    string `json:"billOfLading,optional"`    // 提单号
+		CustomerCode    string `json:"customerCode,optional"`    // 客户代码
+		MasterPO        string `json:"masterPO,optional"`        // 主采购订单号
+		RMBInvoice      string `json:"rmbInvoice,optional"`      // 人民币发票
+		ShipDate        string `json:"shipDate,optional"`        // 装运日期
+		MarksAndNumbers string `json:"marksAndNumbers,optional"` // 标记和编号
+		ShipFrom        string `json:"shipFrom,optional"`        // 发货地
+		ShipMethod      string `json:"shipMethod,optional"`      // 运输方式
+		CountryOfOrigin string `json:"countryOfOrigin,optional"` // 原产国
+		Term            string `json:"term,optional"`            // 术语
+		UBCPI           string `json:"ubcPI,optional"`           // UBC PI
+		MasterBINum     string `json:"masterBINum,optional"`     // 主BI号
+		Exporter        string `json:"exporter,optional"`        // 出口商
+		ShipName        string `json:"shipName,optional"`        // 船名
+		ShipDt          int64  `json:"shipDt,optional"`          // 装运日期
+		ETDDt           int64  `json:"etdDt,optional"`           // 预计出发日期
+		InvoiceTtl      string `json:"invoiceTtl,optional"`      // 发票标题
+		Notes           string `json:"notes,optional"`           // 备注
+	}
+
+	SaveShipment {
+		ShipmentInfo Shipment `json:" shipmentAndInvoice,optional"`
+	}
+
+	SaveShipmentRes {
+		ShinmentId string `json:"shinmentId"`
+	}
+
+	UploadRes {
+		Res interface{} `json:"res"`
+	}
+
+	QueryShipment {
+		PageNo       int    `json:"pageNo,default=0"`
+		PageSize     int    `json:"pageSize,default=10"`
+		SearchParams string `json:"searchParams,optional"`
+		Order        string `json:"order,optional"`
+	}
+
+	ListRes {
+		Res      interface{} `json:"res"`
+		Total    int         `json:"total"`
+		PageNo   int         `json:"pageNo"`
+		PageSize int         `json:"pageSize"`
+	}
+
+	PackingListReq {
+		ShipmentId int `json:"shapmentId"`
+		Total      int `json:"total"`
+		PageNo     int `json:"pageNo"`
+		PageSize   int `json:"pageSize"`
+	}
+
+	UploadFile {
+		UsedFor string `form:"usedFor"`
+	}
+
+	UploadFileRes {
+		Po        string `json:"customerPo"`
+		Color     string `json:"color"`
+		Style     string `json:"styleCode"`
+		SalePrice string `json:"salePrice"`
+		CartonCnt string `json:"cartonCnt"`
+		MeasVol   string `json:"measVol"`
+	}
+
+	SearchAllCustomerAndPrijection {
+		Customers   interface{} `json:"customers"`
+		Projections interface{} `json:"projections"`
+	}
+)
+
+@server(
+	prefix: /ubc/api/v1
+	group: usernoauth
+)
+
+service backpack {
+	@doc(
+		summary: "用户登录账号密码"
+	)
+	@handler SigninHandler
+	post /user/login (SignInRequest) returns (SignInResponse)
+}
+
+@server(
+	prefix: /ubc/api/v1
+	jwt: Auth
+	group: shipment
+)
+
+service backpack {
+	@doc(
+		summary: "保存shipment"
+	)
+	@handler SaveHandler
+	post /shipment/save (SaveShipment) returns (SaveShipmentRes)
+	
+	@doc(
+		summary: "修改shipment"
+	)
+	@handler UpdateHandler
+	put /shipment/update (UpdateShippingInfo) returns ()
+	
+	@doc(
+		summary: "删除shipment"
+	)
+	@handler RemoveHandler
+	delete /shipment/remove (SignInRequest) returns ()
+	
+	@doc(
+		summary: "查询shipment"
+	)
+	@handler SearchHandler
+	post /shipment/search (QueryShipment) returns (ListRes)
+	
+	@doc(
+		summary: "PackingList"
+	)
+	@handler PackingListHandler
+	post /packing/list (PackingListReq) returns (ListRes)
+	
+	@doc(
+		summary: "SaveShipmentAndVoiceHandler"
+	)
+	@handler SaveShipmentAndVoiceHandler
+	post /shipment/saveShipmentAndIVoice (ShipmentAndInvoice) returns (ShipmentAndInvoiceRes)
+	
+	@doc(
+		summary: "SavePacking"
+	)
+	@handler SavePackingHandler
+	post /shipment/savePacking (SaveShipment) returns ()
+	
+	@doc(
+		summary: "SearchAllCustomerAndProjection"
+	)
+	@handler SearchAllCustomerAndProjectionHandler
+	get /customer/searchAllCustomerAndProjection () returns (SearchAllCustomerAndPrijection)
+}
+
+@server(
+	prefix: /ubc/api/v1
+	jwt: Auth
+	group: common
+)
+
+service backpack {
+	@doc(
+		summary: "文件上传"
+	)
+	@handler UploadFile
+	post /common/upload (UploadFile) returns (UploadRes)
+}

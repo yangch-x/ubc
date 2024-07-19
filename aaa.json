@@ -1,0 +1,17 @@
+{
+    "orders": [
+        {
+            "po": "102626",
+            "color": "Indigo",
+            "style_number": "11180",
+            "sizes": [
+                {
+                    "size": "Total",
+                    "quantity": 208
+                }
+            ],
+            "total_quantity": 208,
+            "CTNS": 13
+        }
+    ]
+}
