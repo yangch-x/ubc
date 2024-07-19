@@ -4,14 +4,15 @@ import (
 	"UBC/api/internal/svc"
 	"UBC/api/internal/types"
 	"UBC/api/library/xerr"
-	"UBC/api/utils"
 	"UBC/models/res_models"
 	"bufio"
 	"bytes"
 	"context"
 	"encoding/json"
 	"github.com/zeromicro/go-zero/core/logx"
+	"io"
 	"net/http"
+	"os"
 	"os/exec"
 	"strings"
 )
@@ -48,23 +49,61 @@ type OrdersInfo struct {
 	Orders []Order `json:"orders"`
 }
 
+//
+//func (l *UploadFileLogic) UploadFile(req *types.UploadFile, r *http.Request) (resp *types.UploadRes, err error) {
+//	_ = r.ParseMultipartForm(maxFileSize)
+//	file, h, err := r.FormFile("file")
+//	if err != nil {
+//		l.Errorf("[UploadFile] get file err:%v", err)
+//		return nil, xerr.RequestParamError
+//	}
+//	defer file.Close()
+//
+//	text, err := utils.ExtractPDFText(file, h.Size)
+//	if err != nil {
+//		l.Errorf("[UploadFile] extractPDFText err:%v", err)
+//		return nil, xerr.RequestParamError
+//
+//	}
+//	if req.UsedFor == "packing" {
+//		return l.doPackingFile(text)
+//	} else if req.UsedFor == "projection" {
+//		return l.duProjectionFile()
+//	}
+//	l.Errorf("[UploadFile] current use for not found:%s", req.UsedFor)
+//	return nil, xerr.RequestParamError
+//
+//}
+
 func (l *UploadFileLogic) UploadFile(req *types.UploadFile, r *http.Request) (resp *types.UploadRes, err error) {
 	_ = r.ParseMultipartForm(maxFileSize)
-	file, h, err := r.FormFile("file")
+	file, _, err := r.FormFile("file")
 	if err != nil {
 		l.Errorf("[UploadFile] get file err:%v", err)
 		return nil, xerr.RequestParamError
 	}
 	defer file.Close()
 
-	text, err := utils.ExtractPDFText(file, h.Size)
+	// 创建临时文件
+	tempFile, err := os.CreateTemp("", "upload-*.pdf")
 	if err != nil {
-		l.Errorf("[UploadFile] extractPDFText err:%v", err)
 		return nil, xerr.RequestParamError
 
 	}
+	defer tempFile.Close()
+
+	_, err = io.Copy(tempFile, file)
+	if err != nil {
+		return nil, xerr.RequestParamError
+
+	}
+	output, err := exec.Command("python", "py/pdf2text.py", tempFile.Name()).Output()
+	if err != nil {
+		return nil, xerr.RequestParamError
+	}
+
 	if req.UsedFor == "packing" {
-		return l.doPackingFile(text)
+		return l.doPackingFile(string(output))
 	} else if req.UsedFor == "projection" {
 		return l.duProjectionFile()
 	}
@@ -74,7 +113,7 @@ func (l *UploadFileLogic) UploadFile(req *types.UploadFile, r *http.Request) (re
 }
 
 func (l *UploadFileLogic) doPackingFile(text string) (resp *types.UploadRes, err error) {
-	cmd := exec.Command("python", "D:\\PycharmProjects\\order_project\\UBC\\packing.py", text)
+	cmd := exec.Command("python", "py/packing.py", text)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		l.Errorf("[doPackingFile] exec packing python script err: %s", err)

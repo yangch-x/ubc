@@ -1,8 +1,10 @@
 package main
 
 import (
+	"UBC/api/library/xerr"
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 	"net/http"
 
 	"UBC/api/internal/config"
@@ -28,7 +30,8 @@ func main() {
 
 	ctx := svc.NewServiceContext(c)
 	handler.RegisterHandlers(server, ctx)
-
+	xerr.Init("zh")
+	logx.DisableStat()
 	fmt.Printf("Starting server at %s:%d...\n", c.Host, c.Port)
 	server.Start()
 }

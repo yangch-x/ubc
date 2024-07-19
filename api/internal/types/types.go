@@ -52,20 +52,19 @@ type ShipmentAndInvoice struct {
 	ShipmentId      int     `json:"shipmentId,optional"`
 	InvoiceId       int     `json:"invoiceId,optional"`
 	BillOfLanding   string  `json:"billOfLanding,optional"`   // 提单
-	CustomerCode    string  `json:"customerCode,optional"`    // 客户代码
 	ShipFrom        string  `json:"shipFrom,optional"`        // 发货地
-	ShipMethod      string  `json:"shipMethod,optional"`      // 运输方式
-	CountryOfOrigin string  `json:"countryOfOrigin,optional"` // 原产国
 	Manufacture     string  `json:"manufacture,optional"`     // 制造商
+	CountryOfOrigin string  `json:"countryOfOrigin,optional"` // 原产国
 	VesselFlight    string  `json:"vesselFlight,optional"`    // 船/航班
-	ETDDt           int64   `json:"etdDt,optional"`           // 预计离港日期
 	UBCPI           string  `json:"ubcPi,optional"`           // UBC PI
-	MarksAndNumbers string  `json:"marksAndNumbers,optional"` // 标记和号码
+	ETDDt           string  `json:"etdDt,optional"`           // 预计离港日期
+	CustomerCode    string  `json:"customerCode,optional"`    // 客户代码
+	ShipMethod      string  `json:"shipMethod,optional"`      // 运输方式
 	InvoiceCode     string  `json:"invoiceCode,optional"`     // 发票代码
 	AdditionalCost  float64 `json:"additionalCost,optional"`  // 附加费用
 	DepositAmt      float64 `json:"depositAmt,optional"`      // 定金金额
-	InvoiceDt       int64   `json:"invoiceDt,optional"`       // 发票日期
-	InvoiceDue      int64   `json:"invoiceDue,optional"`      // 发票到期日
+	InvoiceDt       string  `json:"invoiceDt,optional"`       // 发票日期
+	InvoiceDue      string  `json:"invoiceDue,optional"`      // 发票到期日
 }
 
 type ShipmentAndInvoiceRes struct {
@@ -96,6 +95,26 @@ type UpdateShippingInfo struct {
 
 type SaveShipment struct {
 	ShipmentInfo Shipment `json:" shipmentAndInvoice,optional"`
+}
+
+type SaveOrUpdateShipment struct {
+	ID           int     `json:"shipId"`
+	RMBInv       string  `json:"rmbInv"`
+	InvoiceTTL   float64 `json:"invoiceTtl"`
+	CustomerCode string  `json:"customerCode"`
+	MasterPO     string  `json:"masterPo"`
+	ShipFrom     string  `json:"shipFrom"`
+	UBCPI        string  `json:"ubcPi"`
+	OrigCountry  string  `json:"origCountry"`
+	ShipMethod   string  `json:"shipMethod"`
+	ShipTerm     string  `json:"shipTerm"`
+	MasterBLNum  string  `json:"masterBlNum"`
+	HouseBLNum   string  `json:"houseBlNum"`
+	Exporter     string  `json:"exporter"`
+	ShipName     string  `json:"shipName"`
+	ShipDT       string  `json:"shipDt"`
+	ArriveDT     string  `json:"arriveDt"`
+	Notes        string  `json:"notes"`
 }
 
 type SaveShipmentRes struct {
@@ -143,4 +162,8 @@ type UploadFileRes struct {
 type SearchAllCustomerAndPrijection struct {
 	Customers   interface{} `json:"customers"`
 	Projections interface{} `json:"projections"`
+}
+
+type RemoveShipment struct {
+	Id string `form:"shipId"`
 }

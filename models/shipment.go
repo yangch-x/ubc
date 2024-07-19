@@ -8,25 +8,25 @@ import (
 )
 
 type Shipment struct {
-	ShipID       int        `json:"ship_id" gorm:"column:ship_id;primaryKey;autoIncrement"`
-	RmbInv       string     `json:"rmb_inv" gorm:"column:rmb_inv"`
-	MasterPo     string     `json:"master_po" gorm:"column:master_po"`
-	CustomerCode string     `json:"customer_code" gorm:"column:customer_code"`
-	UbcPi        string     `json:"ubc_pi" gorm:"column:ubc_pi"`
-	Markurl      string     `json:"markurl" gorm:"column:markurl"`
-	OrigCountry  string     `json:"orig_country" gorm:"column:orig_country"`
-	ShipMethod   string     `json:"ship_method" gorm:"column:ship_method"`
-	ShipTerm     string     `json:"ship_term" gorm:"column:ship_term"`
-	InvoiceTtl   float64    `json:"invoice_ttl" gorm:"column:invoice_ttl"`
-	ShipFrom     string     `json:"ship_from" gorm:"column:ship_from"`
-	MasterBlNum  string     `json:"master_bl_num" gorm:"column:master_bl_num;notNull"`
-	HouseBlNum   string     `json:"house_bl_num" gorm:"column:house_bl_num"`
-	Exporter     string     `json:"exporter" gorm:"column:exporter"`
-	ShipName     string     `json:"ship_name" gorm:"column:ship_name"`
-	PackDt       *time.Time `json:"pack_dt" gorm:"column:pack_dt"`
-	ShipDt       string     `json:"ship_dt" gorm:"column:ship_dt"`
-	ArriveDt     *time.Time `json:"arrive_dt" gorm:"column:arrive_dt"`
-	Notes        string     `json:"notes" gorm:"column:notes;type:text"`
+	ShipID       int     `json:"ship_id" gorm:"column:ship_id;primaryKey;autoIncrement"`
+	RmbInv       string  `json:"rmb_inv" gorm:"column:rmb_inv"`
+	MasterPo     string  `json:"master_po" gorm:"column:master_po"`
+	CustomerCode string  `json:"customer_code" gorm:"column:customer_code"`
+	UbcPi        string  `json:"ubc_pi" gorm:"column:ubc_pi"`
+	Markurl      string  `json:"markurl" gorm:"column:markurl"`
+	OrigCountry  string  `json:"orig_country" gorm:"column:orig_country"`
+	ShipMethod   string  `json:"ship_method" gorm:"column:ship_method"`
+	ShipTerm     string  `json:"ship_term" gorm:"column:ship_term"`
+	InvoiceTtl   float64 `json:"invoice_ttl" gorm:"column:invoice_ttl"`
+	ShipFrom     string  `json:"ship_from" gorm:"column:ship_from"`
+	MasterBlNum  string  `json:"master_bl_num" gorm:"column:master_bl_num;notNull"`
+	HouseBlNum   string  `json:"house_bl_num" gorm:"column:house_bl_num"`
+	Exporter     string  `json:"exporter" gorm:"column:exporter"`
+	ShipName     string  `json:"ship_name" gorm:"column:ship_name"`
+	PackDt       string  `json:"pack_dt" gorm:"column:pack_dt"`
+	ShipDt       string  `json:"ship_dt" gorm:"column:ship_dt"`
+	ArriveDt     string  `json:"arrive_dt" gorm:"column:arrive_dt"`
+	Notes        string  `json:"notes" gorm:"column:notes;type:text"`
 }
 
 type Config struct {
@@ -232,15 +232,20 @@ type SearchShipment struct {
 	CartonSize   float64 `json:"carton_size"`
 }
 
-func (s *Shipment) Save() (int, error) {
-	if err := mysqlDb.Table("Shipment").Save(&s).Error; err != nil {
+func (s *Shipment) Save(tx *gorm.DB) (int, error) {
+	if tx == nil {
+		tx = mysqlDb
+	}
+
+	// 保存 Shipment
+	if err := tx.Table("Shipment").Save(&s).Error; err != nil {
 		return -1, err
 	}
 	return s.ShipID, nil
 }
 
 func (s *Shipment) Remove(shipId string) error {
-	return mysqlDb.Table("TableName").Delete(&Shipment{}, shipId).Error
+	return mysqlDb.Table("Shipment").Delete(&Shipment{}, shipId).Error
 }
 
 func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_models.SearchShipment, int64, error) {
@@ -260,11 +265,11 @@ func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_mode
 			"%"+searchValue+"%", "%"+searchValue+"%", "%"+searchValue+"%", "%"+searchValue+"%", "%"+searchValue+"%", "%"+searchValue+"%")
 	}
 
-	if order != "" {
-		query = query.Order(order)
-	} else {
-		query = query.Order("s.ship_id DESC")
-	}
+	//if order != "" {
+	//	query = query.Order(order)
+	//} else {
+	//	query = query.Order("s.ship_id DESC")
+	//}
 	if err := query.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}
@@ -306,15 +311,23 @@ func (s *Packing) SearchList(shipmentId, page, size int) ([]res_models.PackingLi
 	return res, totalRecords, nil
 }
 
-func (p *PackingList) SaveBatch(ps []PackingList) error {
+func (p *PackingList) SaveBatch(ps []PackingList, tx *gorm.DB) error {
 	if len(ps) == 0 {
 		return nil
 	}
-	return mysqlDb.Table("PackingList").Save(&ps).Error
+	if tx == nil {
+		tx = mysqlDb
+	}
+
+	return tx.Table("PackingList").Save(&ps).Error
 }
 
-func (i *Invoice) SaveOrUpdate() error {
-	return mysqlDb.Table("Invoice").Save(&i).Error
+func (i *Invoice) SaveOrUpdate(tx *gorm.DB) error {
+
+	if tx == nil {
+		tx = mysqlDb
+	}
+	return tx.Table("Invoice").Save(&i).Error
 }
 
 func (i *Invoice) FindById(invoiceId string) error {
@@ -394,7 +407,7 @@ func (p *Projection) FindById(projectionId string) error {
 func SaveShipmentAndPackingAndInvoice(shipment *Shipment, list []PackingList, invoice *Invoice) (shipmentId, invoiceId int, err error) {
 
 	err = mysqlDb.Transaction(func(tx *gorm.DB) error {
-		sId, errs := shipment.Save()
+		sId, errs := shipment.Save(tx)
 		if errs != nil {
 			return errs
 		}
@@ -402,16 +415,16 @@ func SaveShipmentAndPackingAndInvoice(shipment *Shipment, list []PackingList, in
 		for i := range list {
 			list[i].ShipID = sId
 		}
-		if errs = pl.SaveBatch(list); errs != nil {
+		if errs = pl.SaveBatch(list, tx); errs != nil {
 			return errs
 		}
 
 		invoice.ShipID = sId
-		if errs = invoice.SaveOrUpdate(); errs != nil {
+		if errs = invoice.SaveOrUpdate(tx); errs != nil {
 			return errs
 		}
 		return nil
 	})
 
-	return shipment.ShipID, invoice.InvoiceID, nil
+	return shipment.ShipID, invoice.InvoiceID, err
 }

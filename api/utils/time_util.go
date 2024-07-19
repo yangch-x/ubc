@@ -133,6 +133,15 @@ func ConvertToUTC(timeStr string, layout string) (*time.Time, error) {
 	return &utcTime, nil
 }
 
+func FormatDateToYMD(dateStr string) string {
+	// 解析 ISO 8601 日期字符串
+	t, err := time.Parse(time.RFC3339, dateStr)
+	if err != nil {
+		return ""
+	}
+	return t.Format("2006-01-02")
+}
+
 // IsBeforeCurrentDate 判断给定时间是否晚于当前时间（只比较到天）
 func IsBeforeCurrentDate(targetTime time.Time) bool {
 	// 获取当前时间

@@ -1,13 +1,12 @@
 package shipment
 
 import (
-	"UBC/api/library/xerr"
-	"UBC/models"
-	"context"
-	"time"
-
 	"UBC/api/internal/svc"
 	"UBC/api/internal/types"
+	"UBC/api/library/xerr"
+	"UBC/api/utils"
+	"UBC/models"
+	"context"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -31,15 +30,14 @@ func (l *SaveShipmentAndVoiceLogic) SaveShipmentAndVoice(req *types.ShipmentAndI
 	shipment := &models.Shipment{
 		ShipID:       req.ShipmentId,
 		HouseBlNum:   req.BillOfLanding,
-		CustomerCode: req.CustomerCode,
 		ShipFrom:     req.ShipFrom,
-		ShipMethod:   req.ShipMethod,
-		OrigCountry:  req.CountryOfOrigin,
 		Exporter:     req.Manufacture,
+		OrigCountry:  req.CountryOfOrigin,
 		ShipName:     req.VesselFlight,
-		ShipDt:       time.Unix(req.ETDDt/1000, 0).Format("2006-01-02 15:04:05"),
 		UbcPi:        req.UBCPI,
-		Markurl:      req.MarksAndNumbers,
+		ShipDt:       utils.FormatDateToYMD(req.ETDDt),
+		CustomerCode: req.CustomerCode,
+		ShipMethod:   req.ShipMethod,
 	}
 
 	var plireq []models.PackingList
@@ -50,13 +48,13 @@ func (l *SaveShipmentAndVoiceLogic) SaveShipmentAndVoice(req *types.ShipmentAndI
 		CustomerCode: req.CustomerCode,
 		InvoiceAmt:   req.AdditionalCost,
 		ReceivedAmt:  req.DepositAmt,
-		InvoiceDt:    time.Unix(req.InvoiceDt/1000, 0).Format("2006-01-02 15:04:05"),
-		InvoiceDue:   time.Unix(req.InvoiceDue/1000, 0).Format("2006-01-02 15:04:05"),
+		InvoiceDt:    utils.FormatDateToYMD(req.InvoiceDt),
+		InvoiceDue:   utils.FormatDateToYMD(req.InvoiceDue),
 	}
 	sId, iId, err := models.SaveShipmentAndPackingAndInvoice(shipment, plireq, invoice)
 	if err != nil {
 		l.Error("SaveShipmentAndVoice err:%v", err)
-		return resp, xerr.DbError
+		return resp, xerr.SaveShipmentError
 	}
 	resp.ShipmentId = sId
 	resp.InvoiceId = iId

@@ -28,13 +28,8 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodPost,
-				Path:    "/shipment/save",
-				Handler: shipment.SaveHandler(serverCtx),
-			},
-			{
-				Method:  http.MethodPut,
-				Path:    "/shipment/update",
-				Handler: shipment.UpdateHandler(serverCtx),
+				Path:    "/shipment/saveOrUpdate",
+				Handler: shipment.SaveOrUpdateHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodDelete,
