@@ -125,7 +125,7 @@ type UploadRes struct {
 	Res interface{} `json:"res"`
 }
 
-type QueryShipment struct {
+type Query struct {
 	PageNo       int    `json:"pageNo,default=0"`
 	PageSize     int    `json:"pageSize,default=10"`
 	SearchParams string `json:"searchParams,optional"`
@@ -166,4 +166,62 @@ type SearchAllCustomerAndPrijection struct {
 
 type RemoveShipment struct {
 	Id string `form:"shipId"`
+}
+
+type RemoveProjection struct {
+	Id string `form:"projID"`
+}
+
+type RemoveCustomer struct {
+	Id string `form:"customerID"`
+}
+
+type SaveProection struct {
+	ProjID          int     `json:"projID,optional"`
+	ArriveDt        string  `json:"arriveDt,optional"`
+	UbcPi           string  `json:"ubcPi,optional"`
+	FobLdp          string  `json:"fobLdp,optional"`
+	CustomerCode    string  `json:"customerCode,optional"`
+	Country         string  `json:"country,optional"`
+	CustomerPo      string  `json:"customerPo,optional"`
+	MasterPo        string  `json:"masterPo,optional"`
+	StyleCode       string  `json:"styleCode,optional"`
+	StyleName       string  `json:"styleName,optional"`
+	Fabrication     string  `json:"fabrication,optional"`
+	Color           string  `json:"color,optional"`
+	Size            string  `json:"size,optional"`
+	PoQty           int     `json:"poQty,optional"`
+	ShipQty         int     `json:"shipQty,optional"`
+	SalePrice       float64 `json:"salePrice,optional"`
+	SaleCustPrice   float64 `json:"saleCustPrice,optional"`
+	SaleCurrency    string  `json:"saleCurrency,optional"`
+	InvoiceCode     string  `json:"invoiceCode,optional"`
+	Receiving       string  `json:"receiving,optional"`
+	Notes           string  `json:"notes,optional"`
+	CostPrice       float64 `json:"costPrice,optional"`
+	CostCurrency    string  `json:"costCurrency,optional"`
+	RmbInv          string  `json:"rmbInv,optional"`
+	Exporter        string  `json:"exporter,optional"`
+	UbcPayable      float64 `json:"ubcPayable,optional"`
+	PayPeriod       string  `json:"payPeriod,optional"`
+	SalesPerson     string  `json:"salesPerson,optional"`
+	SalesCommission float64 `json:"salesCommission,optional"`
+	CommPaid        float64 `json:"commPaid,optional"`
+}
+
+type SaveOrUpdateCustomer struct {
+	CustomerID      int    `json:"customerID,optional"`
+	CustomerCode    string `json:"customerCode,optional"`
+	CustomerEmail   string `json:"customerEmail,optional"`
+	CustomerName    string `json:"customerName,optional"`
+	BillingContact  string `json:"billingContact,optional"`
+	NotifyContact   string `json:"notifyContact,optional"`
+	PaymentTerm     string `json:"paymentTerm,optional"`
+	ShipTo          string `json:"shipTo,optional"`
+	SalesPerson     string `json:"salesPerson,optional"`
+	UbcMerchandiser string `json:"ubcMerchandiser,optional"`
+	Country         string `json:"country,optional"`
+	DischargeLoc    string `json:"dischargeLoc,optional"`
+	Status          string `json:"status,optional"`
+	DueDateGap      int    `json:"dueDateGap,optional"`
 }

@@ -25,7 +25,7 @@ func NewSearchLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchLogi
 	}
 }
 
-func (l *SearchLogic) Search(req *types.QueryShipment) (resp *types.ListRes, err error) {
+func (l *SearchLogic) Search(req *types.Query) (resp *types.ListRes, err error) {
 	s := models.Shipment{}
 	search, i, err := s.Search(req.SearchParams, req.Order, req.PageNo, req.PageSize)
 	if err != nil {

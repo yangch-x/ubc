@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	common "UBC/api/internal/handler/common"
+	customer "UBC/api/internal/handler/customer"
+	projection "UBC/api/internal/handler/projection"
 	shipment "UBC/api/internal/handler/shipment"
 	usernoauth "UBC/api/internal/handler/usernoauth"
 	"UBC/api/internal/svc"
@@ -52,14 +54,53 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: shipment.SaveShipmentAndVoiceHandler(serverCtx),
 			},
 			{
-				Method:  http.MethodPost,
-				Path:    "/shipment/savePacking",
-				Handler: shipment.SavePackingHandler(serverCtx),
-			},
-			{
 				Method:  http.MethodGet,
 				Path:    "/customer/searchAllCustomerAndProjection",
 				Handler: shipment.SearchAllCustomerAndProjectionHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/ubc/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/projection/saveOrUpdate",
+				Handler: projection.SaveOrUpdateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/projection/remove",
+				Handler: projection.RemoveHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/projection/search",
+				Handler: projection.SearchHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/ubc/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/customer/saveOrUpdate",
+				Handler: customer.SaveOrUpdateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/customer/remove",
+				Handler: customer.RemoveHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/customer/search",
+				Handler: customer.SearchHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

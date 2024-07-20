@@ -244,8 +244,8 @@ func (s *Shipment) Save(tx *gorm.DB) (int, error) {
 	return s.ShipID, nil
 }
 
-func (s *Shipment) Remove(shipId string) error {
-	return mysqlDb.Table("Shipment").Delete(&Shipment{}, shipId).Error
+func (s *Shipment) Remove(id string) error {
+	return mysqlDb.Table("Shipment").Delete(&Shipment{}, id).Error
 }
 
 func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_models.SearchShipment, int64, error) {
@@ -334,6 +334,10 @@ func (i *Invoice) FindById(invoiceId string) error {
 	return mysqlDb.Table("Invoice").Where("invoice_id = ?", invoiceId).First(&i).Error
 }
 
+func (i *Invoice) Remove(id string) error {
+	return mysqlDb.Table("Invoice").Delete(&Shipment{}, id).Error
+}
+
 func (i *Invoice) SearchList(searchValue string, page, size int) ([]Invoice, int64, error) {
 
 	var invoices []Invoice
@@ -343,8 +347,7 @@ func (i *Invoice) SearchList(searchValue string, page, size int) ([]Invoice, int
 	offset := (page - 1) * size
 
 	// Create the query
-	query := mysqlDb.Model(&Invoice{})
-	//query := mysqlDb.Model(&Invoice{}).Where("number LIKE ?", "%"+searchValue+"%")
+	query := mysqlDb.Table("Invoice")
 
 	// Get the total count
 	if err := query.Count(&totalRecords).Error; err != nil {
@@ -365,10 +368,43 @@ func (c *Customer) SearchAll() (cus []Customer, err error) {
 
 }
 
+func (c *Customer) SearchList(searchValue string, page, size int) ([]Customer, int64, error) {
+
+	var invoices []Customer
+	var totalRecords int64
+
+	offset := (page - 1) * size
+
+	query := mysqlDb.Table("Customer")
+
+	if err := query.Count(&totalRecords).Error; err != nil {
+		return nil, 0, err
+	}
+
+	if err := query.Offset(offset).Limit(size).Find(&invoices).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return invoices, totalRecords, nil
+}
+
+func (c *Customer) Remove(id string) error {
+	return mysqlDb.Table("Customer").Delete(&Customer{}, id).Error
+}
+
+func (c *Customer) SaveOrUpdate() error {
+
+	return mysqlDb.Table("Customer").Save(&c).Error
+}
+
 func (p *Projection) SearchAll() (pro []Projection, err error) {
 	err = mysqlDb.Table("Projection").Find(&pro).Error
 	return
 
+}
+
+func (p *Projection) Remove(id string) error {
+	return mysqlDb.Table("Projection").Delete(&Projection{}, id).Error
 }
 
 func (p *Projection) SearchList(searchValue string, page, size int) ([]Projection, int64, error) {
@@ -376,19 +412,14 @@ func (p *Projection) SearchList(searchValue string, page, size int) ([]Projectio
 	var invoices []Projection
 	var totalRecords int64
 
-	// Calculate the offset
 	offset := (page - 1) * size
 
-	// Create the query
-	query := mysqlDb.Model(&Invoice{})
-	//query := mysqlDb.Model(&Invoice{}).Where("number LIKE ?", "%"+searchValue+"%")
+	query := mysqlDb.Table("Projection")
 
-	// Get the total count
 	if err := query.Count(&totalRecords).Error; err != nil {
 		return nil, 0, err
 	}
 
-	// Get the paginated results
 	if err := query.Offset(offset).Limit(size).Find(&invoices).Error; err != nil {
 		return nil, 0, err
 	}
@@ -397,12 +428,12 @@ func (p *Projection) SearchList(searchValue string, page, size int) ([]Projectio
 }
 
 func (p *Projection) SaveOrUpdate() error {
-	return mysqlDb.Table("Invoice").Save(&p).Error
+	return mysqlDb.Table("Projection").Save(&p).Error
 }
 
-func (p *Projection) FindById(projectionId string) error {
-	return mysqlDb.Table("Invoice").Where("projection_id = ?", projectionId).First(&p).Error
-}
+//func (p *Projection) FindById(projectionId string) error {
+//	return mysqlDb.Table("Projection").Where("projection_id = ?", projectionId).First(&p).Error
+//}
 
 func SaveShipmentAndPackingAndInvoice(shipment *Shipment, list []PackingList, invoice *Invoice) (shipmentId, invoiceId int, err error) {
 
