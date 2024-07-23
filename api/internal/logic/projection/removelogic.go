@@ -26,7 +26,7 @@ func NewRemoveLogic(ctx context.Context, svcCtx *svc.ServiceContext) *RemoveLogi
 }
 
 func (l *RemoveLogic) Remove(req *types.RemoveProjection) error {
-	s := models.Shipment{}
+	s := models.Projection{}
 
 	err := s.Remove(req.Id)
 	if err != nil {

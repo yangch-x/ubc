@@ -10,7 +10,7 @@ import (
 
 const (
 	apiKey         = "sk-proj-t8eNeNsIoceuNnPgC8AJT3BlbkFJB7D5zYJv00KhqBYZjH1I"
-	inputFile      = "D:\\goproject\\UBC\\json\\aaa.txt"
+	inputFile      = "D:\\goproject\\UBC\\json\\cp.json"
 	jsonOutputFile = "aaa.json"
 	gptModel       = "gpt-4o"
 )

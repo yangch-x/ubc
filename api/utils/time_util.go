@@ -142,6 +142,19 @@ func FormatDateToYMD(dateStr string) string {
 	return t.Format("2006-01-02")
 }
 
+// ConvertTimeFormat 将 ISO 8601 格式的时间字符串转换为指定的格式
+func ConvertTimeFormat(input string) (string, error) {
+	// 解析时间字符串
+	t, err := time.Parse(time.RFC3339, input)
+	if err != nil {
+		return "", err
+	}
+
+	// 格式化时间
+	output := t.Format("01/02/06")
+	return output, nil
+}
+
 // IsBeforeCurrentDate 判断给定时间是否晚于当前时间（只比较到天）
 func IsBeforeCurrentDate(targetTime time.Time) bool {
 	// 获取当前时间

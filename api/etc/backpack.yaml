@@ -1,8 +1,8 @@
 Name: ubc
 Host: 0.0.0.0
-Port: 8888
+Port: 8881
 MaxBytes: 2097152
-Timeout: 30000
+Timeout: 3000000
 Auth:
   AccessSecret: l@TiD3HFUMliNP0fIf#ebYK0Hif0k23mAg#aw@myfJAqqagaNog5ej
   AccessExpire: 604800
@@ -12,3 +12,9 @@ ORM:
   Active: 10
   Idle: 5
   IdleTimeout: 3600s
+
+
+Address: ["9440 Telstar Ave. Suite#3", "EL Monte, CA 91731, U.S.A", "Tel: ( 626 )579-2808", "Fax: ( 626 )579-2878"]
+Invoice: ["INVOICE NO.:", "INVOICE DATE:","DUE DATE:"]
+
+PythonPath: "python"

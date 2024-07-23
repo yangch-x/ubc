@@ -13,4 +13,8 @@ type Config struct {
 	}
 
 	ORM database.MysqlConfig
+
+	Address    []string
+	Invoice    []string
+	PythonPath string
 }

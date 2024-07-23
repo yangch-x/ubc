@@ -194,6 +194,8 @@ type SaveProection struct {
 	ShipQty         int     `json:"shipQty,optional"`
 	SalePrice       float64 `json:"salePrice,optional"`
 	SaleCustPrice   float64 `json:"saleCustPrice,optional"`
+	TtlBuy          float64 `json:"ttlBuy,optional"`
+	TtlSell         float64 `json:"ttlSell,optional"`
 	SaleCurrency    string  `json:"saleCurrency,optional"`
 	InvoiceCode     string  `json:"invoiceCode,optional"`
 	Receiving       string  `json:"receiving,optional"`
@@ -224,4 +226,69 @@ type SaveOrUpdateCustomer struct {
 	DischargeLoc    string `json:"dischargeLoc,optional"`
 	Status          string `json:"status,optional"`
 	DueDateGap      int    `json:"dueDateGap,optional"`
+}
+
+type CreateInvoiceReq struct {
+	Invoice  CreateInvoice   `json:"invoice"`
+	Shipment CreateShipment  `json:"shipment"`
+	Packings []CreatePacking `json:"packings"`
+}
+
+type CreateInvoiceRes struct {
+	Res interface{} `json:"res"`
+}
+
+type CreateInvoice struct {
+	SubTotal     float64 `json:"subTotal"`
+	TotalCartons int     `json:"totalCartons"`
+	TotalPCs     int     `json:"totalPCs"`
+}
+
+type CreateShipment struct {
+	BillOfLanding   string  `json:"billOfLanding"`
+	ShipFrom        string  `json:"shipFrom"`
+	Manufacture     string  `json:"manufacture"`
+	CountryOfOrigin string  `json:"countryOfOrigin"`
+	VesselFlight    string  `json:"vesselFlight"`
+	UbcPi           string  `json:"ubcPi"`
+	EtdDt           string  `json:"etdDt"`
+	CustomerCode    string  `json:"customerCode"`
+	ShipMethod      string  `json:"shipMethod"`
+	InvoiceCode     string  `json:"invoiceCode"`
+	AdditionalCost  float64 `json:"additionalCost,optional"`
+	DepositAmt      float64 `json:"depositAmt,optional"`
+	InvoiceDt       string  `json:"invoiceDt,optional"`
+	InvoiceDue      string  `json:"invoiceDue"`
+	BillingContact  string  `json:"billingContact,optional"`
+	ShipTo          string  `json:"shipTo"`
+	CustomerPos     string  `json:"customerPos"`
+	Term            string  `json:"term"`
+}
+
+type CreatePacking struct {
+	ListId        int     `json:"listId,optional"`
+	ProjId        int     `json:"projId"`
+	CustomerPo    string  `json:"customerPo,optional"`
+	StyleCode     string  `json:"styleCode,optional"`
+	Color         string  `json:"color,optional"`
+	SalePrice     float64 `json:"salePrice"`
+	CartonCnt     int     `json:"cartonCnt"`
+	TotalQuantity int     `json:"totalQuantity"`
+	StyleName     string  `json:"styleName,optional"`
+	Fabrication   string  `json:"fabrication,optional"`
+	Size          string  `json:"size,optional"`
+}
+
+type CreatePackings struct {
+	ShipId         int             `json:"shipId"`
+	CreatePackings []CreatePacking `json:"createPackings"`
+}
+
+type QueryPacking struct {
+	ShipId int `form:"shipId"`
+}
+
+type QueryPackingResp struct {
+	Packings interface{} `json:"packings"`
+	Shipment interface{} `json:"shipment"`
 }

@@ -16,5 +16,6 @@ var (
 	RequestIllegal        = add(100011) // 非法请求
 	RequestThirdErr       = add(100012) // 请求第三方失败
 	DeleteChatInfoErr     = add(100016) // 删除错误
+	CreateInvoiceErr      = add(100017) // 创建Invoice失败
 
 )

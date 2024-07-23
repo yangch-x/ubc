@@ -20,6 +20,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/sashabaranov/go-openai v1.26.3
 	github.com/sirupsen/logrus v1.9.3
+	github.com/tealeg/xlsx v1.0.5
 	github.com/zeromicro/go-zero v1.6.6
 	go.etcd.io/etcd/client/v3 v3.5.14
 	golang.org/x/crypto v0.24.0
@@ -30,7 +31,6 @@ require (
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.25.10
-	rsc.io/pdf v0.1.1
 )
 
 require (

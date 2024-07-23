@@ -148,36 +148,33 @@ type Packing struct {
 }
 
 type PackingList struct {
-	ListID      int    `gorm:"column:list_id;primaryKey;autoIncrement"`
-	ShipID      int    `gorm:"column:ship_id;not null"`
-	ProjID      int    `gorm:"column:proj_id"`
-	PackName    string `gorm:"column:pack_name;size:255;not null"`
-	CartonCnt   int    `gorm:"column:carton_cnt;not null"`
-	ItemCnt     int    `gorm:"column:item_cnt"`
-	MeasVol     int    `gorm:"column:meas_vol"`
-	GrossWeight int    `gorm:"column:gross_weight"`
-	NetWeight   int    `gorm:"column:net_weight"`
-	CartonSize  string `gorm:"column:carton_size;size:255"`
-	PackCnt     int    `gorm:"column:pack_cnt"`
+	ListID        int     `gorm:"column:list_id;primaryKey;autoIncrement"`
+	ShipID        int     `gorm:"column:ship_id;not null"`
+	ProjID        int     `gorm:"column:proj_id"`
+	SalePrice     float64 `json:"sale_price"`
+	CartonCnt     int     `json:"carton_cnt"`
+	TotalQuantity int     `json:"total_quantity"`
 }
 
 type Projection struct {
-	ProjID          int     `gorm:"column:proj_id;primaryKey;autoIncrement"`
+	ProjID          int     `gorm:"column:proj_id"`
 	ArriveDt        string  `gorm:"column:arrive_dt;not null"`
 	UbcPi           string  `gorm:"column:ubc_pi;size:100;not null"`
 	FobLdp          string  `gorm:"column:fob_ldp;size:25;not null"`
 	CustomerCode    string  `gorm:"column:customer_code;size:255;not null"`
 	Country         string  `gorm:"column:country;size:100;not null"`
-	CustomerPo      string  `gorm:"column:customer_po;size:100;not null"`
+	CustomerPo      string  `gorm:"column:customer_po;size:100;not null;primaryKey"`
 	MasterPo        string  `gorm:"column:master_po;size:100;not null"`
-	StyleCode       string  `gorm:"column:style_code;size:100;not null"`
+	StyleCode       string  `gorm:"column:style_code;size:100;not null;primaryKey"`
 	StyleName       string  `gorm:"column:style_name;size:255;not null"`
 	Fabrication     string  `gorm:"column:fabrication;size:255;not null"`
-	Color           string  `gorm:"column:color;size:255;not null"`
+	Color           string  `gorm:"column:color;size:255;not null;primaryKey"`
 	Size            string  `gorm:"column:size;size:255;not null"`
 	PoQty           int     `gorm:"column:po_qty"`
 	ShipQty         int     `gorm:"column:ship_qty"`
 	SalePrice       float64 `gorm:"column:sale_price"`
+	TtlBuy          float64 `gorm:"column:ttl_buy"`
+	TtlSell         float64 `gorm:"column:ttl_sell"`
 	SaleCustPrice   float64 `gorm:"column:sale_cust_price"`
 	SaleCurrency    string  `gorm:"column:sale_currency;size:100;default:USD;not null"`
 	InvoiceCode     string  `gorm:"column:invoice_code;size:100;not null"`
@@ -281,6 +278,21 @@ func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_mode
 
 }
 
+func (s *Shipment) SearchByIdWithInvoice(shipId int) (results res_models.ShipmentAndInvoice, err error) {
+	query := `SELECT
+				s.*,
+				i.* ,
+				c.*
+			FROM
+				Shipment s
+			JOIN Invoice i ON s.ship_id = i.ship_id 
+			JOIN Customer c ON c.customer_code = s.customer_code
+			WHERE
+				s.ship_id = ?`
+	err = mysqlDb.Raw(query, shipId).Scan(&results).Error
+	return
+}
+
 func (s *Packing) SearchList(shipmentId, page, size int) ([]res_models.PackingListRes, int, error) {
 	offset := (page - 1) * size
 	sql := fmt.Sprintf(`SELECT
@@ -311,6 +323,18 @@ func (s *Packing) SearchList(shipmentId, page, size int) ([]res_models.PackingLi
 	return res, totalRecords, nil
 }
 
+func (p *PackingList) DeleteAndSave(shipId int, ps []PackingList) error {
+	return mysqlDb.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Table("PackingList").Where("ship_id = ?", shipId).Delete(&PackingList{}).Error; err != nil {
+			return err
+		}
+		if err := tx.Table("PackingList").Save(&ps).Error; err != nil {
+			return err
+		}
+		return nil
+	})
+}
+
 func (p *PackingList) SaveBatch(ps []PackingList, tx *gorm.DB) error {
 	if len(ps) == 0 {
 		return nil
@@ -320,6 +344,32 @@ func (p *PackingList) SaveBatch(ps []PackingList, tx *gorm.DB) error {
 	}
 
 	return tx.Table("PackingList").Save(&ps).Error
+}
+
+func (p *PackingList) SearchByShipId(shipId int) ([]res_models.PackingsRes, error) {
+	query := `SELECT
+   				 p.list_id as id,
+   				 p.list_id as list_id,
+   				 p.proj_id as proj_id,
+   				 p.sale_price as sale_price,
+   				 p.total_quantity as total_quantity,
+   				 p.carton_cnt as carton_cnt,
+   				 j.color as color,
+   				 j.style_code as style_code,
+   				 j.customer_po as customer_po
+		    FROM
+				PackingList p
+			JOIN Projection j ON p.proj_id = j.proj_id 
+			WHERE
+				p.ship_id = ?`
+
+	var results []res_models.PackingsRes
+	err := mysqlDb.Raw(query, shipId).Scan(&results).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return results, nil
 }
 
 func (i *Invoice) SaveOrUpdate(tx *gorm.DB) error {
@@ -431,9 +481,9 @@ func (p *Projection) SaveOrUpdate() error {
 	return mysqlDb.Table("Projection").Save(&p).Error
 }
 
-//func (p *Projection) FindById(projectionId string) error {
-//	return mysqlDb.Table("Projection").Where("projection_id = ?", projectionId).First(&p).Error
-//}
+func (p *Projection) SaveAll(ps []Projection) error {
+	return mysqlDb.Table("Projection").Save(&ps).Error
+}
 
 func SaveShipmentAndPackingAndInvoice(shipment *Shipment, list []PackingList, invoice *Invoice) (shipmentId, invoiceId int, err error) {
 

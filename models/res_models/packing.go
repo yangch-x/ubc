@@ -21,6 +21,19 @@ type PackingListRes struct {
 }
 
 type NewShipmenPackingRes struct {
+	Id            string
+	CustomerPo    string
+	StyleCode     string
+	Color         string
+	SalePrice     float64
+	TotalQuantity float64
+	CartonCnt     float64
+}
+
+type PackingsRes struct {
+	Id            int
+	ListId        int
+	ProjId        int
 	CustomerPo    string
 	StyleCode     string
 	Color         string

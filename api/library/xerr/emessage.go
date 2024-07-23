@@ -11,6 +11,7 @@ var (
 		Unauthorized.Code():          "签名验证错误",
 		SaveShipmentError.Code():     "保存shipment失败",
 		DeleteChatInfoErr.Code():     "删除对话框错误",
+		CreateInvoiceErr.Code():      "创建发票失败",
 	}
 
 	messageEn = map[uint32]string{
@@ -28,6 +29,7 @@ var (
 		RequestIllegal.Code():        "Illegal request",
 		RequestThirdErr.Code():       "Failed to request third-party",
 		DeleteChatInfoErr.Code():     "Error deleting dialogue box",
+		CreateInvoiceErr.Code():      "Error Create Invoice",
 	}
 )
 

@@ -6,6 +6,7 @@ import (
 
 	common "UBC/api/internal/handler/common"
 	customer "UBC/api/internal/handler/customer"
+	packing "UBC/api/internal/handler/packing"
 	projection "UBC/api/internal/handler/projection"
 	shipment "UBC/api/internal/handler/shipment"
 	usernoauth "UBC/api/internal/handler/usernoauth"
@@ -58,6 +59,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/customer/searchAllCustomerAndProjection",
 				Handler: shipment.SearchAllCustomerAndProjectionHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/shipment/createInvoice",
+				Handler: shipment.CreateInoviceHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/ubc/api/v1"),
@@ -101,6 +107,23 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/customer/search",
 				Handler: customer.SearchHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/ubc/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/packing/saveOrUpdate",
+				Handler: packing.SaveOrUpdateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/packing/search",
+				Handler: packing.SearchHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
