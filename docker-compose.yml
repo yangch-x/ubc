@@ -12,46 +12,15 @@ services:
     container_name: ubc
     environment:
       - TZ=Asia/Shanghai
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.ubc.rule=Host(`test.wapenai.cn`) && PathPrefix(`/wapen/api/v1`)
-      - traefik.http.services.ubc.loadbalancer.server.port=8888
-      - traefik.http.routers.ubc.tls=true
-      - traefik.http.routers.ubc.tls.certresolver=letsencrypt
-      - traefik.http.routers.ubc.entrypoints=websecure
     privileged: true
     volumes:
       - ./etc/:/app/etc/
     ports:
-      - "8:8888"
+      - "8888:8888"
     stdin_open: true
     tty: true
     networks:
       - gateway
     restart: always
 
-  reverse-proxy:
-    image: traefik
-    container_name: traefix
-    command:
-      - "--api.dashboard=false"
-      - "--providers.docker"
-      - "--log.level=DEBUG"
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8083:8080"
 
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik.toml:/etc/traefik/traefik.toml
-      - ./certificates:/certificates
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-      - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.traefik.service=api@internal"
-    networks:
-      - gateway
