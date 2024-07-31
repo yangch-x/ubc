@@ -18,19 +18,16 @@ COPY . .
 COPY api/etc/ /app/etc/
 COPY py/ /app/py/
 RUN go build -ldflags="-s -w" -o /app/backpack api/backpack.go
-#RUN go build -gcflags="all=-N -l"  -ldflags="-linkmode=external" -o /app/backpack api/backpack.go
 
 # 使用一个较小的基础镜像来运行最终的应用
 FROM alpine:latest
 
-# 安装必要的运行时依赖，包括 Python
+# 安装必要的运行时依赖，包括 Python 和 pip
 RUN apk add --no-cache \
     ca-certificates \
     python3 \
-    py3-pip
-
-RUN pip3 install openai PyPDF2 termcolor
-
+    py3-pip \
+    && pip3 install --no-cache-dir openai PyPDF2 termcolor
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
