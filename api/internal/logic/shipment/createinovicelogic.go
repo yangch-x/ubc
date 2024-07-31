@@ -6,7 +6,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"strconv"
 	"strings"
 
 	"UBC/api/internal/svc"
@@ -47,6 +46,7 @@ func (l *CreateInoviceLogic) CreateInovice(req *types.CreateInvoiceReq, w http.R
 	table1Data := []utils.Table1Row{
 		{req.Shipment.ShipFrom, "", req.Shipment.UbcPi, req.Shipment.VesselFlight, req.Shipment.Term},
 	}
+	req.Shipment.EtdDt, _ = utils.ConvertToDateOnly(req.Shipment.EtdDt)
 
 	table2Data := []utils.Table2Row{
 		{req.Shipment.CountryOfOrigin, req.Shipment.VesselFlight, req.Shipment.BillOfLanding, req.Shipment.EtdDt},
@@ -71,7 +71,7 @@ func (l *CreateInoviceLogic) CreateInovice(req *types.CreateInvoiceReq, w http.R
 	subStr := fmt.Sprintf("%.2f", req.Invoice.SubTotal)
 	cnStr := utils.ConvertFloatToWords(req.Invoice.SubTotal)
 	lastStr := fmt.Sprintf("TOTAL %d CTNS\n%s", req.Invoice.TotalCartons, cnStr)
-	pdfBytes, err := utils.BuildInvoicePdf(table1Data, table2Data, table3Data, l.svcCtx.Config.Address, l.svcCtx.Config.Invoice,
+	pdfBuffer, err := utils.BuildInvoicePdf(table1Data, table2Data, table3Data, l.svcCtx.Config.Address, l.svcCtx.Config.Invoice,
 		invoiceOne, billTo, shipTo, lastStr, totalStr, subStr)
 	if err != nil {
 		l.Errorf("[CreateInvoice] build pdf err:%v", err)
@@ -79,14 +79,12 @@ func (l *CreateInoviceLogic) CreateInovice(req *types.CreateInvoiceReq, w http.R
 	}
 
 	w.Header().Set("Content-Type", "application/pdf")
-	w.Header().Set("Content-Disposition", "attachment; filename=invoice.pdf")
-	w.Header().Set("Content-Length", strconv.Itoa(pdfBytes.Len()))
-	w.WriteHeader(http.StatusOK)
-	_, err = w.Write(pdfBytes.Bytes())
+	w.Header().Set("Content-Disposition", "inline; filename=invoice.pdf")
+	_, err = w.Write(pdfBuffer.Bytes())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	return &types.CreateInvoiceRes{Res: pdfBytes}, nil
+	return nil, nil
 }

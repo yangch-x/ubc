@@ -36,8 +36,10 @@ type PackingsRes struct {
 	ProjId        int
 	CustomerPo    string
 	StyleCode     string
+	StyleName     string
 	Color         string
 	SalePrice     float64
 	TotalQuantity float64
 	CartonCnt     float64
+	Fabrication   string
 }

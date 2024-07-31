@@ -270,7 +270,7 @@ func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_mode
 	if err := query.Count(&total).Error; err != nil {
 		return nil, 0, err
 	}
-	if err := query.Offset((page - 1) * size).Limit(size).Find(&shipments).Error; err != nil {
+	if err := query.Order("ship_dt DESC").Offset((page - 1) * size).Limit(size).Find(&shipments).Error; err != nil {
 		return nil, 0, err
 	}
 
@@ -354,8 +354,10 @@ func (p *PackingList) SearchByShipId(shipId int) ([]res_models.PackingsRes, erro
    				 p.sale_price as sale_price,
    				 p.total_quantity as total_quantity,
    				 p.carton_cnt as carton_cnt,
+   				 j.fabrication as fabrication,
    				 j.color as color,
    				 j.style_code as style_code,
+   				 j.style_name as style_name,
    				 j.customer_po as customer_po
 		    FROM
 				PackingList p

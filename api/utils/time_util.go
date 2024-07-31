@@ -167,3 +167,20 @@ func IsBeforeCurrentDate(targetTime time.Time) bool {
 	// 比较时间
 	return targetTime.Before(currentTime)
 }
+
+// ConvertToDateOnly 将日期时间字符串转换为仅包含年月日的字符串
+func ConvertToDateOnly(dateTimeStr string) (string, error) {
+	// 定义日期时间格式
+	layout := time.RFC3339
+
+	// 解析日期时间字符串
+	parsedTime, err := time.Parse(layout, dateTimeStr)
+	if err != nil {
+		return "", err
+	}
+
+	// 格式化为仅包含年月日的字符串
+	dateOnly := parsedTime.Format("2006-01-02")
+
+	return dateOnly, nil
+}

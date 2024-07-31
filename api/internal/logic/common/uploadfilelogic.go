@@ -118,7 +118,7 @@ func (l *UploadFileLogic) doPackingFile(text string) (resp *types.UploadRes, err
 	cmd := exec.Command(l.svcCtx.Config.PythonPath, "py/packing.py", text)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		l.Errorf("[doPackingFile] exec packing python script err: %s", err)
+		l.Errorf("[doPackingFile] exec packing python script err: %s", string(output))
 		return nil, xerr.ServerCommonError
 	}
 
@@ -175,7 +175,7 @@ func (l *UploadFileLogic) duProjectionFile(text string) (resp *types.UploadRes, 
 	cmd := exec.Command(l.svcCtx.Config.PythonPath, "py/projection_output.py", text)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		l.Errorf("[duProjectionFile] exec packing python script err: %s", err)
+		l.Errorf("[duProjectionFile] exec packing python script err: %s", string(output))
 		return nil, xerr.ServerCommonError
 	}
 

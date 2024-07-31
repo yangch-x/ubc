@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/jung-kurt/gofpdf"
-	"os"
 	"strings"
 )
 
@@ -127,14 +126,6 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 		pdf.CellFormat(30, 4, row.Term, "1", 1, "C", false, 0, "")
 	}
 
-	// Add a row without inner borders between Table 1 and Table 2
-	pdf.SetX(20)
-	pdf.CellFormat(26, 4, "", "LR", 0, "C", false, 0, "")
-	pdf.CellFormat(26, 4, "", "LR", 0, "C", false, 0, "")
-	pdf.CellFormat(26, 4, "", "LR", 0, "C", false, 0, "")
-	pdf.CellFormat(47, 4, "", "LR", 0, "C", false, 0, "")
-	pdf.CellFormat(25, 4, "", "LR", 0, "C", false, 0, "")
-	pdf.CellFormat(30, 4, "", "LR", 1, "C", false, 0, "")
 	// Table 2
 	pdf.SetX(20)
 	pdf.SetFont("Arial", "B", 5)
@@ -158,24 +149,28 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 	pdf.Ln(3)
 
 	// Table 3
+	// 计算 po style styleName  FABRICATION
+	po, styleName, style, fabrication := distributeLengths(table3Data, 115)
 	pdf.SetX(20)
 	pdf.SetFont("Arial", "B", 5)
-	pdf.CellFormat(30, 4, "PO#", "1", 0, "L", false, 0, "")
-	pdf.CellFormat(12, 4, "STYLE#", "1", 0, "L", false, 0, "")
-	pdf.CellFormat(12, 4, "STYLE NAME", "1", 0, "L", false, 0, "")
-	pdf.CellFormat(66, 4, "FABRICATION", "1", 0, "L", false, 0, "")
+	pdf.CellFormat(po, 4, "PO#", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(style, 4, "STYLE#", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(styleName, 4, "STYLE NAME", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(fabrication, 4, "FABRICATION", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(15, 4, "COLOR", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(10, 4, "QTY(PC)", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(20, 4, "RATE", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(20, 4, "TOTAL", "1", 1, "C", false, 0, "")
-
 	pdf.SetFont("Arial", "", 5)
+
 	for _, row := range table3Data {
 		pdf.SetX(20)
-		pdf.CellFormat(30, 4, row.PO, "LR", 0, "L", false, 0, "")
-		pdf.CellFormat(12, 4, row.StyleCode, "LR", 0, "L", false, 0, "")
-		pdf.CellFormat(12, 4, row.StyleName, "LR", 0, "L", false, 0, "")
-		pdf.CellFormat(66, 4, row.Description, "LR", 0, "L", false, 0, "")
+
+		pdf.CellFormat(po, 4, row.PO, "LR", 0, "C", false, 0, "")
+		pdf.CellFormat(style, 4, row.StyleCode, "LR", 0, "C", false, 0, "")
+		pdf.CellFormat(styleName, 4, row.StyleName, "LR", 0, "C", false, 0, "")
+		pdf.CellFormat(fabrication, 4, row.Description, "LR", 0, "C", false, 0, "")
+
 		pdf.CellFormat(15, 4, row.Color, "LR", 0, "C", false, 0, "")
 		pdf.CellFormat(10, 4, row.Qty, "LR", 0, "C", false, 0, "")
 
@@ -193,9 +188,9 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 	pdf.SetFont("Arial", "B", 5)
 	// 添加最左边的表格框
 	pdf.CellFormat(20, 4, "", "LT", 0, "C", false, 0, "")
-	pdf.CellFormat(90, 4, "", "T", 0, "C", false, 0, "") // Empty cells to align with previous columns
+	pdf.CellFormat(95, 4, "", "T", 0, "C", false, 0, "") // Empty cells to align with previous columns
 	pdf.CellFormat(15, 4, "TOTAL", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(15, 4, totalStr, "1", 0, "C", false, 0, "")
+	pdf.CellFormat(10, 4, totalStr, "1", 0, "C", false, 0, "")
 	pdf.CellFormat(20, 4, "$", "1", 0, "L", false, 0, "")
 	pdf.CellFormat(20, 4, subStr, "1", 1, "R", false, 0, "")
 
@@ -268,8 +263,9 @@ func BuildInvoicePdf(table1Data []Table1Row, table2Data []Table2Row, table3Data 
 
 	pdf := gofpdf.NewCustom(&gofpdf.InitType{
 		UnitStr: "mm",
-		Size:    gofpdf.SizeType{Wd: 215, Ht: 280}, // Set page size to 21.5 cm x 18 cm
+		Size:    gofpdf.SizeType{Wd: 215, Ht: 280},
 	})
+	pdf.SetTitle(fmt.Sprintf("%s.pdf", invoiceOne[0]), false)
 	pdf.AddPage()
 
 	buildTitle(pdf, address, invoice, invoiceOne, billTo, shipTo)
@@ -284,18 +280,6 @@ func BuildInvoicePdf(table1Data []Table1Row, table2Data []Table2Row, table3Data 
 	// 将PDF内容写入字节缓冲区
 	var buf bytes.Buffer
 	err := pdf.Output(&buf)
-	if err != nil {
-		return nil, err
-	}
-
-	// 将字节缓冲区的内容写入文件
-	file, err := os.Create("invoice.pdf")
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	_, err = file.Write(buf.Bytes())
 	if err != nil {
 		return nil, err
 	}
@@ -318,4 +302,82 @@ func ConvertFloatToWords(amount float64) string {
 	result += " ONLY"
 
 	return result
+}
+
+// distributeLengths返回按比例分配的每个字段的长度
+func distributeLengths(rows []Table3Row, total int) (float64, float64, float64, float64) {
+	// 初始化最大长度变量
+	maxPOLength := 0
+	maxStyleNameLength := 0
+	maxStyleCodeLength := 0
+	maxDescriptionLength := 0
+
+	// 遍历结构体切片，找到每个字段的最大长度
+	for _, row := range rows {
+		if len(row.PO) > maxPOLength {
+			maxPOLength = len(row.PO)
+		}
+		if len(row.StyleName) > maxStyleNameLength {
+			maxStyleNameLength = len(row.StyleName)
+		}
+		if len(row.StyleCode) > maxStyleCodeLength {
+			maxStyleCodeLength = len(row.StyleCode)
+		}
+		if len(row.Description) > maxDescriptionLength {
+			maxDescriptionLength = len(row.Description)
+		}
+	}
+
+	if maxPOLength == 0 {
+		maxPOLength = 10
+	}
+	if maxStyleNameLength == 0 {
+		maxStyleNameLength = 10
+	}
+	if maxStyleCodeLength == 0 {
+		maxStyleCodeLength = 10
+	}
+	if maxDescriptionLength == 0 {
+		maxDescriptionLength = 10
+	}
+	// 计算总长度
+	totalLength := maxPOLength + maxStyleNameLength + maxStyleCodeLength + maxDescriptionLength
+
+	// 计算比例分配
+	poLength := float64(maxPOLength) * float64(total) / float64(totalLength)
+	styleNameLength := float64(maxStyleNameLength) * float64(total) / float64(totalLength)
+	styleCodeLength := float64(maxStyleCodeLength) * float64(total) / float64(totalLength)
+	descriptionLength := float64(maxDescriptionLength) * float64(total) / float64(totalLength)
+
+	// 计算总分配长度
+	allocatedTotal := poLength + styleNameLength + styleCodeLength + descriptionLength
+
+	// 调整分配，使总和等于115
+	for allocatedTotal < float64(total) {
+		if poLength < float64(maxPOLength) {
+			poLength++
+		} else if styleNameLength < float64(maxStyleNameLength) {
+			styleNameLength++
+		} else if styleCodeLength < float64(maxStyleCodeLength) {
+			styleCodeLength++
+		} else if descriptionLength < float64(maxDescriptionLength) {
+			descriptionLength++
+		}
+		allocatedTotal++
+	}
+
+	for allocatedTotal > float64(total) {
+		if descriptionLength > 0 {
+			descriptionLength--
+		} else if styleCodeLength > 0 {
+			styleCodeLength--
+		} else if styleNameLength > 0 {
+			styleNameLength--
+		} else if poLength > 0 {
+			poLength--
+		}
+		allocatedTotal--
+	}
+
+	return poLength, styleNameLength, styleCodeLength, descriptionLength
 }
