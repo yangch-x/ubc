@@ -24,3 +24,14 @@ services:
     restart: always
 
 
+  ubc-web:
+    container_name: ubc-web
+    image: ubc-web:test
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    stdin_open: true
+    tty: true
+    networks:
+      - gateway
+    restart: always

@@ -1,9 +1,10 @@
+# 使用 Golang 的基础镜像来构建应用
 FROM golang:1.19-alpine AS builder
 
 LABEL stage=gobuilder
 
-ENV CGO_ENABLED 0
-ENV GOPROXY https://goproxy.cn,direct
+ENV CGO_ENABLED=0
+ENV GOPROXY=https://goproxy.cn,direct
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 # 安装必要的包，包括 tzdata 和 Python
@@ -26,17 +27,23 @@ FROM alpine:latest
 RUN apk add --no-cache \
     ca-certificates \
     python3 \
-    py3-pip \
-    && pip3 install --no-cache-dir openai PyPDF2 termcolor
+    py3-pip
+
+# 创建虚拟环境并安装 Python 包
+RUN python3 -m venv /venv \
+    && /venv/bin/pip install --no-cache-dir openai PyPDF2 termcolor
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
-ENV TZ Asia/Shanghai
+ENV TZ=Asia/Shanghai
 
 WORKDIR /app
 COPY --from=builder /app/backpack /app/backpack
 COPY --from=builder /app/etc /app/etc
 COPY --from=builder /app/py /app/py
+
+# 设置环境变量以使用虚拟环境中的 Python
+ENV PATH="/venv/bin:$PATH"
 
 EXPOSE 8888
 
