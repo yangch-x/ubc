@@ -8,7 +8,7 @@ Auth:
   AccessExpire: 604800
 
 ORM:
-  DSN: root:y_1X%rspKkeAjhM#hW#J7f%!pKk1nh@tcp(54.222.235.29:3306)/ubc_erp?timeout=15s&readTimeout=15s&writeTimeout=15s&parseTime=true&loc=Local&charset=utf8mb4
+  DSN: root:y_1X%rspKkeAjhM#hW#J7f%!pKk1nh@tcp(mysql:3306)/ubc_erp_new?timeout=15s&readTimeout=15s&writeTimeout=15s&parseTime=true&loc=Local&charset=utf8mb4
   Active: 10
   Idle: 5
   IdleTimeout: 3600s

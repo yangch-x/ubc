@@ -51,8 +51,8 @@ type ShipmentAndInvoice struct {
 	CartonSize      float64 `json:"cartonSize"`
 	InvoiceID       int     `gorm:"column:invoice_id;primaryKey;autoIncrement"`
 	InvoiceCode     string  `gorm:"column:invoice_code;size:100;unique;not null"`
-	InvoiceAmt      int     `gorm:"column:invoice_amt"`
-	ReceivedAmt     int     `gorm:"column:received_amt"`
+	InvoiceAmt      float64 `gorm:"column:invoice_amt"`
+	ReceivedAmt     float64 `gorm:"column:received_amt"`
 	InvoiceDt       string  `gorm:"column:invoice_dt"`
 	InvoiceDue      string  `gorm:"column:invoice_due"`
 	InvoiceCurrency string  `gorm:"column:invoice_currency;size:100;default:USD;not null"`
@@ -78,8 +78,8 @@ type ShipAndInvoice struct {
 	ShipName       string  `json:"vesselFlight"`
 	ShipDt         string  `json:"shipDt"`
 	InvoiceCode    string  `json:"invoiceCode"`
-	InvoiceAmt     int     `json:"invoiceAmt"`
-	ReceivedAmt    int     `json:"receivedAmt"`
+	InvoiceAmt     float64 `json:"invoiceAmt"`
+	ReceivedAmt    float64 `json:"receivedAmt"`
 	InvoiceDt      string  `json:"invoiceDt"`
 	InvoiceDue     string  `json:"invoiceDue"`
 	ShipTo         string  `json:"ship_to"`

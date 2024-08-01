@@ -8,7 +8,7 @@ networks:
 
 services:
   ubc-api:
-    image: ubc:test
+    image: registry.us-west-1.aliyuncs.com/ubc/ubc:test
     container_name: ubc
     environment:
       - TZ=Asia/Shanghai
@@ -26,7 +26,7 @@ services:
 
   ubc-web:
     container_name: ubc-web
-    image: ubc-web:test
+    image: registry.us-west-1.aliyuncs.com/ubc/ubc-web:test
     environment:
       - TZ=Asia/Shanghai
     privileged: true
