@@ -49,22 +49,23 @@ type Invoice struct {
 }
 
 type ShipmentAndInvoice struct {
-	ShipmentId      int     `json:"shipmentId,optional"`
-	InvoiceId       int     `json:"invoiceId,optional"`
-	BillOfLanding   string  `json:"billOfLanding,optional"`   // 提单
-	ShipFrom        string  `json:"shipFrom,optional"`        // 发货地
-	Manufacture     string  `json:"manufacture,optional"`     // 制造商
-	CountryOfOrigin string  `json:"countryOfOrigin,optional"` // 原产国
-	VesselFlight    string  `json:"vesselFlight,optional"`    // 船/航班
-	UBCPI           string  `json:"ubcPi,optional"`           // UBC PI
-	ETDDt           string  `json:"etdDt,optional"`           // 预计离港日期
-	CustomerCode    string  `json:"customerCode,optional"`    // 客户代码
-	ShipMethod      string  `json:"shipMethod,optional"`      // 运输方式
-	InvoiceCode     string  `json:"invoiceCode,optional"`     // 发票代码
-	AdditionalCost  float64 `json:"additionalCost,optional"`  // 附加费用
-	DepositAmt      float64 `json:"depositAmt,optional"`      // 定金金额
-	InvoiceDt       string  `json:"invoiceDt,optional"`       // 发票日期
-	InvoiceDue      string  `json:"invoiceDue,optional"`      // 发票到期日
+	ShipmentId                int     `json:"shipmentId,optional"`
+	InvoiceId                 int     `json:"invoiceId,optional"`
+	BillOfLanding             string  `json:"billOfLanding,optional"`             // 提单
+	ShipFrom                  string  `json:"shipFrom,optional"`                  // 发货地
+	Manufacture               string  `json:"manufacture,optional"`               // 制造商
+	CountryOfOrigin           string  `json:"countryOfOrigin,optional"`           // 原产国
+	VesselFlight              string  `json:"vesselFlight,optional"`              // 船/航班
+	UBCPI                     string  `json:"ubcPi,optional"`                     // UBC PI
+	ETDDt                     string  `json:"etdDt,optional"`                     // 预计离港日期
+	CustomerCode              string  `json:"customerCode,optional"`              // 客户代码
+	ShipMethod                string  `json:"shipMethod,optional"`                // 运输方式
+	InvoiceCode               string  `json:"invoiceCode,optional"`               // 发票代码
+	AdditionalCost            float64 `json:"additionalCost,optional"`            // 附加费用
+	AdditionalCostDescription string  `json:"additionalCostDescription,optional"` // 附加费用说明
+	DepositAmt                float64 `json:"depositAmt,optional"`                // 定金金额
+	InvoiceDt                 string  `json:"invoiceDt,optional"`                 // 发票日期
+	InvoiceDue                string  `json:"invoiceDue,optional"`                // 发票到期日
 }
 
 type ShipmentAndInvoiceRes struct {
@@ -245,24 +246,25 @@ type CreateInvoice struct {
 }
 
 type CreateShipment struct {
-	BillOfLanding   string  `json:"billOfLanding"`
-	ShipFrom        string  `json:"shipFrom"`
-	Manufacture     string  `json:"manufacture"`
-	CountryOfOrigin string  `json:"countryOfOrigin"`
-	VesselFlight    string  `json:"vesselFlight"`
-	UbcPi           string  `json:"ubcPi"`
-	EtdDt           string  `json:"etdDt"`
-	CustomerCode    string  `json:"customerCode"`
-	ShipMethod      string  `json:"shipMethod"`
-	InvoiceCode     string  `json:"invoiceCode"`
-	AdditionalCost  float64 `json:"additionalCost,optional"`
-	DepositAmt      float64 `json:"depositAmt,optional"`
-	InvoiceDt       string  `json:"invoiceDt,optional"`
-	InvoiceDue      string  `json:"invoiceDue"`
-	BillingContact  string  `json:"billingContact,optional"`
-	ShipTo          string  `json:"shipTo"`
-	CustomerPos     string  `json:"customerPos"`
-	Term            string  `json:"term"`
+	BillOfLanding             string  `json:"billOfLanding"`
+	ShipFrom                  string  `json:"shipFrom"`
+	Manufacture               string  `json:"manufacture"`
+	CountryOfOrigin           string  `json:"countryOfOrigin"`
+	VesselFlight              string  `json:"vesselFlight"`
+	UbcPi                     string  `json:"ubcPi"`
+	EtdDt                     string  `json:"etdDt"`
+	CustomerCode              string  `json:"customerCode"`
+	ShipMethod                string  `json:"shipMethod"`
+	InvoiceCode               string  `json:"invoiceCode"`
+	AdditionalCost            float64 `json:"additionalCost,optional"`
+	AdditionalCostDescription string  `json:"additionalCostDescription,optional"`
+	DepositAmt                float64 `json:"depositAmt,optional"`
+	InvoiceDt                 string  `json:"invoiceDt,optional"`
+	InvoiceDue                string  `json:"invoiceDue"`
+	BillingContact            string  `json:"billingContact,optional"`
+	ShipTo                    string  `json:"shipTo"`
+	CustomerPos               string  `json:"customerPos"`
+	Term                      string  `json:"term"`
 }
 
 type CreatePacking struct {

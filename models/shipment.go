@@ -98,17 +98,19 @@ type HSCodeHist struct {
 }
 
 type Invoice struct {
-	InvoiceID       int     `gorm:"column:invoice_id;primaryKey;autoIncrement"`
-	ShipID          int     `gorm:"column:ship_id"`
-	InvoiceCode     string  `gorm:"column:invoice_code;size:100;unique;not null"`
-	UbcPi           string  `gorm:"column:ubc_pi;size:100;not null"`
-	CustomerCode    string  `gorm:"column:customer_code;size:255;not null"`
-	InvoiceAmt      float64 `gorm:"column:invoice_amt"`
-	ReceivedAmt     float64 `gorm:"column:received_amt"`
-	InvoiceDt       string  `gorm:"column:invoice_dt"`
-	InvoiceDue      string  `gorm:"column:invoice_due"`
-	InvoiceCurrency string  `gorm:"column:invoice_currency;size:100;default:USD;not null"`
-	Notes           string  `gorm:"column:notes;type:text"`
+	InvoiceID                 int     `gorm:"column:invoice_id;primaryKey;autoIncrement"`
+	ShipID                    int     `gorm:"column:ship_id"`
+	InvoiceCode               string  `gorm:"column:invoice_code;size:100;unique;not null"`
+	UbcPi                     string  `gorm:"column:ubc_pi;size:100;not null"`
+	CustomerCode              string  `gorm:"column:customer_code;size:255;not null"`
+	InvoiceAmt                float64 `gorm:"column:invoice_amt"`
+	ReceivedAmt               float64 `gorm:"column:received_amt"`
+	AdditionalCost            float64 `gorm:"column:additional_cost"`
+	AdditionalCostDescription string  `gorm:"column:additional_cost_description"`
+	InvoiceDt                 string  `gorm:"column:invoice_dt"`
+	InvoiceDue                string  `gorm:"column:invoice_due"`
+	InvoiceCurrency           string  `gorm:"column:invoice_currency;size:100;default:USD;not null"`
+	Notes                     string  `gorm:"column:notes;type:text"`
 }
 
 type PO struct {

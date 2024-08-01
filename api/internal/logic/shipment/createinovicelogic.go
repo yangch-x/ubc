@@ -51,7 +51,7 @@ func (l *CreateInoviceLogic) CreateInovice(req *types.CreateInvoiceReq, w http.R
 	table2Data := []utils.Table2Row{
 		{req.Shipment.CountryOfOrigin, req.Shipment.VesselFlight, req.Shipment.BillOfLanding, req.Shipment.EtdDt},
 	}
-	table3Data := make([]utils.Table3Row, len(req.Packings))
+	table3Data := make([]utils.Table3Row, len(req.Packings)+1)
 	total := 0
 	for i := range req.Packings {
 		table3Data[i] = utils.Table3Row{
@@ -67,6 +67,14 @@ func (l *CreateInoviceLogic) CreateInovice(req *types.CreateInvoiceReq, w http.R
 		}
 		total += req.Packings[i].TotalQuantity
 	}
+	// 判断是否有附加费用
+	if req.Shipment.AdditionalCost != 0 && len(req.Shipment.AdditionalCostDescription) != 0 {
+		table3Data[len(table3Data)-1] = utils.Table3Row{
+			Description: req.Shipment.AdditionalCostDescription,
+			TotalUSD:    fmt.Sprintf("%.2f", req.Shipment.AdditionalCost),
+		}
+	}
+
 	totalStr := fmt.Sprintf("%d", total)
 	subStr := fmt.Sprintf("%.2f", req.Invoice.SubTotal)
 	cnStr := utils.ConvertFloatToWords(req.Invoice.SubTotal)

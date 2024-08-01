@@ -150,17 +150,17 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 
 	// Table 3
 	// 计算 po style styleName  FABRICATION
-	po, styleName, style, fabrication := distributeLengths(table3Data, 115)
+	po, styleName, style, fabrication := distributeLengths(table3Data, 120)
 	pdf.SetX(20)
 	pdf.SetFont("Arial", "B", 5)
 	pdf.CellFormat(po, 4, "PO#", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(style, 4, "STYLE#", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(styleName, 4, "STYLE NAME", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(fabrication, 4, "FABRICATION", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(15, 4, "COLOR", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(20, 4, "COLOR", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(10, 4, "QTY(PC)", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(20, 4, "RATE", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(20, 4, "TOTAL", "1", 1, "C", false, 0, "")
+	pdf.CellFormat(15, 4, "RATE", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(15, 4, "TOTAL", "1", 1, "C", false, 0, "")
 	pdf.SetFont("Arial", "", 5)
 
 	for _, row := range table3Data {
@@ -171,16 +171,16 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 		pdf.CellFormat(styleName, 4, row.StyleName, "LR", 0, "C", false, 0, "")
 		pdf.CellFormat(fabrication, 4, row.Description, "LR", 0, "C", false, 0, "")
 
-		pdf.CellFormat(15, 4, row.Color, "LR", 0, "C", false, 0, "")
+		pdf.CellFormat(20, 4, row.Color, "LR", 0, "C", false, 0, "")
 		pdf.CellFormat(10, 4, row.Qty, "LR", 0, "C", false, 0, "")
 
 		// UPrice with $ left-aligned and number right-aligned
 		pdf.CellFormat(5, 4, "$", "L", 0, "L", false, 0, "")
-		pdf.CellFormat(15, 4, row.UPrice, "R", 0, "R", false, 0, "")
+		pdf.CellFormat(10, 4, row.UPrice, "R", 0, "R", false, 0, "")
 
 		// TotalUSD with $ left-aligned and number right-aligned
 		pdf.CellFormat(5, 4, "$", "L", 0, "L", false, 0, "")
-		pdf.CellFormat(15, 4, row.TotalUSD, "R", 1, "R", false, 0, "")
+		pdf.CellFormat(10, 4, row.TotalUSD, "R", 1, "R", false, 0, "")
 	}
 
 	// Add the total row within the same table, aligned with the columns
@@ -188,11 +188,11 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 	pdf.SetFont("Arial", "B", 5)
 	// 添加最左边的表格框
 	pdf.CellFormat(20, 4, "", "LT", 0, "C", false, 0, "")
-	pdf.CellFormat(95, 4, "", "T", 0, "C", false, 0, "") // Empty cells to align with previous columns
-	pdf.CellFormat(15, 4, "TOTAL", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(100, 4, "", "T", 0, "C", false, 0, "") // Empty cells to align with previous columns
+	pdf.CellFormat(20, 4, "TOTAL", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(10, 4, totalStr, "1", 0, "C", false, 0, "")
-	pdf.CellFormat(20, 4, "$", "1", 0, "L", false, 0, "")
-	pdf.CellFormat(20, 4, subStr, "1", 1, "R", false, 0, "")
+	pdf.CellFormat(15, 4, "$", "1", 0, "L", false, 0, "")
+	pdf.CellFormat(15, 4, subStr, "1", 1, "R", false, 0, "")
 
 	// Add a new table for the total cartons and total amount text with only the outer border
 	pdf.SetX(20)
@@ -340,6 +340,7 @@ func distributeLengths(rows []Table3Row, total int) (float64, float64, float64, 
 	if maxDescriptionLength == 0 {
 		maxDescriptionLength = 10
 	}
+	maxStyleCodeLength += 5
 	// 计算总长度
 	totalLength := maxPOLength + maxStyleNameLength + maxStyleCodeLength + maxDescriptionLength
 

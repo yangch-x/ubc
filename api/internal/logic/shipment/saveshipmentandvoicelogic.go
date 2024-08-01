@@ -42,14 +42,16 @@ func (l *SaveShipmentAndVoiceLogic) SaveShipmentAndVoice(req *types.ShipmentAndI
 
 	var plireq []models.PackingList
 	invoice := &models.Invoice{
-		InvoiceID:    req.InvoiceId,
-		UbcPi:        req.UBCPI,
-		InvoiceCode:  req.InvoiceCode,
-		CustomerCode: req.CustomerCode,
-		InvoiceAmt:   req.AdditionalCost,
-		ReceivedAmt:  req.DepositAmt,
-		InvoiceDt:    utils.FormatDateToYMD(req.InvoiceDt),
-		InvoiceDue:   utils.FormatDateToYMD(req.InvoiceDue),
+		InvoiceID:                 req.InvoiceId,
+		UbcPi:                     req.UBCPI,
+		InvoiceCode:               req.InvoiceCode,
+		CustomerCode:              req.CustomerCode,
+		InvoiceAmt:                req.AdditionalCost,
+		ReceivedAmt:               req.DepositAmt,
+		AdditionalCost:            req.AdditionalCost,
+		AdditionalCostDescription: req.AdditionalCostDescription,
+		InvoiceDt:                 utils.FormatDateToYMD(req.InvoiceDt),
+		InvoiceDue:                utils.FormatDateToYMD(req.InvoiceDue),
 	}
 	sId, iId, err := models.SaveShipmentAndPackingAndInvoice(shipment, plireq, invoice)
 	if err != nil {
