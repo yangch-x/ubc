@@ -4,6 +4,7 @@ import (
 	"UBC/models/res_models"
 	"fmt"
 	"gorm.io/gorm"
+	"strings"
 	"time"
 )
 
@@ -111,6 +112,8 @@ type Invoice struct {
 	InvoiceDue                string  `gorm:"column:invoice_due"`
 	InvoiceCurrency           string  `gorm:"column:invoice_currency;size:100;default:USD;not null"`
 	Notes                     string  `gorm:"column:notes;type:text"`
+	SubTotal                  float64 `gorm:"column:sub_total"`
+	TotalPCs                  int     `gorm:"column:total_pcs"`
 }
 
 type PO struct {
@@ -255,15 +258,17 @@ func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_mode
 	)
 
 	query := mysqlDb.Table("Shipment s").
-		Select("s.*, SUM(p.gross_weight) AS gross_weight, SUM(p.item_cnt) AS item_cnt, SUM(p.carton_cnt) AS carton_cnt, SUM(p.meas_vol) AS carton_size").
+		Select("s.*, i.invoice_code as invoice_code, i.sub_total as sub_total,i.total_pcs as total_pcs, SUM(p.gross_weight) AS gross_weight, SUM(p.item_cnt) AS item_cnt, SUM(p.carton_cnt) AS carton_cnt, SUM(p.meas_vol) AS carton_size").
 		Joins("LEFT JOIN PackingList p ON s.ship_id = p.ship_id").
-		Group("s.ship_id, s.customer_code, s.rmb_inv, s.invoice_ttl, s.ship_from, s.house_bl_num, s.exporter, s.ship_name, s.ship_dt, s.notes")
+		Joins("LEFT JOIN Invoice i ON s.ship_id = i.ship_id").
+		Group("s.ship_id, s.rmb_inv, s.master_po, s.customer_code, s.ubc_pi, s.markurl, s.orig_country, s.ship_method, s.ship_term, s.invoice_ttl, s.ship_from, s.master_bl_num, s.house_bl_num, " +
+			"s.exporter, s.ship_name, s.pack_dt, s.ship_dt, s.arrive_dt, s.notes, i.invoice_code, i.sub_total, i.total_pcs")
 
 	if searchValue != "" {
-		query = query.Where("s.rmb_inv LIKE ? OR s.customer_code LIKE ? OR s.house_bl_num LIKE ? OR s.exporter LIKE ? OR s.ship_name LIKE ? OR s.notes LIKE ?",
-			"%"+searchValue+"%", "%"+searchValue+"%", "%"+searchValue+"%", "%"+searchValue+"%", "%"+searchValue+"%", "%"+searchValue+"%")
+		searchValue = strings.TrimSpace(searchValue)
+		query = query.Where("i.invoice_code LIKE ? ", "%"+searchValue+"%")
 	}
-
+	//GROUP BY s.ship_id, s.rmb_inv, s.master_po, s.customer_code, s.ubc_pi, s.markurl, s.orig_country, s.ship_method, s.ship_term, s.invoice_ttl, s.ship_from, s.master_bl_num, s.house_bl_num, s.exporter, s.ship_name, s.pack_dt, s.ship_dt, s.arrive_dt, s.notes, i.invoice_code, i.sub_total, i.total_pcs
 	//if order != "" {
 	//	query = query.Order(order)
 	//} else {
@@ -416,6 +421,12 @@ func (i *Invoice) SearchList(searchValue string, page, size int) ([]Invoice, int
 	return invoices, totalRecords, nil
 }
 
+func (i *Invoice) UpdateByInvoiceCode() error {
+	return mysqlDb.Table("Invoice").
+		Where("invoice_code = ?", i.InvoiceCode).
+		Updates(Invoice{TotalPCs: i.TotalPCs, SubTotal: i.SubTotal}).Error
+}
+
 func (c *Customer) SearchAll() (cus []Customer, err error) {
 	err = mysqlDb.Table("Customer").Find(&cus).Error
 	return
@@ -430,7 +441,10 @@ func (c *Customer) SearchList(searchValue string, page, size int) ([]Customer, i
 	offset := (page - 1) * size
 
 	query := mysqlDb.Table("Customer")
-
+	if searchValue != "" {
+		searchValue = strings.TrimSpace(searchValue)
+		query = query.Where("customer_name LIKE ? ", "%"+searchValue+"%")
+	}
 	if err := query.Count(&totalRecords).Error; err != nil {
 		return nil, 0, err
 	}
@@ -469,6 +483,11 @@ func (p *Projection) SearchList(searchValue string, page, size int) ([]Projectio
 	offset := (page - 1) * size
 
 	query := mysqlDb.Table("Projection")
+	if searchValue != "" {
+		searchValue = strings.TrimSpace(searchValue)
+		likePattern := "%" + searchValue + "%"
+		query = query.Where("customer_po LIKE ? OR customer_code LIKE ?", likePattern, likePattern)
+	}
 
 	if err := query.Count(&totalRecords).Error; err != nil {
 		return nil, 0, err

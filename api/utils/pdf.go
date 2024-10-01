@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/jung-kurt/gofpdf"
+	"math"
 	"strings"
 )
 
@@ -153,10 +154,10 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 	po, styleName, style, fabrication := distributeLengths(table3Data, 120)
 	pdf.SetX(20)
 	pdf.SetFont("Arial", "B", 5)
-	pdf.CellFormat(po, 4, "PO#", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(style, 4, "STYLE#", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(po, 4, "PO", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(style, 4, "STYLE", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(styleName, 4, "STYLE NAME", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(fabrication, 4, "FABRICATION", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(fabrication, 4, "DESCRIPTION", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(20, 4, "COLOR", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(10, 4, "QTY(PC)", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(15, 4, "RATE", "1", 0, "C", false, 0, "")
@@ -290,8 +291,7 @@ func BuildInvoicePdf(table1Data []Table1Row, table2Data []Table2Row, table3Data 
 
 func ConvertFloatToWords(amount float64) string {
 	intPart := int(amount)
-	decimalPart := int((amount - float64(intPart)) * 100)
-
+	decimalPart := int(math.Round((amount - float64(intPart)) * 100))
 	dollarWords := convertToWords(intPart)
 	centWords := convertToWords(decimalPart)
 

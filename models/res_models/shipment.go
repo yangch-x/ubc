@@ -25,6 +25,9 @@ type SearchShipment struct {
 	ItemCnt      int     `json:"itemCnt"`
 	CartonCnt    int     `json:"cartonCnt"`
 	CartonSize   float64 `json:"cartonSize"`
+	InvoiceCode  string  `json:"invoiceCode"`
+	SubTotal     float64 `json:"subTotal"`
+	TotalPCs     int     `json:"totalPcs"`
 }
 
 type ShipmentAndInvoice struct {

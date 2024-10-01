@@ -246,6 +246,7 @@ type (
 	}
 
 	CreateInvoice {
+		InvoiceCode  string  `json:"invoiceCode"`
 		SubTotal     float64 `json:"subTotal"`
 		TotalCartons int     `json:"totalCartons"`
 		TotalPCs     int     `json:"totalPCs"`

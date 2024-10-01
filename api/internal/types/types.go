@@ -240,6 +240,7 @@ type CreateInvoiceRes struct {
 }
 
 type CreateInvoice struct {
+	InvoiceCode  string  `json:"invoiceCode"`
 	SubTotal     float64 `json:"subTotal"`
 	TotalCartons int     `json:"totalCartons"`
 	TotalPCs     int     `json:"totalPCs"`

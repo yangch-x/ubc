@@ -3,6 +3,7 @@ package shipment
 import (
 	"UBC/api/library/xerr"
 	"UBC/api/utils"
+	"UBC/models"
 	"context"
 	"fmt"
 	"net/http"
@@ -34,6 +35,13 @@ func (l *CreateInoviceLogic) CreateInovice(req *types.CreateInvoiceReq, w http.R
 	dueData, _ := utils.ConvertTimeFormat(req.Shipment.InvoiceDue)
 	invoiceOne := []string{req.Shipment.InvoiceCode, invoiceDate, dueData}
 	var billTo, shipTo []string
+	// 修改 sub total ，Total PCs
+
+	invoice := &models.Invoice{InvoiceCode: req.Invoice.InvoiceCode, TotalPCs: req.Invoice.TotalPCs, SubTotal: req.Invoice.SubTotal}
+	if err = invoice.UpdateByInvoiceCode(); err != nil {
+		l.Errorf("[CreateInvoice] update totalPsc and sub total err:%v", err)
+		return nil, xerr.CreateInvoiceErr
+	}
 
 	if len(req.Shipment.BillingContact) != 0 {
 		billTo = strings.Split(req.Shipment.BillingContact, "|")
