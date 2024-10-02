@@ -155,18 +155,21 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 	pdf.SetX(20)
 	pdf.SetFont("Arial", "B", 5)
 	pdf.CellFormat(po, 4, "PO", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(style, 4, "STYLE", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(style, 4, "STYLE NO.", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(styleName, 4, "STYLE NAME", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(fabrication, 4, "DESCRIPTION", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(20, 4, "COLOR", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(10, 4, "QTY(PC)", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(15, 4, "RATE", "1", 0, "C", false, 0, "")
-	pdf.CellFormat(15, 4, "TOTAL", "1", 1, "C", false, 0, "")
+	pdf.CellFormat(15, 4, "U/PRICE", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(15, 4, "TOTALUSD", "1", 1, "C", false, 0, "")
 	pdf.SetFont("Arial", "", 5)
 
 	for _, row := range table3Data {
 		pdf.SetX(20)
-
+		if row.Description == "TOTAL AMOUNT" {
+			buildBorder(pdf, row, po, styleName, style, fabrication)
+			continue
+		}
 		pdf.CellFormat(po, 4, row.PO, "LR", 0, "C", false, 0, "")
 		pdf.CellFormat(style, 4, row.StyleCode, "LR", 0, "C", false, 0, "")
 		pdf.CellFormat(styleName, 4, row.StyleName, "LR", 0, "C", false, 0, "")
@@ -190,7 +193,7 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 	// 添加最左边的表格框
 	pdf.CellFormat(20, 4, "", "LT", 0, "C", false, 0, "")
 	pdf.CellFormat(100, 4, "", "T", 0, "C", false, 0, "") // Empty cells to align with previous columns
-	pdf.CellFormat(20, 4, "TOTAL", "1", 0, "C", false, 0, "")
+	pdf.CellFormat(20, 4, "AMOUNT DUE", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(10, 4, totalStr, "1", 0, "C", false, 0, "")
 	pdf.CellFormat(15, 4, "$", "1", 0, "L", false, 0, "")
 	pdf.CellFormat(15, 4, subStr, "1", 1, "R", false, 0, "")
@@ -271,11 +274,7 @@ func BuildInvoicePdf(table1Data []Table1Row, table2Data []Table2Row, table3Data 
 
 	buildTitle(pdf, address, invoice, invoiceOne, billTo, shipTo)
 	pdf.Ln(10)
-	// Build the tables
-	for i := 0; i < 40-len(table3Data); i++ {
-		t := Table3Row{UPrice: "", TotalUSD: "-"}
-		table3Data = append(table3Data, t)
-	}
+
 	buildTable(pdf, table1Data, table2Data, table3Data, lastStr, totalStr, subStr)
 
 	// 将PDF内容写入字节缓冲区
@@ -381,4 +380,19 @@ func distributeLengths(rows []Table3Row, total int) (float64, float64, float64, 
 	}
 
 	return poLength, styleNameLength, styleCodeLength, descriptionLength
+}
+
+func buildBorder(pdf *gofpdf.Fpdf, row Table3Row, po, styleName, style, fabrication float64) {
+	pdf.CellFormat(po, 4, row.PO, "L", 0, "C", false, 0, "")
+	pdf.CellFormat(style, 4, row.StyleCode, "L", 0, "C", false, 0, "")
+	pdf.CellFormat(styleName, 4, row.StyleName, "L", 0, "C", false, 0, "")
+	pdf.SetLineWidth(0.3)
+	pdf.CellFormat(fabrication, 4, row.Description, "LTB", 0, "C", false, 0, "")
+	pdf.CellFormat(20, 4, row.Color, "LTB", 0, "C", false, 0, "")
+	pdf.CellFormat(10, 4, row.Qty, "LTB", 0, "C", false, 0, "")
+	pdf.CellFormat(5, 4, "$", "LTB", 0, "L", false, 0, "")
+	pdf.CellFormat(10, 4, row.UPrice, "TBR", 0, "R", false, 0, "")
+	pdf.CellFormat(5, 4, "$", "TB", 0, "L", false, 0, "")
+	pdf.CellFormat(10, 4, row.TotalUSD, "TBR", 1, "R", false, 0, "")
+	pdf.SetLineWidth(0.2)
 }

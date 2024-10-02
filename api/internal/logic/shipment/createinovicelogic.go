@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"UBC/api/internal/svc"
@@ -75,16 +76,45 @@ func (l *CreateInoviceLogic) CreateInovice(req *types.CreateInvoiceReq, w http.R
 		}
 		total += req.Packings[i].TotalQuantity
 	}
-	// 判断是否有附加费用
-	if req.Shipment.AdditionalCost != 0 && len(req.Shipment.AdditionalCostDescription) != 0 {
-		table3Data[len(table3Data)-1] = utils.Table3Row{
-			Description: req.Shipment.AdditionalCostDescription,
-			TotalUSD:    fmt.Sprintf("%.2f", req.Shipment.AdditionalCost),
-		}
+	// 新增空行
+	for i := 0; i < 25-len(table3Data); i++ {
+		t := utils.Table3Row{UPrice: "", TotalUSD: "-"}
+		table3Data = append(table3Data, t)
+	}
+	// 计算Qty
+	var totalQty int64
+	for _, t := range table3Data {
+		q, _ := strconv.ParseInt(t.Qty, 10, 32)
+		totalQty += q
 	}
 
-	totalStr := fmt.Sprintf("%d", total)
 	subStr := fmt.Sprintf("%.2f", req.Invoice.SubTotal)
+
+	// 小计
+	table3Data = append(table3Data, utils.Table3Row{Description: "TOTAL AMOUNT", Qty: strconv.FormatInt(totalQty, 10), TotalUSD: subStr})
+
+	// Deposit
+	table3Data = append(table3Data, utils.Table3Row{
+		Description: "Deposit",
+		TotalUSD:    fmt.Sprintf("%.2f", req.Shipment.DepositAmt),
+	})
+
+	// 判断是否有附加费用
+	if req.Shipment.AdditionalCost > 0 && len(req.Shipment.AdditionalCostDescription) != 0 {
+		table3Data = append(table3Data, utils.Table3Row{
+			Description: req.Shipment.AdditionalCostDescription,
+			TotalUSD:    fmt.Sprintf("%.2f", req.Shipment.AdditionalCost),
+		})
+	}
+
+	for i := 0; i < 2; i++ {
+		t := utils.Table3Row{UPrice: "", TotalUSD: "-"}
+		table3Data = append(table3Data, t)
+	}
+
+	subStr = fmt.Sprintf("%.2f", req.Invoice.SubTotal+req.Shipment.AdditionalCost+req.Shipment.DepositAmt)
+
+	totalStr := fmt.Sprintf("%d", total)
 	cnStr := utils.ConvertFloatToWords(req.Invoice.SubTotal)
 	lastStr := fmt.Sprintf("TOTAL %d CTNS\n%s", req.Invoice.TotalCartons, cnStr)
 	pdfBuffer, err := utils.BuildInvoicePdf(table1Data, table2Data, table3Data, l.svcCtx.Config.Address, l.svcCtx.Config.Invoice,
