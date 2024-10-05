@@ -112,10 +112,12 @@ func (l *CreateInoviceLogic) CreateInovice(req *types.CreateInvoiceReq, w http.R
 		table3Data = append(table3Data, t)
 	}
 
+	totals := req.Invoice.SubTotal + req.Shipment.AdditionalCost + req.Shipment.DepositAmt
+
 	subStr = fmt.Sprintf("%.2f", req.Invoice.SubTotal+req.Shipment.AdditionalCost+req.Shipment.DepositAmt)
 
 	totalStr := fmt.Sprintf("%d", total)
-	cnStr := utils.ConvertFloatToWords(req.Invoice.SubTotal)
+	cnStr := utils.ConvertFloatToWords(totals)
 	lastStr := fmt.Sprintf("TOTAL %d CTNS\n%s", req.Invoice.TotalCartons, cnStr)
 	pdfBuffer, err := utils.BuildInvoicePdf(table1Data, table2Data, table3Data, l.svcCtx.Config.Address, l.svcCtx.Config.Invoice,
 		invoiceOne, billTo, shipTo, lastStr, totalStr, subStr)
