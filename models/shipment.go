@@ -250,7 +250,7 @@ func (s *Shipment) Remove(id string) error {
 	return mysqlDb.Table("Shipment").Delete(&Shipment{}, id).Error
 }
 
-func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_models.SearchShipment, int64, error) {
+func (s *Shipment) Search(searchValue, dueDate string, page, size int) ([]res_models.SearchShipment, int64, error) {
 
 	var (
 		shipments []res_models.SearchShipment
@@ -258,7 +258,7 @@ func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_mode
 	)
 
 	query := mysqlDb.Table("Shipment s").
-		Select("s.*, i.invoice_code as invoice_code, i.sub_total as sub_total,i.total_pcs as total_pcs, SUM(p.gross_weight) AS gross_weight, SUM(p.item_cnt) AS item_cnt, SUM(p.carton_cnt) AS carton_cnt, SUM(p.meas_vol) AS carton_size").
+		Select("s.*, i.invoice_code as invoice_code, i.sub_total as sub_total,i.total_pcs as total_pcs, SUM(p.gross_weight) AS gross_weight, SUM(p.item_cnt) AS item_cnt, SUM(p.carton_cnt) AS carton_cnt, SUM(p.meas_vol) AS carton_size,i.invoice_due as due_date").
 		Joins("LEFT JOIN PackingList p ON s.ship_id = p.ship_id").
 		Joins("LEFT JOIN Invoice i ON s.ship_id = i.ship_id").
 		Group("s.ship_id, s.rmb_inv, s.master_po, s.customer_code, s.ubc_pi, s.markurl, s.orig_country, s.ship_method, s.ship_term, s.invoice_ttl, s.ship_from, s.master_bl_num, s.house_bl_num, " +
@@ -268,6 +268,12 @@ func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_mode
 		searchValue = strings.TrimSpace(searchValue)
 		query = query.Where("i.invoice_code LIKE ? ", "%"+searchValue+"%")
 	}
+
+	if dueDate != "" {
+		dueDate = strings.TrimSpace(dueDate)
+		query = query.Where("i.invoice_due = ? ", dueDate)
+	}
+
 	//GROUP BY s.ship_id, s.rmb_inv, s.master_po, s.customer_code, s.ubc_pi, s.markurl, s.orig_country, s.ship_method, s.ship_term, s.invoice_ttl, s.ship_from, s.master_bl_num, s.house_bl_num, s.exporter, s.ship_name, s.pack_dt, s.ship_dt, s.arrive_dt, s.notes, i.invoice_code, i.sub_total, i.total_pcs
 	//if order != "" {
 	//	query = query.Order(order)
@@ -283,6 +289,24 @@ func (s *Shipment) Search(searchValue, order string, page, size int) ([]res_mode
 
 	return shipments, total, nil
 
+}
+
+func (s *Shipment) SearchByIds(ids []int) ([]*res_models.DownloadShipment, error) {
+	if len(ids) == 0 {
+		return nil, nil
+	}
+	var (
+		shipments []*res_models.DownloadShipment
+	)
+
+	query := mysqlDb.Table("Shipment s").
+		Select("s.*, i.invoice_code as invoice_code, i.sub_total as sub_total, i.invoice_dt as invoice_dt, i.invoice_due as invoice_due").
+		Joins("LEFT JOIN PackingList p ON s.ship_id = p.ship_id").
+		Joins("LEFT JOIN Invoice i ON s.ship_id = i.ship_id").
+		Group("s.ship_id, s.rmb_inv, s.master_po, s.customer_code, s.ubc_pi, s.markurl, s.orig_country, s.ship_method, s.ship_term, s.invoice_ttl, s.ship_from, s.master_bl_num, s.house_bl_num, s.exporter, s.ship_name, s.pack_dt, s.ship_dt, s.arrive_dt, s.notes, i.invoice_code, i.sub_total, i.total_pcs")
+
+	query.Where("s.ship_id IN ?", ids).Find(&shipments)
+	return shipments, nil
 }
 
 func (s *Shipment) SearchByIdWithInvoice(shipId int) (results res_models.ShipmentAndInvoice, err error) {
@@ -473,6 +497,10 @@ func (p *Projection) SearchAll() (pro []Projection, err error) {
 
 func (p *Projection) Remove(id string) error {
 	return mysqlDb.Table("Projection").Delete(&Projection{}, id).Error
+}
+
+func (p *Projection) BatchRemove(ids []int) error {
+	return mysqlDb.Table("Projection").Where("proj_id IN ?", ids).Delete(&Projection{}).Error
 }
 
 func (p *Projection) SearchList(searchValue string, page, size int) ([]Projection, int64, error) {

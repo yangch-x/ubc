@@ -28,6 +28,15 @@ type SearchShipment struct {
 	InvoiceCode  string  `json:"invoiceCode"`
 	SubTotal     float64 `json:"subTotal"`
 	TotalPcs     int     `json:"totalPcs"`
+	DueDate      string  `json:"dueDate"`
+}
+
+type DownloadShipment struct {
+	HouseBLNum   string  `json:"houseBlNum"  excel:"HouseBLNum"`
+	CustomerCode string  `json:"customerCode" excel:"CustomerCode"`
+	InvoiceDt    string  `json:"invoiceDt" excel:"InvoiceDt"`
+	InvoiceDue   string  `json:"invoiceDue" excel:"InvoiceDue"`
+	SubTotal     float64 `json:"subTotal" excel:"SubTotal"`
 }
 
 type ShipmentAndInvoice struct {

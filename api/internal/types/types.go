@@ -130,6 +130,7 @@ type Query struct {
 	PageNo       int    `json:"pageNo,default=0"`
 	PageSize     int    `json:"pageSize,default=10"`
 	SearchParams string `json:"searchParams,optional"`
+	DueDate      string `json:"dueDate,optional"`
 	Order        string `json:"order,optional"`
 }
 
@@ -294,4 +295,8 @@ type QueryPacking struct {
 type QueryPackingResp struct {
 	Packings interface{} `json:"packings"`
 	Shipment interface{} `json:"shipment"`
+}
+
+type IdsReq struct {
+	Ids []int `json:"ids"`
 }

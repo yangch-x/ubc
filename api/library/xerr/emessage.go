@@ -12,6 +12,7 @@ var (
 		SaveShipmentError.Code():     "保存shipment失败",
 		DeleteChatInfoErr.Code():     "删除对话框错误",
 		CreateInvoiceErr.Code():      "创建发票失败",
+		EmptyErr.Code():              "未查询到数据",
 	}
 
 	messageEn = map[uint32]string{
@@ -30,6 +31,7 @@ var (
 		RequestThirdErr.Code():       "Failed to request third-party",
 		DeleteChatInfoErr.Code():     "Error deleting dialogue box",
 		CreateInvoiceErr.Code():      "Error Create Invoice",
+		EmptyErr.Code():              "No data is queried",
 	}
 )
 

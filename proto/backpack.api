@@ -137,6 +137,7 @@ type (
 		PageNo       int    `json:"pageNo,default=0"`
 		PageSize     int    `json:"pageSize,default=10"`
 		SearchParams string `json:"searchParams,optional"`
+		DueDate      string `json:"dueDate,optional"`
 		Order        string `json:"order,optional"`
 	}
 
@@ -300,6 +301,10 @@ type (
 		Packings interface{} `json:"packings"`
 		Shipment interface{} `json:"shipment"`
 	}
+
+	IdsReq {
+		Ids []int `json:"ids"`
+	}
 )
 
 @server(
@@ -339,6 +344,12 @@ service backpack {
 	)
 	@handler SearchHandler
 	post /shipment/search (Query) returns (ListRes)
+	
+	@doc(
+		summary: "下载shipment"
+	)
+	@handler DownloadHandler
+	post /shipment/download (IdsReq) returns ()
 	
 	@doc(
 		summary: "PackingList"
@@ -383,6 +394,12 @@ service backpack {
 	)
 	@handler RemoveHandler
 	delete /projection/remove (RemoveProjection) returns ()
+	
+	@doc(
+		summary: "批量删除projection"
+	)
+	@handler BatchRemoveHandler
+	post /projection/batch_remove (IdsReq) returns ()
 	
 	@doc(
 		summary: "查询projection"

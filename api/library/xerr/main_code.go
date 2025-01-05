@@ -17,5 +17,5 @@ var (
 	RequestThirdErr       = add(100012) // 请求第三方失败
 	DeleteChatInfoErr     = add(100016) // 删除错误
 	CreateInvoiceErr      = add(100017) // 创建Invoice失败
-
+	EmptyErr              = add(100018)
 )

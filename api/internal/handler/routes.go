@@ -46,6 +46,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 			{
 				Method:  http.MethodPost,
+				Path:    "/shipment/download",
+				Handler: shipment.DownloadHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
 				Path:    "/packing/list",
 				Handler: shipment.PackingListHandler(serverCtx),
 			},
@@ -80,6 +85,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodDelete,
 				Path:    "/projection/remove",
 				Handler: projection.RemoveHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/projection/batch_remove",
+				Handler: projection.BatchRemoveHandler(serverCtx),
 			},
 			{
 				Method:  http.MethodPost,
