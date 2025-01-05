@@ -228,6 +228,7 @@ type SaveOrUpdateCustomer struct {
 	DischargeLoc    string `json:"dischargeLoc,optional"`
 	Status          string `json:"status,optional"`
 	DueDateGap      int    `json:"dueDateGap,optional"`
+	Code            int    `json:"code,optional"`
 }
 
 type CreateInvoiceReq struct {

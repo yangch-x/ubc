@@ -75,6 +75,7 @@ type Customer struct {
 	DischargeLoc    string `gorm:"column:discharge_loc;size:255"`
 	Status          string `gorm:"column:status;size:25"`
 	DueDateGap      int    `gorm:"column:due_date_gap"`
+	Code            int    `gorm:"column:code"`
 }
 
 type HSCode struct {

@@ -42,6 +42,7 @@ func (l *SaveOrUpdateLogic) SaveOrUpdate(req *types.SaveOrUpdateCustomer) error 
 		DischargeLoc:    req.DischargeLoc,
 		Status:          req.Status,
 		DueDateGap:      req.DueDateGap,
+		Code:            req.Code,
 	}
 
 	err := customer.SaveOrUpdate()

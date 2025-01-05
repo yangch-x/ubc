@@ -53,7 +53,7 @@ func (l *CreateInoviceLogic) CreateInovice(req *types.CreateInvoiceReq, w http.R
 	}
 
 	table1Data := []utils.Table1Row{
-		{req.Shipment.ShipFrom, "", req.Shipment.UbcPi, req.Shipment.VesselFlight, req.Shipment.Term},
+		{req.Shipment.ShipFrom, "", req.Shipment.UbcPi, req.Shipment.ShipMethod, req.Shipment.Term},
 	}
 	req.Shipment.EtdDt, _ = utils.ConvertToDateOnly(req.Shipment.EtdDt)
 

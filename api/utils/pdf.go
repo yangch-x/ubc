@@ -192,11 +192,12 @@ func buildTable(pdf *gofpdf.Fpdf, table1Data []Table1Row, table2Data []Table2Row
 	pdf.SetFont("Arial", "B", 5)
 	// 添加最左边的表格框
 	pdf.CellFormat(20, 4, "", "LT", 0, "C", false, 0, "")
-	pdf.CellFormat(100, 4, "", "T", 0, "C", false, 0, "") // Empty cells to align with previous columns
+	pdf.CellFormat(100, 4, "", "T", 0, "C", false, 0, "")
 	pdf.CellFormat(20, 4, "AMOUNT DUE", "1", 0, "C", false, 0, "")
 	pdf.CellFormat(10, 4, totalStr, "1", 0, "C", false, 0, "")
-	pdf.CellFormat(15, 4, "$", "1", 0, "L", false, 0, "")
-	pdf.CellFormat(15, 4, subStr, "1", 1, "R", false, 0, "")
+	pdf.CellFormat(15, 4, "", "1", 0, "L", false, 0, "")
+	pdf.CellFormat(5, 4, "$", "LTB", 0, "L", false, 0, "")
+	pdf.CellFormat(10, 4, subStr, "RTB", 1, "R", false, 0, "")
 
 	// Add a new table for the total cartons and total amount text with only the outer border
 	pdf.SetX(20)
