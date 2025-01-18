@@ -235,6 +235,41 @@ type SearchShipment struct {
 	CartonSize   float64 `json:"carton_size"`
 }
 
+type ProjectionPo struct {
+	Id              int     `gorm:"column:id"`
+	ArriveDt        string  `gorm:"column:arrive_dt;not null"`
+	UbcPi           string  `gorm:"column:ubc_pi;size:100;not null"`
+	FobLdp          string  `gorm:"column:fob_ldp;size:25;not null"`
+	CustomerCode    string  `gorm:"column:customer_code;size:255;not null"`
+	Country         string  `gorm:"column:country;size:100;not null"`
+	CustomerPo      string  `gorm:"column:customer_po;size:100;not null;primaryKey"`
+	MasterPo        string  `gorm:"column:master_po;size:100;not null"`
+	StyleCode       string  `gorm:"column:style_code;size:100;not null;primaryKey"`
+	StyleName       string  `gorm:"column:style_name;size:255;not null"`
+	Fabrication     string  `gorm:"column:fabrication;size:255;not null"`
+	Color           string  `gorm:"column:color;size:255;not null;primaryKey"`
+	Size            string  `gorm:"column:size;size:255;not null"`
+	PoQty           int     `gorm:"column:po_qty"`
+	ShipQty         int     `gorm:"column:ship_qty"`
+	SalePrice       float64 `gorm:"column:sale_price"`
+	TtlBuy          float64 `gorm:"column:ttl_buy"`
+	TtlSell         float64 `gorm:"column:ttl_sell"`
+	SaleCustPrice   float64 `gorm:"column:sale_cust_price"`
+	SaleCurrency    string  `gorm:"column:sale_currency;size:100;default:USD;not null"`
+	InvoiceCode     string  `gorm:"column:invoice_code;size:100;not null"`
+	Receiving       string  `gorm:"column:receiving;size:255;not null"`
+	Notes           string  `gorm:"column:notes;size:255;not null"`
+	CostPrice       float64 `gorm:"column:cost_price"`
+	CostCurrency    string  `gorm:"column:cost_currency;size:100;default:RMB;not null"`
+	RmbInv          string  `gorm:"column:rmb_inv;size:100;not null"`
+	Exporter        string  `gorm:"column:exporter;size:100;not null"`
+	UbcPayable      float64 `gorm:"column:ubc_payable"`
+	PayPeriod       string  `gorm:"column:pay_period;size:100;not null"`
+	SalesPerson     string  `gorm:"column:sales_person;size:100;not null"`
+	SalesCommission float64 `gorm:"column:sales_commission"`
+	CommPaid        float64 `gorm:"column:comm_paid"`
+}
+
 func (s *Shipment) Save(tx *gorm.DB) (int, error) {
 	if tx == nil {
 		tx = mysqlDb
@@ -535,6 +570,64 @@ func (p *Projection) SaveOrUpdate() error {
 
 func (p *Projection) SaveAll(ps []Projection) error {
 	return mysqlDb.Table("Projection").Save(&ps).Error
+}
+
+func (p *ProjectionPo) SearchAll() (pro []ProjectionPo, err error) {
+	err = mysqlDb.Table("Projection_Po").Find(&pro).Error
+	return
+}
+
+func (p *ProjectionPo) SearchByIds(ids []int) ([]*ProjectionPo, error) {
+
+	if len(ids) == 0 {
+		return nil, nil
+	}
+	var (
+		pos []*ProjectionPo
+	)
+
+	mysqlDb.Table("Projection_Po").Where("id IN ?", ids).Find(&pos)
+	return pos, nil
+}
+
+func (p *ProjectionPo) Remove(id string) error {
+	return mysqlDb.Table("Projection_Po").Delete(&ProjectionPo{}, id).Error
+}
+
+func (p *ProjectionPo) BatchRemove(ids []int) error {
+	return mysqlDb.Table("Projection_Po").Where("id IN ?", ids).Delete(&ProjectionPo{}).Error
+}
+
+func (p *ProjectionPo) SearchList(searchValue string, page, size int) ([]ProjectionPo, int64, error) {
+	var invoices []ProjectionPo
+	var totalRecords int64
+
+	offset := (page - 1) * size
+
+	query := mysqlDb.Table("Projection_Po")
+	if searchValue != "" {
+		searchValue = strings.TrimSpace(searchValue)
+		likePattern := "%" + searchValue + "%"
+		query = query.Where("customer_po LIKE ? OR customer_code LIKE ?", likePattern, likePattern)
+	}
+
+	if err := query.Count(&totalRecords).Error; err != nil {
+		return nil, 0, err
+	}
+
+	if err := query.Offset(offset).Limit(size).Find(&invoices).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return invoices, totalRecords, nil
+}
+
+func (p *ProjectionPo) SaveOrUpdate() error {
+	return mysqlDb.Table("Projection_Po").Save(&p).Error
+}
+
+func (p *ProjectionPo) SaveAll(ps []ProjectionPo) error {
+	return mysqlDb.Table("Projection_Po").Save(&ps).Error
 }
 
 func SaveShipmentAndPackingAndInvoice(shipment *Shipment, list []PackingList, invoice *Invoice) (shipmentId, invoiceId int, err error) {

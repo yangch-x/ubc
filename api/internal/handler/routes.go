@@ -8,6 +8,7 @@ import (
 	customer "UBC/api/internal/handler/customer"
 	packing "UBC/api/internal/handler/packing"
 	projection "UBC/api/internal/handler/projection"
+	projectionPo "UBC/api/internal/handler/projectionPo"
 	shipment "UBC/api/internal/handler/shipment"
 	usernoauth "UBC/api/internal/handler/usernoauth"
 	"UBC/api/internal/svc"
@@ -95,6 +96,38 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Method:  http.MethodPost,
 				Path:    "/projection/search",
 				Handler: projection.SearchHandler(serverCtx),
+			},
+		},
+		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
+		rest.WithPrefix("/ubc/api/v1"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/projectionPo/saveOrUpdate",
+				Handler: projectionPo.SaveOrUpdateHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodDelete,
+				Path:    "/projectionPo/remove",
+				Handler: projectionPo.RemoveHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/projectionPo/batch_remove",
+				Handler: projectionPo.BatchRemoveHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/projectionPo/search",
+				Handler: projectionPo.SearchHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/projectionPo/download",
+				Handler: projectionPo.DownloadHandler(serverCtx),
 			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),

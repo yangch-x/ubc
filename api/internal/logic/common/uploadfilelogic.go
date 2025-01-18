@@ -17,6 +17,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -65,6 +66,19 @@ type Projection struct {
 	WaterResistant string  `json:"water_resistant"`
 }
 
+type PoInfo struct {
+	Po           string `json:"Po"`
+	Data         string `json:"data"`
+	Due          string `json:"due"`
+	StyleNum     string `json:"styleNum"`
+	StyleName    string `json:"styleName"`
+	Color        string `json:"color"`
+	Description  string `json:"description"`
+	Qty          string `json:"qty"`
+	Amount       string `json:"amount"`
+	CustomerName string `json:"customerName"`
+}
+
 type PackingList struct {
 	Orders []Packing `json:"orders"`
 }
@@ -81,7 +95,7 @@ func (l *UploadFileLogic) UploadFile(req *types.UploadFile, r *http.Request) (re
 		return nil, xerr.RequestParamError
 	}
 	defer file.Close()
-	if req.UsedFor == "packing" {
+	if req.UsedFor == "packing" || req.UsedFor == "po" {
 		// 创建临时文件
 		tempFile, err := os.CreateTemp("", "upload-*.pdf")
 		if err != nil {
@@ -99,7 +113,11 @@ func (l *UploadFileLogic) UploadFile(req *types.UploadFile, r *http.Request) (re
 		if err != nil {
 			return nil, xerr.RequestParamError
 		}
-		return l.doPackingFile(string(output))
+		if req.UsedFor == "po" {
+			return l.doPoFile(string(output))
+		} else {
+			return l.doPackingFile(string(output))
+		}
 	} else if req.UsedFor == "projection" {
 		content, err := ReadXLSXFromReader(file)
 		if err != nil {
@@ -235,6 +253,50 @@ func (l *UploadFileLogic) duProjectionFile(text string) (resp *types.UploadRes, 
 		return nil, xerr.DbError
 	}
 	return nil, err
+}
+
+func (l *UploadFileLogic) doPoFile(text string) (resp *types.UploadRes, err error) {
+	cmd := exec.Command(l.svcCtx.Config.PythonPath, "py/po.py", text)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		l.Errorf("[doPoFile] exec packing python script err: %s", string(output))
+		return nil, xerr.ServerCommonError
+	}
+
+	var pos []PoInfo
+	err = json.Unmarshal(output, &pos)
+	if err != nil {
+		l.Errorf("[doPackingFile] Error parsing JSON: %s", err)
+		return nil, xerr.RequestParamError
+	}
+
+	// 转换为 Projection 切片
+	projections := make([]models.ProjectionPo, len(pos))
+	for i, po := range pos {
+		qty, _ := strconv.Atoi(po.Qty)
+		amount, _ := strconv.ParseFloat(po.Amount, 64)
+		projections[i] = models.ProjectionPo{
+			ArriveDt:     po.Due,
+			CustomerCode: po.CustomerName,
+			CustomerPo:   po.Po,
+			StyleCode:    po.StyleNum,
+			StyleName:    po.StyleName,
+			Color:        po.Color,
+			Fabrication:  po.Description,
+			PoQty:        qty,
+			CostPrice:    amount,
+		}
+	}
+
+	// 保存到数据库
+	p := models.ProjectionPo{}
+	err = p.SaveAll(projections)
+	if err != nil {
+		l.Errorf("upload po info save all err:%v", err)
+		return nil, xerr.DbError
+	}
+
+	return &types.UploadRes{Res: projections}, nil
 }
 
 // ReadXLSXFromReader 读取xlsx文件并将其内容转换为字符串

@@ -412,6 +412,44 @@ service backpack {
 @server(
 	prefix: /ubc/api/v1
 	jwt: Auth
+	group: projectionPo
+)
+
+service backpack {
+	@doc(
+		summary: "保存修改projectionPo"
+	)
+	@handler SaveOrUpdateHandler
+	post /projectionPo/saveOrUpdate (SaveProection) returns ()
+	
+	@doc(
+		summary: "删除projectionPo"
+	)
+	@handler RemoveHandler
+	delete /projectionPo/remove (RemoveProjection) returns ()
+	
+	@doc(
+		summary: "批量删除projectionPo"
+	)
+	@handler BatchRemoveHandler
+	post /projectionPo/batch_remove (IdsReq) returns ()
+	
+	@doc(
+		summary: "查询projectionPo"
+	)
+	@handler SearchHandler
+	post /projectionPo/search (Query) returns (ListRes)
+	
+	@doc(
+		summary: "下载projectionPo"
+	)
+	@handler DownloadHandler
+	post /projectionPo/download (IdsReq) returns ()
+}
+
+@server(
+	prefix: /ubc/api/v1
+	jwt: Auth
 	group: customer
 )
 
