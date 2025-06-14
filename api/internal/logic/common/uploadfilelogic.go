@@ -67,16 +67,40 @@ type Projection struct {
 }
 
 type PoInfo struct {
-	Po           string `json:"Po"`
-	Data         string `json:"data"`
-	Due          string `json:"due"`
-	StyleNum     string `json:"styleNum"`
-	StyleName    string `json:"styleName"`
-	Color        string `json:"color"`
-	Description  string `json:"description"`
-	Qty          string `json:"qty"`
-	Amount       string `json:"amount"`
-	CustomerName string `json:"customerName"`
+	Po                  string `json:"Po"`
+	Data                string `json:"data"`
+	Due                 string `json:"due"`
+	StyleNum            string `json:"styleNum"`
+	StyleName           string `json:"styleName"`
+	Color               string `json:"color"`
+	Description         string `json:"description"`
+	Qty                 string `json:"qty"`
+	Amount              string `json:"amount"`
+	CustomerName        string `json:"customerName"`
+	Vendor              string `json:"vendor"`
+	From                string `json:"from"`
+	ShipTo              string `json:"shipTo"`
+	ShipTerms           string `json:"shipTerms"`
+	PaymentTerms        string `json:"paymentTerms"`
+	LastRevised         string `json:"lastRevised"`
+	Reference           string `json:"reference"`
+	PoTotal             string `json:"poTotal"`
+	Page                string `json:"page"`
+	ShipVia             string `json:"shipVia"`
+	SpecialInstructions string `json:"specialInstructions"`
+	Items               []Item `json:"items"`
+}
+type Item struct {
+	PO        string `json:"PO#"`
+	Style     string `json:"STYLE"`
+	Color     string `json:"COLOR"`
+	ColorDesc string `json:"COLOR DESCRIPTION"`
+	Dimension string `json:"DIMENSION"`
+	Size      string `json:"SIZE"`
+	UPC       string `json:"UPC#"`
+	Qty       string `json:"QTY"`
+	Cost      string `json:"COST"`
+	Extended  string `json:"EXTENDED"`
 }
 
 type PackingList struct {
@@ -270,21 +294,42 @@ func (l *UploadFileLogic) doPoFile(text string) (resp *types.UploadRes, err erro
 		return nil, xerr.RequestParamError
 	}
 
-	// 转换为 Projection 切片
+	// 转换为 ProjectionPo 切片
 	projections := make([]models.ProjectionPo, len(pos))
 	for i, po := range pos {
 		qty, _ := strconv.Atoi(po.Qty)
-		amount, _ := strconv.ParseFloat(po.Amount, 64)
+		amount, _ := strconv.ParseFloat(strings.ReplaceAll(po.Amount, ",", ""), 64)
+		poTotal, _ := strconv.ParseFloat(strings.ReplaceAll(po.PoTotal, ",", ""), 64)
+		items, _ := json.Marshal(po.Items)
+
 		projections[i] = models.ProjectionPo{
-			ArriveDt:     po.Due,
-			CustomerCode: po.CustomerName,
-			CustomerPo:   po.Po,
-			StyleCode:    po.StyleNum,
-			StyleName:    po.StyleName,
-			Color:        po.Color,
-			Fabrication:  po.Description,
-			PoQty:        qty,
-			CostPrice:    amount,
+			ArriveDt:            po.Due,                 // 到货日期 (due)
+			PoDate:              po.Data,                // PO日期 (data)
+			CustomerCode:        po.CustomerName,        // 客户代码 (customerName)
+			CustomerPo:          po.Po,                  // 客户PO号 (Po)
+			StyleCode:           po.StyleNum,            // 款号 (styleNum)
+			StyleName:           po.StyleName,           // 款名 (styleName)
+			Color:               po.Color,               // 颜色 (color)
+			Fabrication:         po.Description,         // 面料/描述 (description)
+			PoQty:               qty,                    // PO数量 (qty)
+			CostPrice:           amount,                 // 成本价格 (amount)
+			TtlBuy:              poTotal,                // 总采购金额 (poTotal)
+			TtlSell:             poTotal,                // 总销售金额 (暂时用PO总额)
+			PoItems:             items,                  // PO条目详情 (items)
+			UbcPi:               po.Reference,           // UBC PI (reference)
+			SaleCurrency:        "USD",                  // 销售货币，默认USD
+			CostCurrency:        "USD",                  // 成本货币，默认USD
+			Exporter:            po.Vendor,              // 出口商 (vendor)
+			PayPeriod:           po.PaymentTerms,        // 付款期限 (paymentTerms)
+			ShipTo:              po.ShipTo,              // 发货地址 (shipTo)
+			ShipFrom:            po.From,                // 发货方 (from)
+			ShipTerms:           po.ShipTerms,           // 运输条件 (shipTerms)
+			PaymentTerms:        po.PaymentTerms,        // 付款条件 (paymentTerms)
+			LastRevised:         po.LastRevised,         // 最后修订 (lastRevised)
+			PoTotal:             poTotal,                // PO总额 (poTotal)
+			PageInfo:            po.Page,                // 页面信息 (page)
+			ShipVia:             po.ShipVia,             // 运输方式 (shipVia)
+			SpecialInstructions: po.SpecialInstructions, // 特殊说明 (specialInstructions)
 		}
 	}
 

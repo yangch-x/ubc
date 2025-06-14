@@ -4,6 +4,7 @@ import (
 	"UBC/api/library/xerr"
 	"UBC/models"
 	"context"
+	"gorm.io/datatypes"
 
 	"UBC/api/internal/svc"
 	"UBC/api/internal/types"
@@ -58,6 +59,7 @@ func (l *SaveOrUpdateLogic) SaveOrUpdate(req *types.SaveProection) error {
 		SalesPerson:     req.SalesPerson,
 		SalesCommission: req.SalesCommission,
 		CommPaid:        req.CommPaid,
+		PoItems:         datatypes.JSON(req.PoItems),
 	}
 
 	err := projection.SaveOrUpdate()

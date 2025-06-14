@@ -55,6 +55,12 @@ func Export[T any](data []*T, name string, sheetName string) ([]byte, error) {
 	// 添加标题行
 	for i := 0; i < typeOfT.NumField(); i++ {
 		field := typeOfT.Field(i)
+
+		// 判断是否有tag: `excel:"-"`
+		if tag := field.Tag.Get("excel"); tag == "-" {
+			continue // 跳过不需要写入的字段
+		}
+
 		cell, err := excelize.CoordinatesToCellName(i+1, 1)
 		if err != nil {
 			return nil, err
@@ -75,7 +81,13 @@ func Export[T any](data []*T, name string, sheetName string) ([]byte, error) {
 	// 填充数据
 	for rowIndex, item := range data {
 		val := reflect.ValueOf(item).Elem()
+		typ := val.Type()
 		for colIndex := 0; colIndex < val.NumField(); colIndex++ {
+			field := typ.Field(colIndex)
+			// 跳过带有 `excel:"-"` 标签的字段
+			if tag := field.Tag.Get("excel"); tag == "-" {
+				continue
+			}
 			cell, err := excelize.CoordinatesToCellName(colIndex+1, rowIndex+2)
 			if err != nil {
 				return nil, err

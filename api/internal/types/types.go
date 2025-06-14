@@ -211,6 +211,7 @@ type SaveProection struct {
 	SalesPerson     string  `json:"salesPerson,optional"`
 	SalesCommission float64 `json:"salesCommission,optional"`
 	CommPaid        float64 `json:"commPaid,optional"`
+	PoItems         string  `json:"poItems,optional"`
 }
 
 type SaveOrUpdateCustomer struct {

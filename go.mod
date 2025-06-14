@@ -21,6 +21,7 @@ require (
 	github.com/sashabaranov/go-openai v1.26.3
 	github.com/sirupsen/logrus v1.9.3
 	github.com/tealeg/xlsx v1.0.5
+	github.com/xuri/excelize/v2 v2.7.1
 	github.com/zeromicro/go-zero v1.6.6
 	go.etcd.io/etcd/client/v3 v3.5.14
 	golang.org/x/crypto v0.24.0
@@ -29,8 +30,9 @@ require (
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22
+	gorm.io/datatypes v1.2.5
 	gorm.io/driver/mysql v1.5.7
-	gorm.io/gorm v1.25.10
+	gorm.io/gorm v1.25.11
 )
 
 require (
@@ -53,7 +55,6 @@ require (
 	github.com/coreos/go-systemd/v22 v22.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
-	github.com/douyacun/go-struct-excel v1.0.6 // indirect
 	github.com/dtm-labs/dtmdriver v0.0.6 // indirect
 	github.com/dtm-labs/dtmdriver-gozero v0.0.7 // indirect
 	github.com/dtm-labs/logger v0.0.1 // indirect
@@ -115,7 +116,6 @@ require (
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/xuri/efp v0.0.0-20220603152613-6918739fd470 // indirect
-	github.com/xuri/excelize/v2 v2.7.1 // indirect
 	github.com/xuri/nfp v0.0.0-20220409054826-5e722a1d9e22 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
 	github.com/zeromicro/zero-contrib/zrpc/registry/consul v0.0.0-20221119154608-12cfed75fa7c // indirect

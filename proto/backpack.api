@@ -218,6 +218,7 @@ type (
 		SalesPerson     string  `json:"salesPerson,optional"`
 		SalesCommission float64 `json:"salesCommission,optional"`
 		CommPaid        float64 `json:"commPaid,optional"`
+		PoItems         string  `json:"poItems,optional"`
 	}
 
 	SaveOrUpdateCustomer {
@@ -445,6 +446,12 @@ service backpack {
 	)
 	@handler DownloadHandler
 	post /projectionPo/download (IdsReq) returns ()
+	
+	@doc(
+		summary: "下载projectionPo为pdf"
+	)
+	@handler DownloadPdfHandler
+	post /projectionPo/download/pdf (IdsReq) returns ()
 }
 
 @server(

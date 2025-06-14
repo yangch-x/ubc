@@ -27,7 +27,7 @@ func NewSearchLogic(ctx context.Context, svcCtx *svc.ServiceContext) *SearchLogi
 
 func (l *SearchLogic) Search(req *types.Query) (resp *types.ListRes, err error) {
 	c := models.ProjectionPo{}
-	search, i, err := c.SearchList(req.SearchParams, req.PageNo, req.PageSize)
+	search, i, err := c.SearchList(req.SearchParams, req.DueDate, req.PageNo, req.PageSize)
 	if err != nil {
 		l.Error("Search err:%v", err)
 		return nil, xerr.DbError

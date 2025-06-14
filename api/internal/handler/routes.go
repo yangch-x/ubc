@@ -129,6 +129,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/projectionPo/download",
 				Handler: projectionPo.DownloadHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/projectionPo/download/pdf",
+				Handler: projectionPo.DownloadPdfHandler(serverCtx),
+			},
 		},
 		rest.WithJwt(serverCtx.Config.Auth.AccessSecret),
 		rest.WithPrefix("/ubc/api/v1"),

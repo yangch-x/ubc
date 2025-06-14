@@ -3,31 +3,40 @@ package models
 import (
 	"UBC/models/res_models"
 	"fmt"
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 	"strings"
 	"time"
 )
 
 type Shipment struct {
-	ShipID       int     `json:"ship_id" gorm:"column:ship_id;primaryKey;autoIncrement"`
-	RmbInv       string  `json:"rmb_inv" gorm:"column:rmb_inv"`
-	MasterPo     string  `json:"master_po" gorm:"column:master_po"`
-	CustomerCode string  `json:"customer_code" gorm:"column:customer_code"`
-	UbcPi        string  `json:"ubc_pi" gorm:"column:ubc_pi"`
-	Markurl      string  `json:"markurl" gorm:"column:markurl"`
-	OrigCountry  string  `json:"orig_country" gorm:"column:orig_country"`
-	ShipMethod   string  `json:"ship_method" gorm:"column:ship_method"`
-	ShipTerm     string  `json:"ship_term" gorm:"column:ship_term"`
-	InvoiceTtl   float64 `json:"invoice_ttl" gorm:"column:invoice_ttl"`
-	ShipFrom     string  `json:"ship_from" gorm:"column:ship_from"`
-	MasterBlNum  string  `json:"master_bl_num" gorm:"column:master_bl_num;notNull"`
-	HouseBlNum   string  `json:"house_bl_num" gorm:"column:house_bl_num"`
-	Exporter     string  `json:"exporter" gorm:"column:exporter"`
-	ShipName     string  `json:"ship_name" gorm:"column:ship_name"`
-	PackDt       string  `json:"pack_dt" gorm:"column:pack_dt"`
-	ShipDt       string  `json:"ship_dt" gorm:"column:ship_dt"`
-	ArriveDt     string  `json:"arrive_dt" gorm:"column:arrive_dt"`
-	Notes        string  `json:"notes" gorm:"column:notes;type:text"`
+	ShipID              int     `json:"ship_id" gorm:"column:ship_id;primaryKey;autoIncrement"`
+	RmbInv              string  `json:"rmb_inv" gorm:"column:rmb_inv"`
+	MasterPo            string  `json:"master_po" gorm:"column:master_po"`
+	CustomerCode        string  `json:"customer_code" gorm:"column:customer_code"`
+	UbcPi               string  `json:"ubc_pi" gorm:"column:ubc_pi"`
+	Markurl             string  `json:"markurl" gorm:"column:markurl"`
+	OrigCountry         string  `json:"orig_country" gorm:"column:orig_country"`
+	ShipMethod          string  `json:"ship_method" gorm:"column:ship_method"`
+	ShipTerm            string  `json:"ship_term" gorm:"column:ship_term"`
+	InvoiceTtl          float64 `json:"invoice_ttl" gorm:"column:invoice_ttl"`
+	ShipFrom            string  `json:"ship_from" gorm:"column:ship_from"`
+	MasterBlNum         string  `json:"master_bl_num" gorm:"column:master_bl_num;notNull"`
+	HouseBlNum          string  `json:"house_bl_num" gorm:"column:house_bl_num"`
+	Exporter            string  `json:"exporter" gorm:"column:exporter"`
+	ShipName            string  `json:"ship_name" gorm:"column:ship_name"`
+	PackDt              string  `json:"pack_dt" gorm:"column:pack_dt"`
+	ShipDt              string  `json:"ship_dt" gorm:"column:ship_dt"`
+	ArriveDt            string  `json:"arrive_dt" gorm:"column:arrive_dt"`
+	Notes               string  `json:"notes" gorm:"column:notes;type:text"`
+	ShipTo              string  `gorm:"column:ship_to;type:text"`
+	ShipTerms           string  `gorm:"column:ship_terms;size:255"`
+	PaymentTerms        string  `gorm:"column:payment_terms;size:255"`
+	LastRevised         string  `gorm:"column:last_revised;size:100"`
+	PoTotal             float64 `gorm:"column:po_total"`
+	PageInfo            string  `gorm:"column:page_info;size:100"`
+	ShipVia             string  `gorm:"column:ship_via;size:255"`
+	SpecialInstructions string  `gorm:"column:special_instructions;type:text"`
 }
 
 type Config struct {
@@ -236,38 +245,49 @@ type SearchShipment struct {
 }
 
 type ProjectionPo struct {
-	Id              int     `gorm:"column:id"`
-	ArriveDt        string  `gorm:"column:arrive_dt;not null"`
-	UbcPi           string  `gorm:"column:ubc_pi;size:100;not null"`
-	FobLdp          string  `gorm:"column:fob_ldp;size:25;not null"`
-	CustomerCode    string  `gorm:"column:customer_code;size:255;not null"`
-	Country         string  `gorm:"column:country;size:100;not null"`
-	CustomerPo      string  `gorm:"column:customer_po;size:100;not null;primaryKey"`
-	MasterPo        string  `gorm:"column:master_po;size:100;not null"`
-	StyleCode       string  `gorm:"column:style_code;size:100;not null;primaryKey"`
-	StyleName       string  `gorm:"column:style_name;size:255;not null"`
-	Fabrication     string  `gorm:"column:fabrication;size:255;not null"`
-	Color           string  `gorm:"column:color;size:255;not null;primaryKey"`
-	Size            string  `gorm:"column:size;size:255;not null"`
-	PoQty           int     `gorm:"column:po_qty"`
-	ShipQty         int     `gorm:"column:ship_qty"`
-	SalePrice       float64 `gorm:"column:sale_price"`
-	TtlBuy          float64 `gorm:"column:ttl_buy"`
-	TtlSell         float64 `gorm:"column:ttl_sell"`
-	SaleCustPrice   float64 `gorm:"column:sale_cust_price"`
-	SaleCurrency    string  `gorm:"column:sale_currency;size:100;default:USD;not null"`
-	InvoiceCode     string  `gorm:"column:invoice_code;size:100;not null"`
-	Receiving       string  `gorm:"column:receiving;size:255;not null"`
-	Notes           string  `gorm:"column:notes;size:255;not null"`
-	CostPrice       float64 `gorm:"column:cost_price"`
-	CostCurrency    string  `gorm:"column:cost_currency;size:100;default:RMB;not null"`
-	RmbInv          string  `gorm:"column:rmb_inv;size:100;not null"`
-	Exporter        string  `gorm:"column:exporter;size:100;not null"`
-	UbcPayable      float64 `gorm:"column:ubc_payable"`
-	PayPeriod       string  `gorm:"column:pay_period;size:100;not null"`
-	SalesPerson     string  `gorm:"column:sales_person;size:100;not null"`
-	SalesCommission float64 `gorm:"column:sales_commission"`
-	CommPaid        float64 `gorm:"column:comm_paid"`
+	Id                  int            `gorm:"column:id"`
+	ArriveDt            string         `gorm:"column:arrive_dt;not null"`
+	PoDate              string         `gorm:"column:po_date;size:100"`
+	UbcPi               string         `gorm:"column:ubc_pi;size:100;not null"`
+	FobLdp              string         `gorm:"column:fob_ldp;size:25;not null"`
+	CustomerCode        string         `gorm:"column:customer_code;size:255;not null"`
+	Country             string         `gorm:"column:country;size:100;not null"`
+	CustomerPo          string         `gorm:"column:customer_po;size:100;not null;primaryKey"`
+	MasterPo            string         `gorm:"column:master_po;size:100;not null"`
+	StyleCode           string         `gorm:"column:style_code;size:100;not null;primaryKey"`
+	StyleName           string         `gorm:"column:style_name;size:255;not null"`
+	Fabrication         string         `gorm:"column:fabrication;size:255;not null"`
+	Color               string         `gorm:"column:color;size:255;not null;primaryKey"`
+	Size                string         `gorm:"column:size;size:255;not null"`
+	PoQty               int            `gorm:"column:po_qty"`
+	ShipQty             int            `gorm:"column:ship_qty"`
+	SalePrice           float64        `gorm:"column:sale_price"`
+	TtlBuy              float64        `gorm:"column:ttl_buy"`
+	TtlSell             float64        `gorm:"column:ttl_sell"`
+	SaleCustPrice       float64        `gorm:"column:sale_cust_price"`
+	SaleCurrency        string         `gorm:"column:sale_currency;size:100;default:USD;not null"`
+	InvoiceCode         string         `gorm:"column:invoice_code;size:100;not null"`
+	Receiving           string         `gorm:"column:receiving;size:255;not null"`
+	Notes               string         `gorm:"column:notes;size:255;not null"`
+	CostPrice           float64        `gorm:"column:cost_price"`
+	CostCurrency        string         `gorm:"column:cost_currency;size:100;default:RMB;not null"`
+	RmbInv              string         `gorm:"column:rmb_inv;size:100;not null"`
+	Exporter            string         `gorm:"column:exporter;size:100;not null"`
+	UbcPayable          float64        `gorm:"column:ubc_payable"`
+	PayPeriod           string         `gorm:"column:pay_period;size:100;not null"`
+	SalesPerson         string         `gorm:"column:sales_person;size:100;not null"`
+	SalesCommission     float64        `gorm:"column:sales_commission"`
+	CommPaid            float64        `gorm:"column:comm_paid"`
+	PoItems             datatypes.JSON `gorm:"column:po_items" excel:"-"`
+	ShipTo              string         `gorm:"column:ship_to;type:text"`
+	ShipFrom            string         `gorm:"column:ship_from;type:text"`
+	ShipTerms           string         `gorm:"column:ship_terms;size:255"`
+	PaymentTerms        string         `gorm:"column:payment_terms;size:255"`
+	LastRevised         string         `gorm:"column:last_revised;size:100"`
+	PoTotal             float64        `gorm:"column:po_total"`
+	PageInfo            string         `gorm:"column:page_info;size:100"`
+	ShipVia             string         `gorm:"column:ship_via;size:255"`
+	SpecialInstructions string         `gorm:"column:special_instructions;type:text"`
 }
 
 func (s *Shipment) Save(tx *gorm.DB) (int, error) {
@@ -598,7 +618,7 @@ func (p *ProjectionPo) BatchRemove(ids []int) error {
 	return mysqlDb.Table("Projection_Po").Where("id IN ?", ids).Delete(&ProjectionPo{}).Error
 }
 
-func (p *ProjectionPo) SearchList(searchValue string, page, size int) ([]ProjectionPo, int64, error) {
+func (p *ProjectionPo) SearchList(searchValue, duDate string, page, size int) ([]ProjectionPo, int64, error) {
 	var invoices []ProjectionPo
 	var totalRecords int64
 
@@ -609,6 +629,10 @@ func (p *ProjectionPo) SearchList(searchValue string, page, size int) ([]Project
 		searchValue = strings.TrimSpace(searchValue)
 		likePattern := "%" + searchValue + "%"
 		query = query.Where("customer_po LIKE ? OR customer_code LIKE ?", likePattern, likePattern)
+	}
+
+	if duDate != "" {
+		query = query.Where("arrive_dt = ?", duDate)
 	}
 
 	if err := query.Count(&totalRecords).Error; err != nil {
