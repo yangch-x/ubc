@@ -43,6 +43,8 @@ type ProjectionPoItem struct {
 	STYLE            string `json:"sTYLE"`
 	DIMENSION        string `json:"dIMENSION"`
 	ColorDescription string `json:"COLOR DESCRIPTION"`
+	COST             string `json:"COST"`
+	EXTENDED         string `json:"EXTENDED"`
 }
 
 // PDFOrderData 用于生成PDF的订单数据结构
@@ -150,6 +152,8 @@ func (l *DownloadPdfLogic) convertToOrderData(po *models.ProjectionPo) (*PDFOrde
 			SIZE:             po.Size,
 			UPC:              "",
 			QTY:              strconv.Itoa(po.PoQty),
+			COST:             fmt.Sprintf("%.2f", po.SalePrice),
+			EXTENDED:         "",
 		}
 		poItems = append(poItems, defaultItem)
 	}
@@ -171,6 +175,18 @@ func (l *DownloadPdfLogic) convertToOrderData(po *models.ProjectionPo) (*PDFOrde
 			dimension = item.DIMENSION
 		}
 
+		// 处理COST字段，如果为空则使用po.SalePrice作为默认值
+		itemCost := item.COST
+		if itemCost == "" {
+			itemCost = fmt.Sprintf("%.2f", po.SalePrice)
+		}
+
+		// 处理EXTENDED字段
+		extended := item.EXTENDED
+		if extended == "" {
+			extended = ""
+		}
+
 		pdfItems[i] = PDFItem{
 			PO:               item.PO,
 			STYLE:            item.STYLE,
@@ -180,8 +196,8 @@ func (l *DownloadPdfLogic) convertToOrderData(po *models.ProjectionPo) (*PDFOrde
 			SIZE:             item.SIZE,
 			UPC:              item.UPC,
 			QTY:              item.QTY,
-			COST:             fmt.Sprintf("%.2f", po.CostPrice),
-			EXTENDED:         nil,
+			COST:             itemCost,
+			EXTENDED:         &extended,
 		}
 	}
 
@@ -192,28 +208,28 @@ func (l *DownloadPdfLogic) convertToOrderData(po *models.ProjectionPo) (*PDFOrde
 
 	// 构建订单数据 - 根据实际的字段映射关系
 	orderData := &PDFOrderData{
-		Po:                  po.CustomerPo,                        // customer_po
-		Data:                po.PoDate,                            // po_date
-		Due:                 po.ArriveDt,                          // arrive_dt
-		StyleNum:            po.StyleCode,                         // style_code
-		StyleName:           &po.StyleName,                        // style_name
-		Color:               po.Color,                             // color
-		Description:         po.Fabrication,                       // fabrication (实际存储描述的字段)
-		Qty:                 strconv.Itoa(totalQty),               // 从items计算或使用po_qty
-		Amount:              fmt.Sprintf("%.2f", po.CostPrice),    // cost_price (实际存储amount的字段)
-		CustomerName:        po.CustomerCode,                      // customer_code (实际存储客户名称的字段)
-		Vendor:              po.Exporter,                          // exporter (实际存储vendor的字段)
-		From:                po.ShipFrom,                          // ship_from
-		ShipTo:              po.ShipTo,                            // ship_to
-		ShipTerms:           po.ShipTerms,                         // ship_terms
-		PaymentTerms:        po.PaymentTerms,                      // payment_terms
-		LastRevised:         po.LastRevised,                       // last_revised
-		Reference:           getStringPtr(po.UbcPi),               // ubc_pi (实际存储reference的字段)
-		PoTotal:             fmt.Sprintf("%.2f", po.PoTotal),      // po_total
-		Page:                po.PageInfo,                          // page_info
-		ShipVia:             getStringPtr(po.ShipVia),             // ship_via
-		Items:               pdfItems,                             // po_items JSON解析后的数据
-		SpecialInstructions: getStringPtr(po.SpecialInstructions), // special_instructions
+		Po:                  po.CustomerPo,                        // customer_po -> Po
+		Data:                po.PoDate,                            // po_date -> data
+		Due:                 po.ArriveDt,                          // arrive_dt -> due
+		StyleNum:            po.StyleCode,                         // style_code -> styleNum
+		StyleName:           &po.StyleName,                        // style_name -> styleName
+		Color:               po.Color,                             // color -> color
+		Description:         po.Fabrication,                       // fabrication -> description
+		Qty:                 strconv.Itoa(totalQty),               // 从items计算或使用po_qty -> qty
+		Amount:              fmt.Sprintf("%.2f", po.SalePrice),    // sale_price -> amount
+		CustomerName:        po.CustomerCode,                      // customer_code -> customerName
+		Vendor:              po.Exporter,                          // exporter -> vendor
+		From:                po.ShipFrom,                          // ship_from -> from
+		ShipTo:              po.ShipTo,                            // ship_to -> shipTo
+		ShipTerms:           po.ShipTerms,                         // ship_terms -> shipTerms
+		PaymentTerms:        po.PaymentTerms,                      // payment_terms -> paymentTerms
+		LastRevised:         po.LastRevised,                       // last_revised -> lastRevised
+		Reference:           getStringPtr(po.UbcPi),               // ubc_pi -> reference
+		PoTotal:             fmt.Sprintf("%.2f", po.PoTotal),      // po_total -> poTotal
+		Page:                po.PageInfo,                          // page_info -> page
+		ShipVia:             getStringPtr(po.ShipVia),             // ship_via -> shipVia
+		Items:               pdfItems,                             // po_items JSON解析后的数据 -> items
+		SpecialInstructions: getStringPtr(po.SpecialInstructions), // special_instructions -> specialInstructions
 	}
 
 	return orderData, nil
@@ -229,10 +245,11 @@ func getStringPtr(s string) *string {
 
 // callPythonScriptAndReturnPDF 调用Python脚本生成PDF并直接返回给前端
 func (l *DownloadPdfLogic) callPythonScriptAndReturnPDF(orderData *PDFOrderData, w http.ResponseWriter) error {
-	// 这里读取D:\goproject\UBC\py\projection.json 文件作为参数
-	jsonData, err := os.ReadFile("D:\\goproject\\UBC\\py\\projection.json")
+	// 将orderData转换为JSON数组格式（Python脚本期望的格式）
+	jsonArray := []*PDFOrderData{orderData}
+	jsonData, err := json.Marshal(jsonArray)
 	if err != nil {
-		return fmt.Errorf("failed to read projection.json file: %v", err)
+		return fmt.Errorf("failed to marshal order data to JSON: %v", err)
 	}
 
 	// 获取当前工作目录
