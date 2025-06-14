@@ -365,9 +365,14 @@ func (l *DownloadPdfLogic) processPythonOutput(output []byte, orderData *PDFOrde
 	}
 
 	// 设置响应头 - 在写入任何内容之前设置
-	filename := fmt.Sprintf("projection_po_%s.pdf", orderData.Po)
+	filename := fmt.Sprintf("Production Document %s-%s TO NBO.pdf", orderData.Po, orderData.StyleNum)
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Header().Set("Content-Disposition", fmt.Sprintf("inline; filename=\"%s\"", filename))
+
+	w.Header().Set("Access-Control-Expose-Headers", "Content-Disposition")
+
+	// 或者如果你有其他需要暴露的头部，可以这样写：
+	w.Header().Set("Access-Control-Expose-Headers", "Content-Disposition, Content-Length, Content-Type")
 
 	// 直接写入PDF内容
 	_, err = w.Write(pdfBytes)
