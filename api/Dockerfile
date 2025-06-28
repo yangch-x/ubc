@@ -31,7 +31,7 @@ RUN apk add --no-cache \
 
 # 创建虚拟环境并安装 Python 包
 RUN python3 -m venv /venv \
-    && /venv/bin/pip install --no-cache-dir openai PyPDF2 termcolor
+    && /venv/bin/pip install --no-cache-dir openai PyPDF2 termcolor reportlab
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
