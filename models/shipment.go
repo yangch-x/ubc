@@ -654,6 +654,46 @@ func (p *ProjectionPo) SaveAll(ps []ProjectionPo) error {
 	return mysqlDb.Table("Projection_Po").Save(&ps).Error
 }
 
+// UpdateFields 动态更新指定字段
+func (p *ProjectionPo) UpdateFields(id int, updates map[string]interface{}) error {
+	if len(updates) == 0 {
+		return fmt.Errorf("no fields to update")
+	}
+
+	// 从updates中移除空值和id字段
+	filteredUpdates := make(map[string]interface{})
+	for key, value := range updates {
+		if key == "id" {
+			continue // 跳过id字段
+		}
+
+		// 检查值是否为零值，如果不是零值则添加到更新列表
+		switch v := value.(type) {
+		case string:
+			if v != "" {
+				filteredUpdates[key] = v
+			}
+		case int:
+			if v != 0 {
+				filteredUpdates[key] = v
+			}
+		case float64:
+			if v != 0 {
+				filteredUpdates[key] = v
+			}
+		default:
+			// 对于其他类型，直接添加
+			filteredUpdates[key] = v
+		}
+	}
+
+	if len(filteredUpdates) == 0 {
+		return fmt.Errorf("no valid fields to update")
+	}
+
+	return mysqlDb.Table("Projection_Po").Where("id = ?", id).Updates(filteredUpdates).Error
+}
+
 func SaveShipmentAndPackingAndInvoice(shipment *Shipment, list []PackingList, invoice *Invoice) (shipmentId, invoiceId int, err error) {
 
 	err = mysqlDb.Transaction(func(tx *gorm.DB) error {

@@ -306,8 +306,6 @@ func (l *UploadFileLogic) doPoFile(text string) (resp *types.UploadRes, err erro
 		// 从items中提取成本和价格信息
 		var costPrice float64
 		var totalCost float64
-		var salePrice float64
-		var totalSale float64
 		size := ""
 
 		if len(po.Items) > 0 {
@@ -319,19 +317,15 @@ func (l *UploadFileLogic) doPoFile(text string) (resp *types.UploadRes, err erro
 			// 提取第一个items的扩展总价
 			if po.Items[0].Extended != "" {
 				totalCost, _ = strconv.ParseFloat(strings.ReplaceAll(po.Items[0].Extended, ",", ""), 64)
-				totalSale = totalCost // 在这个例子中，销售价格和成本价格相同
 			}
-			salePrice = costPrice // 销售单价和成本单价相同
 		}
 
 		// 如果items中没有价格信息，使用po级别的信息
 		if costPrice == 0 && amount > 0 {
 			costPrice = amount
-			salePrice = amount
 		}
 		if totalCost == 0 && poTotal > 0 {
 			totalCost = poTotal
-			totalSale = poTotal
 		}
 
 		projections[i] = models.ProjectionPo{
@@ -351,9 +345,9 @@ func (l *UploadFileLogic) doPoFile(text string) (resp *types.UploadRes, err erro
 			Size:         size,            // 尺码 (从items中提取 -> size)
 
 			// 数量和价格
-			PoQty:         qtyInt,    // PO数量 (qty -> po_qty)
-			ShipQty:       0,         // 发货数量 (PDF中未提供)
-			SalePrice:     salePrice, // 销售价格 (从items中提取的单价 -> sale_price)
+			PoQty:         qtyInt, // PO数量 (qty -> po_qty)
+			ShipQty:       0,      // 发货数量 (PDF中未提供)
+			SalePrice:     0,
 			SaleCustPrice: 0,         // 客户销售价格 (PDF中未提供)
 			SaleCurrency:  "USD",     // 销售货币 (默认USD -> sale_currency)
 			InvoiceCode:   "",        // 发票代码 (PDF中未提供)
@@ -372,7 +366,7 @@ func (l *UploadFileLogic) doPoFile(text string) (resp *types.UploadRes, err erro
 			CommPaid:        0,               // 已付佣金 (PDF中未提供)
 
 			// 总计
-			TtlSell: totalSale, // 总销售金额 (从items的EXTENDED中提取 -> ttl_sell)
+			TtlSell: 0,
 			TtlBuy:  totalCost, // 总采购金额 (从items的EXTENDED中提取 -> ttl_buy)
 
 			// JSON和文本字段

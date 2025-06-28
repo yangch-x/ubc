@@ -110,6 +110,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: projectionPo.SaveOrUpdateHandler(serverCtx),
 			},
 			{
+				Method:  http.MethodPost,
+				Path:    "/projectionPo/updateFields",
+				Handler: projectionPo.UpdateFieldsHandler(serverCtx),
+			},
+			{
 				Method:  http.MethodDelete,
 				Path:    "/projectionPo/remove",
 				Handler: projectionPo.RemoveHandler(serverCtx),

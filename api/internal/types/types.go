@@ -225,6 +225,27 @@ type SaveProection struct {
 	SpecialInstructions string  `json:"specialInstructions,optional"`
 }
 
+type UpdateProjectionPoFields struct {
+	Id             int     `json:"id"`                      // 记录ID，必填
+	ArriveDt       string  `json:"arriveDt,optional"`       // Ex-FTY/In House
+	CustomerCode   string  `json:"customerCode,optional"`   // CUSTOMER
+	CustomerPo     string  `json:"customerPo,optional"`     // CUSTOMER P.O.
+	StyleCode      string  `json:"styleCode,optional"`      // STYLE NO
+	StyleName      string  `json:"styleName,optional"`      // DESC/STYLE NAME
+	Color          string  `json:"color,optional"`          // COLOR
+	Fabrication    string  `json:"fabrication,optional"`    // FABRICATION
+	PoQty          int     `json:"poQty,optional"`          // QTY/PC
+	CostPrice      float64 `json:"costPrice,optional"`      // ￥ BUY
+	TtlBuy         float64 `json:"ttlBuy,optional"`         // TTL BUY
+	SalePrice      float64 `json:"salePrice,optional"`      // $ SELL
+	TtlSell        float64 `json:"ttlSell,optional"`        // TTL SELL
+	Exporter       string  `json:"exporter,optional"`       // VENDOR
+	WaterResistant string  `json:"waterResistant,optional"` // WATER RESISTANT / Y/N
+	Notes          string  `json:"notes,optional"`          // NOTE
+	Country        string  `json:"country,optional"`        // Country&Brand ID
+	PoItems        string  `json:"poItems,optional"`        // PO Items JSON string
+}
+
 type SaveOrUpdateCustomer struct {
 	CustomerID      int    `json:"customerID,optional"`
 	CustomerCode    string `json:"customerCode,optional"`
