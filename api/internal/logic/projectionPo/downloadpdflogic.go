@@ -371,7 +371,6 @@ func (l *DownloadPdfLogic) processPythonOutput(output []byte, orderData *PDFOrde
 
 	w.Header().Set("Access-Control-Expose-Headers", "Content-Disposition")
 
-	// 或者如果你有其他需要暴露的头部，可以这样写：
 	w.Header().Set("Access-Control-Expose-Headers", "Content-Disposition, Content-Length, Content-Type")
 
 	// 直接写入PDF内容

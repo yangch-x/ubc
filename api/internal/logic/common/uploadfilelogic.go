@@ -74,7 +74,7 @@ type PoInfo struct {
 	StyleName           string `json:"styleName"`
 	Color               string `json:"color"`
 	Description         string `json:"description"`
-	Qty                 int    `json:"qty"`
+	Qty                 string `json:"qty"`
 	Amount              string `json:"amount"`
 	CustomerName        string `json:"customerName"`
 	Vendor              string `json:"vendor"`
@@ -88,6 +88,7 @@ type PoInfo struct {
 	Page                string `json:"page"`
 	ShipVia             string `json:"shipVia"`
 	SpecialInstructions string `json:"specialInstructions"`
+	Country             string `json:"country"`
 	Items               []Item `json:"items"`
 }
 type Item struct {
@@ -297,27 +298,52 @@ func (l *UploadFileLogic) doPoFile(text string) (resp *types.UploadRes, err erro
 	// 转换为 ProjectionPo 切片
 	projections := make([]models.ProjectionPo, len(pos))
 	for i, po := range pos {
-		qty := po.Qty
+		qtyInt, _ := strconv.Atoi(po.Qty)
 		amount, _ := strconv.ParseFloat(strings.ReplaceAll(po.Amount, ",", ""), 64)
 		poTotal, _ := strconv.ParseFloat(strings.ReplaceAll(po.PoTotal, ",", ""), 64)
 		items, _ := json.Marshal(po.Items)
 
-		// 从items中提取第一个项目的尺寸作为默认值
+		// 从items中提取成本和价格信息
+		var costPrice float64
+		var totalCost float64
+		var salePrice float64
+		var totalSale float64
 		size := ""
+
 		if len(po.Items) > 0 {
 			size = po.Items[0].Size
+			// 提取第一个items的成本价格
+			if po.Items[0].Cost != "" {
+				costPrice, _ = strconv.ParseFloat(strings.ReplaceAll(po.Items[0].Cost, ",", ""), 64)
+			}
+			// 提取第一个items的扩展总价
+			if po.Items[0].Extended != "" {
+				totalCost, _ = strconv.ParseFloat(strings.ReplaceAll(po.Items[0].Extended, ",", ""), 64)
+				totalSale = totalCost // 在这个例子中，销售价格和成本价格相同
+			}
+			salePrice = costPrice // 销售单价和成本单价相同
+		}
+
+		// 如果items中没有价格信息，使用po级别的信息
+		if costPrice == 0 && amount > 0 {
+			costPrice = amount
+			salePrice = amount
+		}
+		if totalCost == 0 && poTotal > 0 {
+			totalCost = poTotal
+			totalSale = poTotal
 		}
 
 		projections[i] = models.ProjectionPo{
 			// 基本信息
 			ArriveDt:     po.Due,          // 到货日期 (due -> arrive_dt)
 			PoDate:       po.Data,         // PO日期 (data -> po_date)
-			UbcPi:        po.Reference,    // UBC PI (reference -> ubc_pi)
-			FobLdp:       "",              // FOB LDP (暂时为空，PDF中未提供)
+			UbcPi:        po.Reference,    // UBC PI (reference -> ubc_pi，如果为空则保持空)
+			FobLdp:       po.ShipTerms,    // FOB LDP (使用shipTerms -> fob_ldp)
 			CustomerCode: po.CustomerName, // 客户代码 (customerName -> customer_code)
-			Country:      "",              // 国家 (暂时为空，PDF中未提供)
+			Country:      po.Country,      // 国家 (country -> country)
 			CustomerPo:   po.Po,           // 客户PO号 (Po -> customer_po)
-			MasterPo:     "",              // 主PO (暂时为空，PDF中未提供)
+			MasterPo:     "",              // 主PO (PDF中确实未提供)
 			StyleCode:    po.StyleNum,     // 款号 (styleNum -> style_code)
 			StyleName:    po.StyleName,    // 款名 (styleName -> style_name)
 			Fabrication:  po.Description,  // 面料/描述 (description -> fabrication)
@@ -325,29 +351,29 @@ func (l *UploadFileLogic) doPoFile(text string) (resp *types.UploadRes, err erro
 			Size:         size,            // 尺码 (从items中提取 -> size)
 
 			// 数量和价格
-			PoQty:         qty,    // PO数量 (qty -> po_qty)
-			ShipQty:       0,      // 发货数量 (暂时为0，PDF中未提供)
-			SalePrice:     amount, // 销售价格 (amount -> sale_price)
-			SaleCustPrice: 0,      // 客户销售价格 (暂时为0，PDF中未提供)
-			SaleCurrency:  "USD",  // 销售货币 (默认USD -> sale_currency)
-			InvoiceCode:   "",     // 发票代码 (暂时为空，PDF中未提供)
-			Receiving:     "",     // 收货 (暂时为空，PDF中未提供)
-			Notes:         "",     // 备注 (暂时为空，PDF中未提供)
-			CostPrice:     amount, // 成本价格 (amount -> cost_price)
-			CostCurrency:  "USD",  // 成本货币 (默认USD -> cost_currency)
-			RmbInv:        "",     // 人民币发票 (暂时为空，PDF中未提供)
+			PoQty:         qtyInt,    // PO数量 (qty -> po_qty)
+			ShipQty:       0,         // 发货数量 (PDF中未提供)
+			SalePrice:     salePrice, // 销售价格 (从items中提取的单价 -> sale_price)
+			SaleCustPrice: 0,         // 客户销售价格 (PDF中未提供)
+			SaleCurrency:  "USD",     // 销售货币 (默认USD -> sale_currency)
+			InvoiceCode:   "",        // 发票代码 (PDF中未提供)
+			Receiving:     "",        // 收货 (PDF中未提供)
+			Notes:         "",        // 备注 (PDF中的SPECIAL INSTRUCTIONS为空)
+			CostPrice:     costPrice, // 成本价格 (从items中提取的COST -> cost_price)
+			CostCurrency:  "USD",     // 成本货币 (默认USD -> cost_currency)
+			RmbInv:        "",        // 人民币发票 (PDF中未提供)
 
 			// 供应商和付款信息
 			Exporter:        po.Vendor,       // 出口商 (vendor -> exporter)
-			UbcPayable:      0,               // UBC应付款 (暂时为0，PDF中未提供)
+			UbcPayable:      0,               // UBC应付款 (PDF中未提供)
 			PayPeriod:       po.PaymentTerms, // 付款期限 (paymentTerms -> pay_period)
-			SalesPerson:     "",              // 销售人员 (暂时为空，PDF中未提供)
-			SalesCommission: 0,               // 销售佣金 (暂时为0，PDF中未提供)
-			CommPaid:        0,               // 已付佣金 (暂时为0，PDF中未提供)
+			SalesPerson:     "",              // 销售人员 (PDF中未提供)
+			SalesCommission: 0,               // 销售佣金 (PDF中未提供)
+			CommPaid:        0,               // 已付佣金 (PDF中未提供)
 
 			// 总计
-			TtlSell: poTotal, // 总销售金额 (poTotal -> ttl_sell)
-			TtlBuy:  poTotal, // 总采购金额 (poTotal -> ttl_buy)
+			TtlSell: totalSale, // 总销售金额 (从items的EXTENDED中提取 -> ttl_sell)
+			TtlBuy:  totalCost, // 总采购金额 (从items的EXTENDED中提取 -> ttl_buy)
 
 			// JSON和文本字段
 			PoItems:             items,                  // PO条目详情 (items -> po_items)
@@ -358,8 +384,8 @@ func (l *UploadFileLogic) doPoFile(text string) (resp *types.UploadRes, err erro
 			LastRevised:         po.LastRevised,         // 最后修订 (lastRevised -> last_revised)
 			PoTotal:             poTotal,                // PO总额 (poTotal -> po_total)
 			PageInfo:            po.Page,                // 页面信息 (page -> page_info)
-			ShipVia:             po.ShipVia,             // 运输方式 (shipVia -> ship_via)
-			SpecialInstructions: po.SpecialInstructions, // 特殊说明 (specialInstructions -> special_instructions)
+			ShipVia:             po.ShipVia,             // 运输方式 (shipVia -> ship_via，即使为空也设置)
+			SpecialInstructions: po.SpecialInstructions, // 特殊说明 (specialInstructions -> special_instructions，即使为空也设置)
 		}
 	}
 
