@@ -10,33 +10,25 @@ import (
 )
 
 type Shipment struct {
-	ShipID              int     `json:"ship_id" gorm:"column:ship_id;primaryKey;autoIncrement"`
-	RmbInv              string  `json:"rmb_inv" gorm:"column:rmb_inv"`
-	MasterPo            string  `json:"master_po" gorm:"column:master_po"`
-	CustomerCode        string  `json:"customer_code" gorm:"column:customer_code"`
-	UbcPi               string  `json:"ubc_pi" gorm:"column:ubc_pi"`
-	Markurl             string  `json:"markurl" gorm:"column:markurl"`
-	OrigCountry         string  `json:"orig_country" gorm:"column:orig_country"`
-	ShipMethod          string  `json:"ship_method" gorm:"column:ship_method"`
-	ShipTerm            string  `json:"ship_term" gorm:"column:ship_term"`
-	InvoiceTtl          float64 `json:"invoice_ttl" gorm:"column:invoice_ttl"`
-	ShipFrom            string  `json:"ship_from" gorm:"column:ship_from"`
-	MasterBlNum         string  `json:"master_bl_num" gorm:"column:master_bl_num;notNull"`
-	HouseBlNum          string  `json:"house_bl_num" gorm:"column:house_bl_num"`
-	Exporter            string  `json:"exporter" gorm:"column:exporter"`
-	ShipName            string  `json:"ship_name" gorm:"column:ship_name"`
-	PackDt              string  `json:"pack_dt" gorm:"column:pack_dt"`
-	ShipDt              string  `json:"ship_dt" gorm:"column:ship_dt"`
-	ArriveDt            string  `json:"arrive_dt" gorm:"column:arrive_dt"`
-	Notes               string  `json:"notes" gorm:"column:notes;type:text"`
-	ShipTo              string  `gorm:"column:ship_to;type:text"`
-	ShipTerms           string  `gorm:"column:ship_terms;size:255"`
-	PaymentTerms        string  `gorm:"column:payment_terms;size:255"`
-	LastRevised         string  `gorm:"column:last_revised;size:100"`
-	PoTotal             float64 `gorm:"column:po_total"`
-	PageInfo            string  `gorm:"column:page_info;size:100"`
-	ShipVia             string  `gorm:"column:ship_via;size:255"`
-	SpecialInstructions string  `gorm:"column:special_instructions;type:text"`
+	ShipID       int     `json:"ship_id" gorm:"column:ship_id;primaryKey;autoIncrement"`
+	RmbInv       string  `json:"rmb_inv" gorm:"column:rmb_inv"`
+	MasterPo     string  `json:"master_po" gorm:"column:master_po"`
+	CustomerCode string  `json:"customer_code" gorm:"column:customer_code"`
+	UbcPi        string  `json:"ubc_pi" gorm:"column:ubc_pi"`
+	Markurl      string  `json:"markurl" gorm:"column:markurl"`
+	OrigCountry  string  `json:"orig_country" gorm:"column:orig_country"`
+	ShipMethod   string  `json:"ship_method" gorm:"column:ship_method"`
+	ShipTerm     string  `json:"ship_term" gorm:"column:ship_term"`
+	InvoiceTtl   float64 `json:"invoice_ttl" gorm:"column:invoice_ttl"`
+	ShipFrom     string  `json:"ship_from" gorm:"column:ship_from"`
+	MasterBlNum  string  `json:"master_bl_num" gorm:"column:master_bl_num;notNull"`
+	HouseBlNum   string  `json:"house_bl_num" gorm:"column:house_bl_num"`
+	Exporter     string  `json:"exporter" gorm:"column:exporter"`
+	ShipName     string  `json:"ship_name" gorm:"column:ship_name"`
+	PackDt       string  `json:"pack_dt" gorm:"column:pack_dt"`
+	ShipDt       string  `json:"ship_dt" gorm:"column:ship_dt"`
+	ArriveDt     string  `json:"arrive_dt" gorm:"column:arrive_dt"`
+	Notes        string  `json:"notes" gorm:"column:notes;type:text"`
 }
 
 type Config struct {
@@ -314,7 +306,7 @@ func (s *Shipment) Search(searchValue, dueDate string, page, size int) ([]res_mo
 	)
 
 	query := mysqlDb.Table("Shipment s").
-		Select("s.*, i.invoice_code as invoice_code, i.sub_total as sub_total,i.total_pcs as total_pcs, SUM(p.gross_weight) AS gross_weight, SUM(p.item_cnt) AS item_cnt, SUM(p.carton_cnt) AS carton_cnt, SUM(p.meas_vol) AS carton_size,i.invoice_due as due_date").
+		Select("s.*, i.invoice_code as invoice_code, i.sub_total as sub_total,i.total_pcs as total_pcs, SUM(p.gross_weight) AS gross_weight, SUM(p.item_cnt) AS item_cnt, SUM(p.carton_cnt) AS carton_cnt, SUM(p.meas_vol) AS carton_size,i.invoice_due as due_date,i.invoice_due as due_date,i.received_amt as deposit_amt").
 		Joins("LEFT JOIN PackingList p ON s.ship_id = p.ship_id").
 		Joins("LEFT JOIN Invoice i ON s.ship_id = i.ship_id").
 		Group("s.ship_id, s.rmb_inv, s.master_po, s.customer_code, s.ubc_pi, s.markurl, s.orig_country, s.ship_method, s.ship_term, s.invoice_ttl, s.ship_from, s.master_bl_num, s.house_bl_num, " +
@@ -356,7 +348,7 @@ func (s *Shipment) SearchByIds(ids []int) ([]*res_models.DownloadShipment, error
 	)
 
 	query := mysqlDb.Table("Shipment s").
-		Select("s.*, i.invoice_code as invoice_code, i.sub_total as sub_total, i.invoice_dt as invoice_dt, i.invoice_due as invoice_due").
+		Select("s.*, i.invoice_code as invoice_code, i.sub_total as sub_total, i.invoice_dt as invoice_dt, i.received_amt as deposit_amt").
 		Joins("LEFT JOIN PackingList p ON s.ship_id = p.ship_id").
 		Joins("LEFT JOIN Invoice i ON s.ship_id = i.ship_id").
 		Group("s.ship_id, s.rmb_inv, s.master_po, s.customer_code, s.ubc_pi, s.markurl, s.orig_country, s.ship_method, s.ship_term, s.invoice_ttl, s.ship_from, s.master_bl_num, s.house_bl_num, s.exporter, s.ship_name, s.pack_dt, s.ship_dt, s.arrive_dt, s.notes, i.invoice_code, i.sub_total, i.total_pcs")

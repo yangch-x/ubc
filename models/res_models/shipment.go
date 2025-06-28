@@ -29,6 +29,7 @@ type SearchShipment struct {
 	SubTotal     float64 `json:"subTotal"`
 	TotalPcs     int     `json:"totalPcs"`
 	DueDate      string  `json:"dueDate"`
+	DepositAmt   float64 `json:"depositAmt"`
 }
 
 type DownloadShipment struct {
@@ -74,6 +75,7 @@ type ShipmentAndInvoice struct {
 	Term                      string  `json:"term"`
 	AdditionalCost            float64 `json:"additionalCost,optional"`
 	AdditionalCostDescription string  `json:"additionalCostDescription,optional"`
+	DepositAmt                float64 `json:"depositAmt"`
 }
 
 type ShipAndInvoice struct {

@@ -66,6 +66,7 @@ type ShipmentAndInvoice struct {
 	DepositAmt                float64 `json:"depositAmt,optional"`                // 定金金额
 	InvoiceDt                 string  `json:"invoiceDt,optional"`                 // 发票日期
 	InvoiceDue                string  `json:"invoiceDue,optional"`                // 发票到期日
+	ReceivedAmt               float64 `json:"receivedAmt,optional"`
 }
 
 type ShipmentAndInvoiceRes struct {
@@ -116,6 +117,7 @@ type SaveOrUpdateShipment struct {
 	ShipDT       string  `json:"shipDt"`
 	ArriveDT     string  `json:"arriveDt"`
 	Notes        string  `json:"notes"`
+	DepositAmt   float64 `json:"depositAmt"`
 }
 
 type SaveShipmentRes struct {

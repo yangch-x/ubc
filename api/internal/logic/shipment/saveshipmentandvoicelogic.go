@@ -47,7 +47,7 @@ func (l *SaveShipmentAndVoiceLogic) SaveShipmentAndVoice(req *types.ShipmentAndI
 		InvoiceCode:               req.InvoiceCode,
 		CustomerCode:              req.CustomerCode,
 		InvoiceAmt:                req.AdditionalCost,
-		ReceivedAmt:               req.DepositAmt,
+		ReceivedAmt:               req.ReceivedAmt,
 		AdditionalCost:            req.AdditionalCost,
 		AdditionalCostDescription: req.AdditionalCostDescription,
 		InvoiceDt:                 utils.FormatDateToYMD(req.InvoiceDt),
