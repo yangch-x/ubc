@@ -268,7 +268,6 @@ func (l *DownloadPdfLogic) callPythonScriptAndReturnPDF(orderData *PDFOrderData,
 
 	// 获取配置的Python路径
 	pythonPath := l.svcCtx.Config.PythonPath
-	pythonPath = "D:\\tools\\Anaconda\\python.exe"
 	if pythonPath == "" {
 		// 如果配置为空，尝试默认的Python命令
 		pythonCommands := []string{"python", "python3", "py"}
